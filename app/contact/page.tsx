@@ -1,11 +1,7 @@
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-      <main className="pt-24 px-6 md:px-12 max-w-2xl mx-auto pb-16">
+      <main className="pt-32 px-6 md:px-12 max-w-2xl mx-auto pb-16">
         <h1 className="text-4xl md:text-5xl font-light tracking-wider mb-8">
           CONTACT US
         </h1>
@@ -60,7 +56,6 @@ export default function ContactPage() {
           </button>
         </form>
       </main>
-      <Footer />
     </div>
   );
 }

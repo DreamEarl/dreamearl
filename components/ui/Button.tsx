@@ -12,7 +12,7 @@ export default function Button({
   fullWidth = false,
   className = "",
   ...props
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
   const baseStyles =
     "px-6 py-3 rounded-md font-medium transition-colors duration-200";
 
