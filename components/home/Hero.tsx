@@ -11,6 +11,7 @@ export default function Hero() {
           src="/background.jpeg"
           alt="Pearl handbag hero image"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
           quality={100}

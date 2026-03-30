@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { translations } from "@/lib/constants/translations";
 
 export default function Footer() {
+  const { footer, common } = translations;
+
   return (
-    <footer className="bg-gray-50 text-black py-16 px-6 md:px-12">
+    <footer className="bg-white text-black py-16 px-6 md:px-12 border-t border-gray-200">
       <div className="max-w-7xl mx-auto">
         {/* Brand Header */}
         <div className="mb-12">
           <h3 className="text-2xl font-light tracking-[0.3em] mb-4">
-            DREAMEARL
+            {common.brand}
           </h3>
           <div className="border-t border-gray-300" />
         </div>
@@ -17,33 +20,29 @@ export default function Footer() {
           {/* Contact Us */}
           <div>
             <h4 className="text-sm font-medium tracking-wider mb-6">
-              CONTACT US
+              {footer.contactUs.title}
             </h4>
             <div className="space-y-4 text-sm">
               <p className="leading-relaxed">
-                For all customer queries, please
+                {footer.contactUs.text}
                 <br />
-                contact us here or send an email to
-                <br />
-                <span className="font-semibold">
-                  mydreamearl.shop@gmail.com
-                </span>
+                <span className="font-semibold">{footer.contactUs.email}</span>
               </p>
               <p className="text-sm leading-relaxed">
-                We&apos;ll respond to all customer queries
-                <br />
-                within 24 hours Monday to Friday
+                {footer.contactUs.responseTime}
               </p>
             </div>
           </div>
 
           {/* Explore */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider mb-6">EXPLORE</h4>
+            <h4 className="text-sm font-medium tracking-wider mb-6">
+              {footer.explore.title}
+            </h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/about" className="hover:underline transition-all">
-                  About us
+                  {footer.explore.links.aboutUs}
                 </Link>
               </li>
               <li>
@@ -51,7 +50,7 @@ export default function Footer() {
                   href="/customization"
                   className="hover:underline transition-all"
                 >
-                  Customization
+                  {footer.explore.links.customization}
                 </Link>
               </li>
               <li>
@@ -59,12 +58,12 @@ export default function Footer() {
                   href="/jewellery-care"
                   className="hover:underline transition-all"
                 >
-                  Jewellery Care
+                  {footer.explore.links.jewelleryCare}
                 </Link>
               </li>
               <li>
                 <Link href="/blogs" className="hover:underline transition-all">
-                  Blogs
+                  {footer.explore.links.blogs}
                 </Link>
               </li>
             </ul>
@@ -72,14 +71,16 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider mb-6">SUPPORT</h4>
+            <h4 className="text-sm font-medium tracking-wider mb-6">
+              {footer.support.title}
+            </h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
                   href="/shipping-policy"
                   className="hover:underline transition-all"
                 >
-                  Shipping Policy
+                  {footer.support.links.shippingPolicy}
                 </Link>
               </li>
               <li>
@@ -87,7 +88,7 @@ export default function Footer() {
                   href="/terms-conditions"
                   className="hover:underline transition-all"
                 >
-                  Terms & Conditions
+                  {footer.support.links.termsConditions}
                 </Link>
               </li>
               <li>
@@ -95,7 +96,7 @@ export default function Footer() {
                   href="/privacy-policy"
                   className="hover:underline transition-all"
                 >
-                  Privacy Policy
+                  {footer.support.links.privacyPolicy}
                 </Link>
               </li>
               <li>
@@ -103,7 +104,7 @@ export default function Footer() {
                   href="/shipping-policy"
                   className="hover:underline transition-all"
                 >
-                  Shipping Policy
+                  {footer.support.links.shippingPolicy}
                 </Link>
               </li>
             </ul>
@@ -112,7 +113,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="text-center text-sm">
-          <p>2026, DREAMEARL. All rights reserved</p>
+          <p>{footer.copyright}</p>
         </div>
       </div>
     </footer>
