@@ -2,7 +2,6 @@
 
 import { UserIcon, CartIcon } from "@/components/ui/icons";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 interface NavbarProps {
   isHomePage?: boolean;
@@ -22,7 +21,6 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
 
-  const showLogo = isHomePage ? scrolled : true;
   const isDark = isHomePage ? scrolled : true;
 
   return (
@@ -31,20 +29,8 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
         isDark ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >
-      {/* Left Side - Logo */}
-      <div className="flex items-center">
-        <Link href="/">
-          <h1
-            className={`text-xl md:text-2xl font-light tracking-[0.3em] transition-all duration-300 ${
-              showLogo
-                ? "opacity-100 text-black"
-                : "opacity-0 pointer-events-none text-white"
-            }`}
-          >
-            DREAMEARL
-          </h1>
-        </Link>
-      </div>
+      {/* Left Side - Logo placeholder for spacing */}
+      <div className="flex items-center w-48" />
 
       {/* Right Icons */}
       <div className="flex items-center gap-6">
