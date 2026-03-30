@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { translations } from "@/lib/constants/translations";
+import Heading from "@/components/ui/Heading";
+import Text from "@/components/ui/Text";
 
 export default function Footer() {
   const { footer, common } = translations;
@@ -9,9 +11,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         {/* Brand Header */}
         <div className="mb-12">
-          <h3 className="text-2xl font-light tracking-[0.3em] mb-4">
+          <Heading variant="footer-brand" className="mb-4">
             {common.brand}
-          </h3>
+          </Heading>
           <div className="border-t border-gray-300" />
         </div>
 
@@ -19,26 +21,24 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
           {/* Contact Us */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider mb-6">
+            <Heading variant="footer-section" className="mb-6">
               {footer.contactUs.title}
-            </h4>
-            <div className="space-y-4 text-sm">
-              <p className="leading-relaxed">
+            </Heading>
+            <div className="space-y-4">
+              <Text variant="body">
                 {footer.contactUs.text}
                 <br />
                 <span className="font-semibold">{footer.contactUs.email}</span>
-              </p>
-              <p className="text-sm leading-relaxed">
-                {footer.contactUs.responseTime}
-              </p>
+              </Text>
+              <Text variant="body">{footer.contactUs.responseTime}</Text>
             </div>
           </div>
 
           {/* Explore */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider mb-6">
+            <Heading variant="footer-section" className="mb-6">
               {footer.explore.title}
-            </h4>
+            </Heading>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/about" className="hover:underline transition-all">
@@ -71,9 +71,9 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider mb-6">
+            <Heading variant="footer-section" className="mb-6">
               {footer.support.title}
-            </h4>
+            </Heading>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
@@ -112,9 +112,9 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="text-center text-sm">
-          <p>{footer.copyright}</p>
-        </div>
+        <Text variant="caption" as="p" className="text-center">
+          {footer.copyright}
+        </Text>
       </div>
     </footer>
   );
