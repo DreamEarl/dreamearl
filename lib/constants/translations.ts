@@ -13,6 +13,11 @@ export const translations = {
   hero: {
     tagline: "Handcrafted Luxury in Every Pearl",
   },
+  brandDescription: {
+    line1: "Pearl statement accessories by DreamEarl",
+    line2:
+      "For the women who writes her own story, and wears it boldly everyday",
+  },
   shopByCategory: {
     title: "SHOP BY CATEGORY",
   },
