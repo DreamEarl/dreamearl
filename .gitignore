@@ -10,6 +10,11 @@
 !.yarn/releases
 !.yarn/versions
 
+# sanity studio
+/sanity/node_modules
+/sanity/dist
+/sanity/.sanity
+
 # testing
 /coverage
 
