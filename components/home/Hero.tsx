@@ -8,7 +8,7 @@ export default function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/background.jpeg"
+          src="/images/hero/background.jpeg"
           alt="Pearl handbag hero image"
           fill
           sizes="100vw"
