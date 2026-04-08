@@ -160,7 +160,7 @@ export default defineType({
       media: "images.0",
     },
     prepare(selection) {
-      const { title, subtitle } = selection;
+      const { subtitle } = selection;
       return {
         ...selection,
         subtitle: `Rs. ${subtitle}`,
