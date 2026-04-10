@@ -25,9 +25,10 @@ export default function AnimatedLogo() {
         className="fixed z-100"
         initial={false}
         animate={{
-          top: scrolled ? "24px" : "calc(50vh - clamp(200px, 25vw, 300px))",
+          top: scrolled ? "24px" : "20vh",
           left: scrolled ? "24px" : "50%",
           x: scrolled ? "0%" : "-50%",
+          y: scrolled ? "0%" : "-50%",
         }}
         transition={{
           type: "spring",
@@ -40,7 +41,9 @@ export default function AnimatedLogo() {
           <motion.h1
             className="font-light font-glacial tracking-[0.3em] whitespace-nowrap"
             animate={{
-              fontSize: scrolled ? "30px" : "6rem",
+              fontSize: scrolled
+                ? "clamp(1.25rem, 2vw, 1.5rem)"
+                : "clamp(3rem, 8vw, 6rem)",
               color: scrolled ? "#000000" : "#ffffff",
             }}
             transition={{
@@ -114,7 +117,7 @@ export default function AnimatedLogo() {
         }}
       >
         <motion.p
-          className="tracking-[0.2em] text-white text-center whitespace-nowrap"
+          className="font-semibold tracking-[0.2em] text-white text-center whitespace-nowrap"
           animate={{
             fontSize: "clamp(1.125rem, 2vw, 1.4rem)",
           }}
