@@ -55,7 +55,7 @@ const variantConfig: Record<HeadingVariant, HeadingConfig> = {
   },
   "footer-brand": {
     tag: "h3",
-    className: "text-2xl font-light tracking-[0.3em]",
+    className: "text-2xl font-glacial font-light tracking-[0.3em]",
   },
   "footer-section": {
     tag: "h4",

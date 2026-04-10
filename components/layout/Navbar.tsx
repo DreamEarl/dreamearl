@@ -37,7 +37,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
         {showLogo && (
           <Link
             href="/"
-            className="font-light tracking-[0.3em] text-lg whitespace-nowrap text-black hover:opacity-70 transition-opacity"
+            className="font-glacial font-semibold tracking-[0.3em] text-[30px] whitespace-nowrap text-black hover:opacity-70 transition-opacity"
           >
             {translations.common.brand}
           </Link>
