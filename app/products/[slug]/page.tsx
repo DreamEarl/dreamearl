@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug as getSanityProductBySlug, urlFor } from "@/lib/sanity";
+import {
+  getProductBySlug as getSanityProductBySlug,
+  urlFor,
+} from "@/lib/sanity";
 import ProductDetailClient from "./ProductDetailClient";
 
 export default async function ProductDetailPage({
@@ -20,7 +23,7 @@ export default async function ProductDetailPage({
     name: product.name,
     price: product.price,
     currency: product.currency,
-    image: urlFor(product.images[0]).width(1200).url(),
+    images: product.images.map((img) => urlFor(img).width(1200).url()),
     details: {
       product: product.productType || "N/A",
       craftTechnique: product.craftTechnique || "N/A",

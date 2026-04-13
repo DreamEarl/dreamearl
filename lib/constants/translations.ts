@@ -27,6 +27,7 @@ export const translations = {
     addToCart: "ADD TO CART",
     buyNow: "BUY IT NOW",
     share: "Share",
+    linkCopied: "Link Copied!",
     labels: {
       product: "Product:",
       craftTechnique: "Craft Technique:",
