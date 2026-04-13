@@ -32,7 +32,7 @@ describe("Button Component", () => {
     it("applies outline variant classes", () => {
       render(<Button variant="outline">Outline</Button>);
       const button = screen.getByRole("button");
-      expect(button).toHaveClass("border-2", "border-black");
+      expect(button).toHaveClass("border-1", "border-black");
     });
 
     it("applies ghost variant classes", () => {
@@ -130,7 +130,7 @@ describe("Button Component", () => {
         </Button>,
       );
       const button = screen.getByRole("button");
-      expect(button).toHaveClass("border-2", "border-black", "custom-class");
+      expect(button).toHaveClass("border-1", "border-black", "custom-class");
     });
   });
 

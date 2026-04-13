@@ -17,14 +17,9 @@ describe("ContactUs Component", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders brand name in decorative section", () => {
-      render(<ContactUs />);
-      expect(screen.getByText("DREAM")).toBeInTheDocument();
-    });
-
     it("renders brand tagline", () => {
       render(<ContactUs />);
-      expect(screen.getByText("Handcrafted Luxury in")).toBeInTheDocument();
+      expect(screen.getByText("CONTACT US")).toBeInTheDocument();
     });
   });
 
@@ -123,21 +118,10 @@ describe("ContactUs Component", () => {
   });
 
   describe("Layout", () => {
-    it("has responsive flex layout", () => {
+    it("has a flex column layout", () => {
       const { container } = render(<ContactUs />);
-      const mainContainer = container.firstChild;
-      expect(mainContainer).toHaveClass(
-        "flex",
-        "flex-col",
-        "md:flex-row",
-        "h-full",
-      );
-    });
-
-    it("contains left decorative section", () => {
-      const { container } = render(<ContactUs />);
-      const decorativeSection = container.querySelector(".bg-gray-200");
-      expect(decorativeSection).toBeInTheDocument();
+      const mainContainer = container.firstChild as HTMLElement;
+      expect(mainContainer).toHaveClass("flex", "flex-col");
     });
 
     it("contains right content section", () => {

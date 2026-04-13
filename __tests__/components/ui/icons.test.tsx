@@ -4,6 +4,9 @@ import {
   MailIcon,
   InstagramIcon,
   CloseIcon,
+  CartIcon,
+  MenuIcon,
+  UserIcon,
 } from "@/components/ui/icons";
 
 describe("Icon Components", () => {
@@ -140,6 +143,15 @@ describe("Icon Components", () => {
 
       const closeIcon = render(<CloseIcon className={customClass} />);
       expect(closeIcon.container.querySelector("svg")).toHaveClass(customClass);
+
+      const cartIcon = render(<CartIcon className={customClass} />);
+      expect(cartIcon.container.querySelector("svg")).toHaveClass(customClass);
+
+      const menuIcon = render(<MenuIcon className={customClass} />);
+      expect(menuIcon.container.querySelector("svg")).toHaveClass(customClass);
+
+      const userIcon = render(<UserIcon className={customClass} />);
+      expect(userIcon.container.querySelector("svg")).toHaveClass(customClass);
     });
 
     it("all icons have default size classes", () => {
@@ -154,6 +166,73 @@ describe("Icon Components", () => {
         const svg = container.querySelector("svg");
         expect(svg).toHaveClass("w-5", "h-5");
       });
+    });
+
+    it("CartIcon, MenuIcon, UserIcon have default w-6 h-6 classes", () => {
+      const icons = [
+        render(<CartIcon />),
+        render(<MenuIcon />),
+        render(<UserIcon />),
+      ];
+
+      icons.forEach(({ container }) => {
+        const svg = container.querySelector("svg");
+        expect(svg).toHaveClass("w-6", "h-6");
+      });
+    });
+  });
+
+  describe("CartIcon", () => {
+    it("renders an SVG element", () => {
+      const { container } = render(<CartIcon />);
+      expect(container.querySelector("svg")).toBeInTheDocument();
+    });
+
+    it("applies default className", () => {
+      const { container } = render(<CartIcon />);
+      expect(container.querySelector("svg")).toHaveClass("w-6", "h-6");
+    });
+
+    it("applies custom className", () => {
+      const { container } = render(<CartIcon className="w-8 h-8" />);
+      expect(container.querySelector("svg")).toHaveClass("w-8", "h-8");
+    });
+  });
+
+  describe("MenuIcon", () => {
+    it("renders an SVG element", () => {
+      const { container } = render(<MenuIcon />);
+      expect(container.querySelector("svg")).toBeInTheDocument();
+    });
+
+    it("applies default className", () => {
+      const { container } = render(<MenuIcon />);
+      expect(container.querySelector("svg")).toHaveClass("w-6", "h-6");
+    });
+
+    it("applies custom className", () => {
+      const { container } = render(<MenuIcon className="w-4 h-4" />);
+      expect(container.querySelector("svg")).toHaveClass("w-4", "h-4");
+    });
+  });
+
+  describe("UserIcon", () => {
+    it("renders an SVG element", () => {
+      const { container } = render(<UserIcon />);
+      expect(container.querySelector("svg")).toBeInTheDocument();
+    });
+
+    it("applies default className", () => {
+      const { container } = render(<UserIcon />);
+      expect(container.querySelector("svg")).toHaveClass("w-6", "h-6");
+    });
+
+    it("applies custom className", () => {
+      const { container } = render(
+        <UserIcon className="w-5 h-5 text-gray-700" />,
+      );
+      const svg = container.querySelector("svg");
+      expect(svg).toHaveClass("w-5", "h-5", "text-gray-700");
     });
   });
 });
