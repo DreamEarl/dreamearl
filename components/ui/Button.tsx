@@ -17,7 +17,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-black text-white font-light tracking-wide hover:bg-gray-900 transition-colors",
   outline:
-    "border-2 border-black text-black font-light tracking-wide hover:bg-gray-50 transition-colors",
+    "border-1 border-black bg-white text-black font-light tracking-wide hover:bg-gray-50 transition-colors",
   ghost:
     "flex items-center gap-2 text-sm tracking-wider hover:text-gray-600 transition-colors",
   social:

@@ -12,6 +12,8 @@ export const translations = {
   },
   hero: {
     tagline: "Handcrafted Luxury in Every Pearl",
+    exploreCollection: "EXPLORE COLLECTION",
+    ourStory: "OUR STORY",
   },
   brandDescription: {
     line1: "Pearl statement accessories by DreamEarl",

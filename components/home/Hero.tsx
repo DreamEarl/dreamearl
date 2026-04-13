@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { translations } from "@/lib/constants/translations";
+import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
@@ -64,6 +65,31 @@ export default function Hero() {
         >
           {translations.hero.tagline}
         </p>
+      </div>
+
+      {/* CTA Buttons */}
+      <div
+        className="absolute z-10 flex gap-4 justify-center w-120"
+        style={{
+          top: "calc(70% + clamp(200px, 28vw, 240px))",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+      >
+        <Button
+          variant="primary"
+          href="/shop"
+          className="flex-1 whitespace-nowrap text-center"
+        >
+          {translations.hero.exploreCollection}
+        </Button>
+        <Button
+          variant="outline"
+          href="/about"
+          className="flex-1 whitespace-nowrap text-center"
+        >
+          {translations.hero.ourStory}
+        </Button>
       </div>
     </section>
   );
