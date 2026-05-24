@@ -157,7 +157,6 @@ export async function getCustomizationSection(): Promise<{
   heading?: string;
   subtitle?: string;
   buttonText?: string;
-  buttonLink?: string;
   images?: CustomizationImage[];
 } | null> {
   return client.fetch(`
@@ -165,7 +164,6 @@ export async function getCustomizationSection(): Promise<{
       heading,
       subtitle,
       buttonText,
-      buttonLink,
       images
     }
   `);

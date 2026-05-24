@@ -11,7 +11,6 @@ export default async function CustomizeSection() {
   const heading = data?.heading ?? translations.customization.heading;
   const subtitle = data?.subtitle ?? translations.customization.subtitle;
   const buttonText = data?.buttonText ?? translations.customization.buttonText;
-  const buttonLink = data?.buttonLink ?? translations.customization.buttonLink;
   const images = data?.images ?? [];
 
   return (
@@ -23,7 +22,7 @@ export default async function CustomizeSection() {
           <Text variant="body">{subtitle}</Text>
           <Button
             variant="primary"
-            href={buttonLink}
+            href="/custom-order"
             className="mt-2 tracking-widest text-sm px-16 py-4"
           >
             {buttonText}

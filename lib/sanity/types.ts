@@ -50,7 +50,6 @@ export interface SanityCustomizationSection {
   heading?: string;
   subtitle?: string;
   buttonText?: string;
-  buttonLink?: string;
   images?: CustomizationImage[];
 }
 

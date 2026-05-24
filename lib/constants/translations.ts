@@ -27,7 +27,6 @@ export const translations = {
     heading: "Customize Your Piece",
     subtitle: "Have a vision for your perfect pearl accessory?",
     buttonText: "MAKE CUSTOM ORDER",
-    buttonLink: "/contact",
   },
   product: {
     addToCart: "ADD TO CART",
@@ -103,6 +102,30 @@ export const translations = {
       },
     },
     copyright: "2026, DREAMEARL. All rights reserved",
+  },
+  customOrder: {
+    heading: "Customize Your Piece",
+    subtitle:
+      "Have a vision for your perfect pearl accessory? Share your inspiration with us, and our master artisans will bring your dream to life.",
+    form: {
+      inspirationImage: "Inspiration Image",
+      dropzone: "Drop your image here, or click to browse",
+      dropzoneHint: "PNG, JPG up to 10MB",
+      fullName: "Full Name",
+      fullNamePlaceholder: "Your name",
+      email: "Email Address",
+      emailPlaceholder: "your@email.com",
+      phone: "Phone Number",
+      phonePlaceholder: "+91 1234567890",
+      productType: "Product Type",
+      productTypePlaceholder: "Select a type",
+      requirements: "Custom Requirements",
+      requirementsPlaceholder:
+        "Describe your vision, preferred colors, size, materials, and any special details you'd like to include...",
+      submit: "Submit Custom Order",
+      submitNote:
+        "Our team will review your request and contact you within 24-48 hours with a quote and timeline.",
+    },
   },
 };
 

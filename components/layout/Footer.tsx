@@ -47,7 +47,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/customization"
+                  href="/custom-order"
                   className="hover:underline transition-all"
                 >
                   {footer.explore.links.customization}

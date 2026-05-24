@@ -25,12 +25,6 @@ export default defineType({
       initialValue: "MAKE CUSTOM ORDER",
     }),
     defineField({
-      name: "buttonLink",
-      title: "Button Link",
-      type: "string",
-      initialValue: "/contact",
-    }),
-    defineField({
       name: "images",
       title: "Inspiration Images",
       type: "array",
