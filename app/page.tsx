@@ -1,5 +1,6 @@
 import Hero from "@/components/home/Hero";
 import ShopByCategory from "@/components/home/ShopByCategory";
+import CustomizeSection from "@/components/home/CustomizeSection";
 import Text from "@/components/ui/Text";
 import { translations } from "@/lib/constants/translations";
 
@@ -12,6 +13,7 @@ export default function Home() {
         <Text variant="body">{translations.brandDescription.line2}</Text>
       </div>
       <ShopByCategory />
+      <CustomizeSection />
     </div>
   );
 }

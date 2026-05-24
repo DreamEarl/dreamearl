@@ -1,5 +1,10 @@
 import { client } from "./client";
-import { SanityProduct, SanityCategory, SanitySiteSettings } from "./types";
+import {
+  SanityProduct,
+  SanityCategory,
+  SanitySiteSettings,
+  CustomizationImage,
+} from "./types";
 
 // Fetch all products
 export async function getAllProducts(): Promise<SanityProduct[]> {
@@ -143,6 +148,25 @@ export async function getFeaturedProducts(): Promise<SanityProduct[]> {
       description,
       inStock,
       featured
+    }
+  `);
+}
+
+// Fetch customization section data
+export async function getCustomizationSection(): Promise<{
+  heading?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  images?: CustomizationImage[];
+} | null> {
+  return client.fetch(`
+    *[_type == "customizationSection"][0] {
+      heading,
+      subtitle,
+      buttonText,
+      buttonLink,
+      images
     }
   `);
 }

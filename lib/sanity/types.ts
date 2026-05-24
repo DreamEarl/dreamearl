@@ -43,7 +43,23 @@ export interface SanityCategory {
   displayOrder: number;
 }
 
+// Customization Section Types
+export interface SanityCustomizationSection {
+  _id: string;
+  _type: "customizationSection";
+  heading?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  images?: CustomizationImage[];
+}
+
 // Site Settings Types
+export type CustomizationImage = SanityImageSource & {
+  _key: string;
+  alt?: string;
+};
+
 export interface SanitySiteSettings {
   _id: string;
   _type: "siteSettings";

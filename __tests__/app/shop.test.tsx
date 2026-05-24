@@ -4,6 +4,7 @@ import { translations } from "@/lib/constants/translations";
 
 jest.mock("@/lib/sanity", () => ({
   getProductsByCategory: jest.fn(),
+  getAllProducts: jest.fn(),
   urlFor: jest.fn(() => ({
     width: jest.fn().mockReturnThis(),
     url: jest.fn(() => "/mock-product-image.jpg"),
@@ -58,7 +59,7 @@ const mockProducts = [
   },
 ];
 
-import { getProductsByCategory } from "@/lib/sanity";
+import { getProductsByCategory, getAllProducts } from "@/lib/sanity";
 
 describe("Shop Page", () => {
   describe("With category filter", () => {
@@ -86,13 +87,13 @@ describe("Shop Page", () => {
 
   describe("Without category filter", () => {
     it("renders generic 'Shop' heading", async () => {
-      (getProductsByCategory as jest.Mock).mockResolvedValue([]);
+      (getAllProducts as jest.Mock).mockResolvedValue([]);
       render(await ShopPage({ searchParams: Promise.resolve({}) }));
       expect(screen.getByText("Shop")).toBeInTheDocument();
     });
 
     it("renders empty product grid", async () => {
-      (getProductsByCategory as jest.Mock).mockResolvedValue([]);
+      (getAllProducts as jest.Mock).mockResolvedValue([]);
       render(await ShopPage({ searchParams: Promise.resolve({}) }));
       expect(screen.queryAllByRole("link")).toHaveLength(0);
     });

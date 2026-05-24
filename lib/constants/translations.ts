@@ -23,6 +23,12 @@ export const translations = {
   shopByCategory: {
     title: "SHOP BY CATEGORY",
   },
+  customization: {
+    heading: "Customize Your Piece",
+    subtitle: "Have a vision for your perfect pearl accessory?",
+    buttonText: "MAKE CUSTOM ORDER",
+    buttonLink: "/contact",
+  },
   product: {
     addToCart: "ADD TO CART",
     buyNow: "BUY IT NOW",
