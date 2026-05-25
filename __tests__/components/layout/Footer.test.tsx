@@ -59,7 +59,7 @@ describe("Footer Component", () => {
       render(<Footer />);
       const link = screen.getByText(footer.explore.links.customization);
       expect(link).toBeInTheDocument();
-      expect(link.closest("a")).toHaveAttribute("href", "/customization");
+      expect(link.closest("a")).toHaveAttribute("href", "/custom-order");
     });
 
     it("renders Jewellery Care link", () => {
