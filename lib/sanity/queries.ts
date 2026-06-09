@@ -52,6 +52,11 @@ export async function getProductsByCategory(
       currency,
       category,
       description,
+      productType,
+      craftTechnique,
+      pearlType,
+      pearlColour,
+      size,
       inStock,
       featured
     }
