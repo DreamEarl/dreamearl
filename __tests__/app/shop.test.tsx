@@ -2,6 +2,12 @@ import { render, screen } from "@/__tests__/utils/test-utils";
 import ShopPage from "@/app/shop/page";
 import { translations } from "@/lib/constants/translations";
 
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({ push: jest.fn(), replace: jest.fn() })),
+  usePathname: jest.fn(() => "/shop"),
+  useSearchParams: jest.fn(() => new URLSearchParams()),
+}));
+
 jest.mock("@/lib/sanity", () => ({
   getProductsByCategory: jest.fn(),
   getAllProducts: jest.fn(),
