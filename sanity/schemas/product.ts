@@ -68,11 +68,12 @@ export default defineType({
       rows: 4,
     }),
     defineField({
-      name: "productType",
-      title: "Product Type / Subcategory",
-      type: "string",
+      name: "productTypes",
+      title: "Product Types / Subcategories",
+      type: "array",
+      of: [{ type: "string" }],
       description:
-        "Select from available subcategories or enter a custom slug. This value is used for filtering products on the shop page.",
+        "Select multiple subcategories that this product belongs to. Used for filtering on the shop page.",
       components: {
         input: ProductTypeInput,
       },

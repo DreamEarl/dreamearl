@@ -42,7 +42,11 @@ function applyFilters(
   },
 ): SanityProduct[] {
   return products.filter((p) => {
-    if (filters.type && p.productType !== filters.type) return false;
+    if (filters.type) {
+      const productTypes =
+        p.productTypes || (p.productType ? [p.productType] : []);
+      if (!productTypes.includes(filters.type)) return false;
+    }
     if (
       filters.pearlTypes.length > 0 &&
       !filters.pearlTypes.includes(p.pearlType ?? "")

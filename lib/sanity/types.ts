@@ -18,6 +18,7 @@ export interface SanityProduct {
   };
   description?: string;
   productType?: string;
+  productTypes?: string[];
   craftTechnique?: string;
   pearlType?: string;
   pearlColour?: string;
