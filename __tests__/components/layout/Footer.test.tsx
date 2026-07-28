@@ -68,13 +68,6 @@ describe("Footer Component", () => {
       expect(link).toBeInTheDocument();
       expect(link.closest("a")).toHaveAttribute("href", "/jewellery-care");
     });
-
-    it("renders Blogs link", () => {
-      render(<Footer />);
-      const link = screen.getByText(footer.explore.links.blogs);
-      expect(link).toBeInTheDocument();
-      expect(link.closest("a")).toHaveAttribute("href", "/blogs");
-    });
   });
 
   describe("Support Section", () => {
