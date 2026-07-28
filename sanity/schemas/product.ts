@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { ProductTypeInput } from "../components/ProductTypeInput";
 
 export default defineType({
   name: "product",
@@ -68,15 +69,12 @@ export default defineType({
     }),
     defineField({
       name: "productType",
-      title: "Product Type",
+      title: "Product Type / Subcategory",
       type: "string",
-      options: {
-        list: [
-          { title: "Handbag", value: "handbag" },
-          { title: "Bracelet", value: "bracelet" },
-          { title: "Necklace", value: "necklace" },
-          { title: "Earrings", value: "earrings" },
-        ],
+      description:
+        "Select from available subcategories or enter a custom slug. This value is used for filtering products on the shop page.",
+      components: {
+        input: ProductTypeInput,
       },
     }),
     defineField({

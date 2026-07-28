@@ -26,8 +26,8 @@ export default function Footer() {
             </Heading>
             <div className="space-y-4">
               <Text variant="body">
-                {footer.contactUs.text}
-                <br />
+                {`${footer.contactUs.text} `}
+
                 <span className="font-semibold">{footer.contactUs.email}</span>
               </Text>
               <Text variant="body">{footer.contactUs.responseTime}</Text>
@@ -97,14 +97,6 @@ export default function Footer() {
                   className="hover:underline transition-all"
                 >
                   {footer.support.links.privacyPolicy}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shipping-policy"
-                  className="hover:underline transition-all"
-                >
-                  {footer.support.links.shippingPolicy}
                 </Link>
               </li>
             </ul>

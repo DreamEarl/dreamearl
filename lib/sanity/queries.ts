@@ -4,6 +4,7 @@ import {
   SanityCategory,
   SanitySiteSettings,
   CustomizationImage,
+  SanityCollectionSection,
 } from "./types";
 
 // Fetch all products
@@ -118,6 +119,32 @@ export async function getAllCategories(): Promise<SanityCategory[]> {
   `);
 }
 
+// Fetch category by slug with subcategories
+export async function getCategoryBySlug(
+  categorySlug: string,
+): Promise<SanityCategory | null> {
+  return client.fetch(
+    `
+    *[_type == "category" && slug.current == $categorySlug][0] {
+      _id,
+      _type,
+      name,
+      slug,
+      image,
+      description,
+      displayOrder,
+      subcategories[] | order(displayOrder asc) {
+        label,
+        slug,
+        image,
+        displayOrder
+      }
+    }
+  `,
+    { categorySlug },
+  );
+}
+
 // Fetch site settings
 export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
   return client.fetch(`
@@ -157,6 +184,32 @@ export async function getFeaturedProducts(): Promise<SanityProduct[]> {
   `);
 }
 
+// Fetch featured products by category
+export async function getFeaturedProductsByCategory(
+  categorySlug: string,
+  limit: number = 3,
+): Promise<SanityProduct[]> {
+  return client.fetch(
+    `
+    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(featured desc, _createdAt desc) [0...$limit] {
+      _id,
+      _type,
+      brand,
+      name,
+      slug,
+      images,
+      price,
+      currency,
+      category,
+      description,
+      inStock,
+      featured
+    }
+  `,
+    { categorySlug, limit },
+  );
+}
+
 // Fetch customization section data
 export async function getCustomizationSection(): Promise<{
   heading?: string;
@@ -170,6 +223,23 @@ export async function getCustomizationSection(): Promise<{
       subtitle,
       buttonText,
       images
+    }
+  `);
+}
+
+// Fetch collection section data
+export async function getCollectionSection(): Promise<SanityCollectionSection | null> {
+  return client.fetch(`
+    *[_type == "collectionSection" && isActive == true][0] {
+      _id,
+      _type,
+      title,
+      description,
+      buttonText,
+      buttonLink,
+      image,
+      imagePosition,
+      isActive
     }
   `);
 }

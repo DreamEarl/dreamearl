@@ -23,6 +23,10 @@ export const translations = {
   shopByCategory: {
     title: "SHOP BY CATEGORY",
   },
+  featuredProducts: {
+    title: "HANDBAGS",
+    shopAll: "VIEW ALL",
+  },
   customization: {
     heading: "Customize Your Piece",
     subtitle: "Have a vision for your perfect pearl accessory?",

@@ -31,6 +31,15 @@ export interface SanityProduct {
 }
 
 // Category Types
+export interface SanitySubcategory {
+  label: string;
+  slug: {
+    current: string;
+  };
+  image: SanityImageSource;
+  displayOrder: number;
+}
+
 export interface SanityCategory {
   _id: string;
   _type: "category";
@@ -41,6 +50,7 @@ export interface SanityCategory {
   image: SanityImageSource;
   description?: string;
   displayOrder: number;
+  subcategories?: SanitySubcategory[];
 }
 
 // Customization Section Types
@@ -51,6 +61,19 @@ export interface SanityCustomizationSection {
   subtitle?: string;
   buttonText?: string;
   images?: CustomizationImage[];
+}
+
+// Collection Section Types
+export interface SanityCollectionSection {
+  _id: string;
+  _type: "collectionSection";
+  title: string;
+  description?: string;
+  buttonText: string;
+  buttonLink: string;
+  image: SanityImageSource & { alt?: string };
+  imagePosition: "left" | "right";
+  isActive: boolean;
 }
 
 // Site Settings Types

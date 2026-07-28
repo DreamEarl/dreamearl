@@ -43,6 +43,57 @@ export default defineType({
       description: "Lower numbers appear first",
       initialValue: 0,
     }),
+    defineField({
+      name: "subcategories",
+      title: "Subcategories",
+      type: "array",
+      description: "Product type filters shown on the shop page",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "label",
+              title: "Label",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "slug",
+              title: "Slug",
+              type: "slug",
+              description: "URL-friendly identifier (e.g., 'hand-bags')",
+              options: {
+                source: "label",
+              },
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "image",
+              title: "Image",
+              type: "image",
+              options: {
+                hotspot: true,
+              },
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "displayOrder",
+              title: "Display Order",
+              type: "number",
+              description: "Order in which subcategories appear",
+              initialValue: 0,
+            },
+          ],
+          preview: {
+            select: {
+              title: "label",
+              media: "image",
+            },
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     select: {

@@ -8,12 +8,12 @@ import SidePanel from "@/components/ui/SidePanel";
 export type SortOption = "newest" | "price_asc" | "price_desc";
 
 export interface AvailableFilters {
-  pearlTypes: string[];
   pearlColours: string[];
-  craftTechniques: string[];
   minPrice: number;
   maxPrice: number;
 }
+
+const BEAD_TYPES = ["Pearl beads", "Crystal beads"];
 
 interface FilterSortBarProps {
   productCount: number;
@@ -40,8 +40,6 @@ export default function FilterSortBar({
     searchParams.get("pearlType")?.split(",").filter(Boolean) ?? [];
   const currentPearlColours =
     searchParams.get("pearlColour")?.split(",").filter(Boolean) ?? [];
-  const currentCraftTechniques =
-    searchParams.get("craftTechnique")?.split(",").filter(Boolean) ?? [];
 
   const [localMinPrice, setLocalMinPrice] = useState(() =>
     searchParams.get("priceMin")
@@ -59,7 +57,6 @@ export default function FilterSortBar({
   const activeFilterCount =
     currentPearlTypes.length +
     currentPearlColours.length +
-    currentCraftTechniques.length +
     (hasPriceFilter ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
 
@@ -110,7 +107,6 @@ export default function FilterSortBar({
     const params = new URLSearchParams(searchParams.toString());
     params.delete("pearlType");
     params.delete("pearlColour");
-    params.delete("craftTechnique");
     params.delete("priceMin");
     params.delete("priceMax");
     setLocalMinPrice(availableFilters.minPrice);
@@ -233,34 +229,32 @@ export default function FilterSortBar({
             </div>
           )}
 
-          {/* Pearl Type */}
-          {availableFilters.pearlTypes.length > 0 && (
-            <div className="mb-8 pb-8 border-b border-gray-100">
-              <h3 className="text-xs tracking-widest uppercase text-gray-400 mb-4">
-                Pearl type
-              </h3>
-              <div className="flex flex-col gap-3">
-                {availableFilters.pearlTypes.map((type) => (
-                  <label
-                    key={type}
-                    className="flex items-center gap-3 cursor-pointer group"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={currentPearlTypes.includes(type)}
-                      onChange={() =>
-                        toggleMultiValue("pearlType", type, currentPearlTypes)
-                      }
-                      className="w-4 h-4 border-gray-300 accent-black cursor-pointer"
-                    />
-                    <span className="text-sm tracking-wide text-gray-700 group-hover:text-black transition-colors">
-                      {type}
-                    </span>
-                  </label>
-                ))}
-              </div>
+          {/* Bead Types */}
+          <div className="mb-8 pb-8 border-b border-gray-100">
+            <h3 className="text-xs tracking-widest uppercase text-gray-400 mb-4">
+              Bead types
+            </h3>
+            <div className="flex flex-col gap-3">
+              {BEAD_TYPES.map((type) => (
+                <label
+                  key={type}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
+                  <input
+                    type="checkbox"
+                    checked={currentPearlTypes.includes(type)}
+                    onChange={() =>
+                      toggleMultiValue("pearlType", type, currentPearlTypes)
+                    }
+                    className="w-4 h-4 border-gray-300 accent-black cursor-pointer"
+                  />
+                  <span className="text-sm tracking-wide text-gray-700 group-hover:text-black transition-colors">
+                    {type}
+                  </span>
+                </label>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Pearl Colour */}
           {availableFilters.pearlColours.length > 0 && (
@@ -288,39 +282,6 @@ export default function FilterSortBar({
                     />
                     <span className="text-sm tracking-wide text-gray-700 group-hover:text-black transition-colors">
                       {colour}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Craft Technique */}
-          {availableFilters.craftTechniques.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-xs tracking-widest uppercase text-gray-400 mb-4">
-                Craft technique
-              </h3>
-              <div className="flex flex-col gap-3">
-                {availableFilters.craftTechniques.map((technique) => (
-                  <label
-                    key={technique}
-                    className="flex items-center gap-3 cursor-pointer group"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={currentCraftTechniques.includes(technique)}
-                      onChange={() =>
-                        toggleMultiValue(
-                          "craftTechnique",
-                          technique,
-                          currentCraftTechniques,
-                        )
-                      }
-                      className="w-4 h-4 border-gray-300 accent-black cursor-pointer"
-                    />
-                    <span className="text-sm tracking-wide text-gray-700 group-hover:text-black transition-colors">
-                      {technique}
                     </span>
                   </label>
                 ))}
