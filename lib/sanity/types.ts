@@ -101,3 +101,68 @@ export interface SanitySiteSettings {
   };
   aboutPage?: any[];
 }
+
+// About Page Types
+export interface SanityAboutSection {
+  title: string;
+  content: string;
+}
+
+export interface SanityAboutStorySection {
+  image: SanityImageSource;
+  eyebrow?: string;
+  heading: string;
+  content: Array<{ paragraph: string }>;
+}
+export interface SanityAboutPhilosophyValue {
+  title: string;
+  description: string;
+}
+
+export interface SanityAboutPhilosophySection {
+  eyebrow?: string;
+  heading: string;
+  backgroundColor?: string;
+  values?: SanityAboutPhilosophyValue[];
+}
+export interface SanityAboutPhilosophyValue {
+  title: string;
+  description: string;
+}
+
+export interface SanityAboutPhilosophySection {
+  eyebrow?: string;
+  heading: string;
+  backgroundColor?: string;
+  values?: SanityAboutPhilosophyValue[];
+}
+
+export interface SanityAboutCtaSection {
+  eyebrow?: string;
+  heading: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  images?: SanityImageSource[];
+}
+
+export interface SanityAboutClosingSection {
+  quote: string;
+  subtext?: string;
+}
+
+export interface SanityAboutPage {
+  _id: string;
+  _type: "aboutPage";
+  hero: {
+    backgroundImage: SanityImageSource;
+    subtitle?: string;
+    title: string;
+    description: string;
+  };
+  storySection?: SanityAboutStorySection;
+  philosophySection?: SanityAboutPhilosophySection;
+  ctaSection?: SanityAboutCtaSection;
+  closingSection?: SanityAboutClosingSection;
+  sections?: SanityAboutSection[];
+}

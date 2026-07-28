@@ -5,6 +5,7 @@ import {
   SanitySiteSettings,
   CustomizationImage,
   SanityCollectionSection,
+  SanityAboutPage,
 } from "./types";
 
 // Fetch all products
@@ -242,6 +243,73 @@ export async function getCollectionSection(): Promise<SanityCollectionSection | 
       image,
       imagePosition,
       isActive
+    }
+  `);
+}
+
+// Fetch about page data
+export async function getAboutPage(): Promise<SanityAboutPage | null> {
+  return client.fetch(`
+    *[_type == "aboutPage"][0] {
+      _id,
+      _type,
+      hero {
+        backgroundImage {
+          asset-> {
+            _id,
+            url
+          },
+          hotspot,
+          crop
+        },
+        subtitle,
+        title,
+        description
+      },
+      storySection {
+        image {
+          asset-> {
+            _id,
+            url
+          },
+          hotspot,
+          crop
+        },
+        eyebrow,
+        heading,
+        content
+      },
+      philosophySection {
+        eyebrow,
+        heading,
+        values[] {
+          title,
+          description
+        }
+      },
+      ctaSection {
+        eyebrow,
+        heading,
+        description,
+        buttonText,
+        buttonLink,
+        images[] {
+          asset-> {
+            _id,
+            url
+          },
+          hotspot,
+          crop
+        }
+      },
+      closingSection {
+        quote,
+        subtext
+      },
+      sections[] {
+        title,
+        content
+      }
     }
   `);
 }

@@ -3,6 +3,7 @@ import category from "./category";
 import siteSettings from "./siteSettings";
 import customizationSection from "./customizationSection";
 import collectionSection from "./collectionSection";
+import aboutPage from "./aboutPage";
 
 export const schemaTypes = [
   product,
@@ -10,4 +11,5 @@ export const schemaTypes = [
   siteSettings,
   customizationSection,
   collectionSection,
+  aboutPage,
 ];

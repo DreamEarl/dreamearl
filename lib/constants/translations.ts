@@ -131,6 +131,15 @@ export const translations = {
         "Our team will review your request and contact you within 24-48 hours with a quote and timeline.",
     },
   },
+  about: {
+    hero: {
+      backgroundImage: "/images/hero/background.jpeg",
+      subtitle: "Handmade Luxury Accessories",
+      title: "Our Story",
+      description:
+        "DreamEarl was born from a love for elegance that feels personal, timeless, and unforgettable.",
+    },
+  },
 };
 
 export type Translations = typeof translations;

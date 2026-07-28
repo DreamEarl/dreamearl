@@ -44,7 +44,10 @@ export default async function ViewCollection() {
               imagePosition === "right" ? "lg:order-1" : "lg:order-2"
             }`}
           >
-            <Heading variant="section" className="uppercase tracking-wider">
+            <Heading
+              variant="section"
+              className="uppercase tracking-wider text-left font-bold"
+            >
               {title}
             </Heading>
             {description && (
