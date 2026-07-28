@@ -1,4 +1,4 @@
-import { render, screen } from "@/utils/test-utils";
+import { render, screen } from "@/__tests__/utils/test-utils";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import { getFeaturedProductsByCategory } from "@/lib/sanity";
 
@@ -10,6 +10,33 @@ jest.mock("@/lib/sanity", () => ({
       url: jest.fn(() => "https://example.com/image.jpg"),
     })),
   })),
+}));
+
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: ({
+    src,
+    alt,
+    ...props
+  }: {
+    src: string;
+    alt: string;
+    [key: string]: unknown;
+  }) => {
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    return <img src={src} alt={alt} {...props} />;
+  },
+}));
+
+jest.mock("next/link", () => ({
+  __esModule: true,
+  default: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => <a href={href}>{children}</a>,
 }));
 
 describe("FeaturedProducts", () => {
@@ -68,7 +95,7 @@ describe("FeaturedProducts", () => {
     render(component);
 
     expect(screen.getByText("HANDBAGS")).toBeInTheDocument();
-    expect(screen.getByText("SHOP ALL")).toBeInTheDocument();
+    expect(screen.getByText("VIEW ALL")).toBeInTheDocument();
     expect(screen.getByText("ETHEREAL PEARL")).toBeInTheDocument();
     expect(screen.getByText("SILVER MINI MUSE")).toBeInTheDocument();
     expect(screen.getByText("LUMI PERLE'")).toBeInTheDocument();
@@ -105,7 +132,7 @@ describe("FeaturedProducts", () => {
     render(component);
 
     const shopAllLink = screen
-      .getByText("SHOP ALL")
+      .getByText("VIEW ALL")
       .closest("a") as HTMLAnchorElement;
     expect(shopAllLink).toHaveAttribute("href", "/shop?category=handbags");
   });

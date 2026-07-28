@@ -11,6 +11,7 @@ jest.mock("next/navigation", () => ({
 jest.mock("@/lib/sanity", () => ({
   getProductsByCategory: jest.fn(),
   getAllProducts: jest.fn(),
+  getCategoryBySlug: jest.fn(),
   urlFor: jest.fn(() => ({
     width: jest.fn().mockReturnThis(),
     url: jest.fn(() => "/mock-product-image.jpg"),
@@ -65,12 +66,18 @@ const mockProducts = [
   },
 ];
 
-import { getProductsByCategory, getAllProducts } from "@/lib/sanity";
+import { getProductsByCategory, getAllProducts, getCategoryBySlug } from "@/lib/sanity";
 
 describe("Shop Page", () => {
   describe("With category filter", () => {
     it("renders the category heading capitalised", async () => {
       (getProductsByCategory as jest.Mock).mockResolvedValue(mockProducts);
+      (getCategoryBySlug as jest.Mock).mockResolvedValue({
+        _id: "cat-1",
+        name: "Earrings",
+        slug: { current: "earrings" },
+        subcategories: [],
+      });
       render(
         await ShopPage({
           searchParams: Promise.resolve({ category: "earrings" }),
@@ -81,6 +88,12 @@ describe("Shop Page", () => {
 
     it("renders product cards", async () => {
       (getProductsByCategory as jest.Mock).mockResolvedValue(mockProducts);
+      (getCategoryBySlug as jest.Mock).mockResolvedValue({
+        _id: "cat-1",
+        name: "Earrings",
+        slug: { current: "earrings" },
+        subcategories: [],
+      });
       render(
         await ShopPage({
           searchParams: Promise.resolve({ category: "earrings" }),
