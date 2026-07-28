@@ -61,11 +61,6 @@ export default function Footer() {
                   {footer.explore.links.jewelleryCare}
                 </Link>
               </li>
-              <li>
-                <Link href="/blogs" className="hover:underline transition-all">
-                  {footer.explore.links.blogs}
-                </Link>
-              </li>
             </ul>
           </div>
 

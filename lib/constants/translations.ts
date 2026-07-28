@@ -140,6 +140,40 @@ export const translations = {
         "DreamEarl was born from a love for elegance that feels personal, timeless, and unforgettable.",
     },
   },
+  jewelleryCare: {
+    hero: {
+      title: "Care for Your DreamEarl Piece",
+      backgroundImage: "/images/hero/background.jpeg",
+    },
+    intro:
+      "At DreamEarl, every piece is handcrafted with patience, precision, and countless woven details. With a little extra care, your DreamEarl creation will continue to look beautiful for years to come. Treat it gently, store it thoughtfully, and let it accompany you through many memorable moments.",
+    sections: [
+      {
+        title: "Storage",
+        eyebrow: "01",
+        content:
+          "Store your DreamEarl piece in the dust bag provided or in a cool, dry place away from direct sunlight. Keep it away from other jewellery to avoid scratching or tangling. For handbags and totes, stuff them lightly with tissue paper to help maintain their shape.",
+      },
+      {
+        title: "Cleaning",
+        eyebrow: "02",
+        content:
+          "Wipe your piece gently with a soft, dry cloth after each use to remove any dust or oils. Avoid using chemical cleaners, alcohol, or harsh detergents. For a deeper clean, use a slightly damp soft cloth and let it air dry completely before storing.",
+      },
+      {
+        title: "Handling",
+        eyebrow: "03",
+        content:
+          "Apply perfume, hairspray, and lotions before putting on your piece — chemicals can dull the lustre of pearls over time. Avoid exposing your piece to extreme heat or water. Remove it before swimming, bathing, or exercising.",
+      },
+      {
+        title: "Pearl Care",
+        eyebrow: "04",
+        content:
+          "Pearls are organic gems that need special attention. They are sensitive to acids, so avoid contact with vinegar, lemon juice, or sweat. Restring knotted pearl pieces periodically to prevent breakage. The more you wear your pearls, the more they radiate — they thrive on your body's natural warmth.",
+      },
+    ],
+  },
 };
 
 export type Translations = typeof translations;
