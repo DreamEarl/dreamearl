@@ -66,7 +66,11 @@ const mockProducts = [
   },
 ];
 
-import { getProductsByCategory, getAllProducts, getCategoryBySlug } from "@/lib/sanity";
+import {
+  getProductsByCategory,
+  getAllProducts,
+  getCategoryBySlug,
+} from "@/lib/sanity";
 
 describe("Shop Page", () => {
   describe("With category filter", () => {
