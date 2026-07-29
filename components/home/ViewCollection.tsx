@@ -41,7 +41,7 @@ export default async function ViewCollection() {
         >
           {/* Image */}
           <div
-            className={`relative aspect-4/5 overflow-hidden bg-gray-50 ${
+            className={`relative aspect-4/5 max-h-[90vh] overflow-hidden bg-gray-50 ${
               imagePosition === "right" ? "lg:order-2" : "lg:order-1"
             }`}
           >
@@ -55,26 +55,29 @@ export default async function ViewCollection() {
 
           {/* Content */}
           <div
-            className={`flex flex-col justify-center gap-6 ${
+            className={`flex flex-col justify-start gap-4 ${
               imagePosition === "right" ? "lg:order-1" : "lg:order-2"
             }`}
           >
             <Heading
               variant="section"
-              className="uppercase tracking-wider text-left font-bold"
+              className="flex-1 text-3xl! font-semibold text-left uppercase"
             >
               {title}
             </Heading>
             {description && (
-              <Text variant="body" className="text-gray-700">
+              <Text
+                variant="body"
+                className="max-w-420 pt-4 text-left text-lg!"
+              >
                 {description}
               </Text>
             )}
-            <div>
+            <div className="flex justify-start pt-2">
               <Link href={href}>
                 <Button
                   variant="primary"
-                  size="md"
+                  size="sm"
                   className="tracking-widest uppercase"
                 >
                   {buttonText}

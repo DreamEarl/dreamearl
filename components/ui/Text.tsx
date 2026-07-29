@@ -11,7 +11,7 @@ interface TextProps {
 }
 
 const variantClasses: Record<TextVariant, string> = {
-  body: "text-sm leading-relaxed",
+  body: "text-sm leading-relaxed font-glacial",
   small: "text-xs tracking-widest text-gray-600",
   muted: "text-sm text-gray-700 leading-relaxed",
   price: "text-2xl",

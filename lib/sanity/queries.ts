@@ -198,7 +198,7 @@ export async function getFeaturedProductsByCategory(
 ): Promise<SanityProduct[]> {
   return client.fetch(
     `
-    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(displayOrder asc, featured desc, _createdAt desc) [0...$limit] {
+    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(displayOrder asc, _createdAt desc) [0...$limit] {
       _id,
       _type,
       brand,
