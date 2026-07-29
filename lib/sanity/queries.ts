@@ -240,6 +240,7 @@ export async function getCollectionSection(): Promise<SanityCollectionSection | 
       description,
       buttonText,
       buttonLink,
+      subcategory,
       image,
       imagePosition,
       isActive

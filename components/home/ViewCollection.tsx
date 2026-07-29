@@ -12,9 +12,24 @@ export default async function ViewCollection() {
     return null;
   }
 
-  const { title, description, buttonText, buttonLink, image, imagePosition } =
-    data;
+  const {
+    title,
+    description,
+    buttonText,
+    buttonLink,
+    subcategory,
+    image,
+    imagePosition,
+  } = data;
   const imageUrl = urlFor(image).width(1200).url();
+
+  const href = subcategory
+    ? (() => {
+        const url = new URL(buttonLink, "http://x");
+        url.searchParams.set("type", subcategory);
+        return `${url.pathname}${url.search}`;
+      })()
+    : buttonLink;
 
   return (
     <section className="py-16 px-4 bg-white">
@@ -56,7 +71,7 @@ export default async function ViewCollection() {
               </Text>
             )}
             <div>
-              <Link href={buttonLink}>
+              <Link href={href}>
                 <Button
                   variant="primary"
                   size="md"

@@ -9,16 +9,22 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
-      <div className="bg-white py-10 px-6 gap-2 text-center">
-        <Text variant="price">{translations.brandDescription.line1}</Text>
-        <Text variant="price">{translations.brandDescription.line2}</Text>
+      <div className="flex flex-1 gap-12 flex-col">
+        <div className="bg-white px-4 py-6 gap-2 text-center">
+          <Text variant="price" className="font-glacial font-light">
+            {translations.brandDescription.line1}
+          </Text>
+          <Text variant="price" className="font-glacial font-light">
+            {translations.brandDescription.line2}
+          </Text>
+        </div>
+
+        <FeaturedProducts />
+
+        <ViewCollection />
+
+        <CustomizeSection />
       </div>
-
-      <FeaturedProducts />
-
-      <ViewCollection />
-
-      <CustomizeSection />
     </div>
   );
 }

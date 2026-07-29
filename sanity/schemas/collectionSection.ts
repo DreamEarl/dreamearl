@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { SubcategorySelectInput } from "../components/SubcategorySelectInput";
 
 export default defineType({
   name: "collectionSection",
@@ -35,6 +36,13 @@ export default defineType({
       description: "URL path (e.g., /shop?category=handbags)",
       initialValue: "/shop?category=handbags",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "subcategory",
+      title: "Subcategory",
+      type: "string",
+      description: "Optional subcategory to pre-select on the shop page",
+      components: { input: SubcategorySelectInput },
     }),
     defineField({
       name: "image",

@@ -16,7 +16,7 @@ export default async function FeaturedProducts() {
     <section className="p-4 bg-white">
       <div className="flex flex-col max-w-7xl mx-auto gap-8 mb-4">
         <div className="flex items-center">
-          <Heading variant="section" className="flex-1 font-semibold">
+          <Heading variant="section" className="flex-1 text-3xl! font-semibold">
             {translations.featuredProducts.title}
           </Heading>
         </div>

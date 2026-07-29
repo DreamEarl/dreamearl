@@ -72,6 +72,7 @@ export interface SanityCollectionSection {
   description?: string;
   buttonText: string;
   buttonLink: string;
+  subcategory?: string;
   image: SanityImageSource & { alt?: string };
   imagePosition: "left" | "right";
   isActive: boolean;
