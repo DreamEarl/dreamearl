@@ -2561,7 +2561,7 @@
     yaml "^2.8.4"
     zod "^4.3.6"
 
-"@sanity/client@^7.22.0", "@sanity/client@^7.22.1", "@sanity/client@^7.23.1", "@sanity/client@^7.24.0", "@sanity/client@^7.9.0":
+"@sanity/client@^7.22.0", "@sanity/client@^7.22.1", "@sanity/client@^7.23.1", "@sanity/client@^7.25.0", "@sanity/client@^7.9.0":
   version "7.25.0"
   resolved "https://registry.yarnpkg.com/@sanity/client/-/client-7.25.0.tgz#b68edf67e0b502ac88013e05871ff4f8312f7bf4"
   integrity sha512-eANEy/ZwTRcrkivg9DzJuY//Wfht2jOEuMQd3gURE290bj+8rTbQwE+5W0a4XPLDz2M9xkiFE4cGB+qXDIVZwQ==
@@ -2831,12 +2831,12 @@
     lodash-es "^4.18.1"
 
 "@sanity/mutator@^6.0.0":
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/@sanity/mutator/-/mutator-6.6.0.tgz#7bd8c4d8f577c6ef21a4f45bc56744d1ef63b704"
-  integrity sha512-JGdWwmDgidTwdmgEi+RX/lwMBF6Hev33Vh/t0/c5gaP4XrsRSV9w0jWc1KensOrnORgMex9Y+Vw4QWjCsqsPiw==
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@sanity/mutator/-/mutator-6.7.0.tgz#9c7c90580d6215c20563a057cf737584b328fa33"
+  integrity sha512-2deMvoV2cG69Pe0yLzVKNwNHbLWL9tA3ecwQKtkL4i2O0x41HHK0SKCpkwfuurmJKuMTDmFuJU7CPLJDZcXnTA==
   dependencies:
     "@sanity/diff-match-patch" "^3.2.0"
-    "@sanity/types" "6.6.0"
+    "@sanity/types" "6.7.0"
     "@sanity/uuid" "^3.0.3"
     debug "^4.4.3"
     lodash-es "^4.18.1"
@@ -2906,16 +2906,16 @@
     object-inspect "^1.13.4"
 
 "@sanity/schema@^6.1.0":
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/@sanity/schema/-/schema-6.6.0.tgz#7f8687b6f6c9a66fc0b20b9705bc55e9baeb04b7"
-  integrity sha512-a/6TVmOdE/TEJlzoVOSGsGWf1nmdRE1MhTqbtDgIcrDvOgO3d3+yisNuvv88+j3rSLgGH5T3z77vjd5JSlOL3Q==
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@sanity/schema/-/schema-6.7.0.tgz#62cbe51e2474f3ab3652c9a06259cab4b9680267"
+  integrity sha512-vC+SzCprcWr4kQxGuJstZjLbH+jHCZ0s+pEkf/4zX7u5IrHEZQSAXwlZ0wCD/KN3RP67czBmvItuIq1559TTmg==
   dependencies:
     "@sanity/descriptors" "^1.3.0"
     "@sanity/generate-help-url" "^4.0.0"
-    "@sanity/types" "6.6.0"
+    "@sanity/types" "6.7.0"
     arrify "^3.0.0"
     get-it "^8.8.0"
-    groq-js "^1.30.3"
+    groq-js "^2.0.0"
     humanize-list "^1.0.1"
     leven "^4.1.0"
     lodash-es "^4.18.1"
@@ -2977,12 +2977,12 @@
     "@sanity/client" "^7.22.1"
     "@sanity/media-library-types" "^1.4.0"
 
-"@sanity/types@6.6.0", "@sanity/types@^6.1.0", "@sanity/types@^6.2.0":
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/@sanity/types/-/types-6.6.0.tgz#102ad545c8257116e550b451cdf01a21be9599e8"
-  integrity sha512-CJxadjPS6CZNev/BZiV/E5S2UbRneW+QBbTa6z9bOxXX+gM6MP95a0/VXq8/GN/yp28tROz++fSyqXoxqIOgLg==
+"@sanity/types@6.7.0", "@sanity/types@^6.1.0", "@sanity/types@^6.2.0":
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@sanity/types/-/types-6.7.0.tgz#7daec448c00950d26531e21583487fa484ed84e6"
+  integrity sha512-RW57l/Pufw6mUBXNRMVCGAd6VuKEkhzYDwQWYd560Iw2viP+BiAVc8F4TqQh/wVVxXyT0t5dBVi0FWQIpfJg7w==
   dependencies:
-    "@sanity/client" "^7.24.0"
+    "@sanity/client" "^7.25.0"
     "@sanity/media-library-types" "^1.6.0"
 
 "@sanity/ui@^3.2.0":
@@ -3132,21 +3132,21 @@
     "@tanstack/table-core" "8.21.3"
 
 "@tanstack/react-virtual@^3.14.2":
-  version "3.14.8"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.14.8.tgz#8b9224181b7b87ee7da76ea25e28df1d6885b3cc"
-  integrity sha512-O39GJQpAYEJcIu3uN1//YtmhjSEOyw75vg9CKCatBDPiD5hKtZQoJHfferyrB/LdOD3UWaoMLWtdEjarwIwdDw==
+  version "3.14.9"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.14.9.tgz#b735e93a059a25f577a9577d7f014343ec7205a5"
+  integrity sha512-qZyr0FZDP8rDC4WBhsryIZmAd9bveJvFGUJJtskWaew6/0dTRS6wZxnR6VQ5bY2KwL3LjerrHqQLk3a0GKcPXQ==
   dependencies:
-    "@tanstack/virtual-core" "3.17.6"
+    "@tanstack/virtual-core" "3.17.7"
 
 "@tanstack/table-core@8.21.3":
   version "8.21.3"
   resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.21.3.tgz#2977727d8fc8dfa079112d9f4d4c019110f1732c"
   integrity sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==
 
-"@tanstack/virtual-core@3.17.6":
-  version "3.17.6"
-  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.17.6.tgz#eaf853f21920b9dec3445c61ce13275b2f50ccf2"
-  integrity sha512-h0/Ebo18CkOrChlQIhNtQkM5ySUnh/GumQ/D1st3hG2HWUPEF+ILUc2k29UtivCi/9G7w7G3/f7Xyd5cCFbKBw==
+"@tanstack/virtual-core@3.17.7":
+  version "3.17.7"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.17.7.tgz#d64525d2c97a53a22f32f55246efdd679af2c392"
+  integrity sha512-bp+v10y65sp2H7WpWfIMyxTNfl8ZVfxFTLRjPIFRryi6FV/J33z4IS53WO4pTk36KlvJ4iLiQz+oaydDC1xbcA==
 
 "@types/babel__core@^7.20.5":
   version "7.20.5"
@@ -3744,9 +3744,9 @@ bare-url@^2.2.2:
     bare-path "^3.0.0"
 
 baseline-browser-mapping@^2.10.44:
-  version "2.11.5"
-  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.11.5.tgz#eca24c8ff0c24fcedef86260e2aae8c76b8dbce8"
-  integrity sha512-xJo6a6YZnwZfnyGmQKWMbVOcii7XRibjOskRh+WJ9UHQoX16xrQrcIgAMQOzfvs8XiLMx6ih/fsLPF73iY2D1A==
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.11.6.tgz#56934c812026ae4fcdb039fc790a94b9a7d81d63"
+  integrity sha512-69D/imtToCsIcAl8WBS2YaRwA4jO/j0HhU+hELqMEu9f54MoUtI6+XH5mrKU8rEFNEk/Ui1I2MK4/JkWacclGw==
 
 before-after-hook@^4.0.0:
   version "4.0.0"
@@ -4441,9 +4441,9 @@ ejs@^3.1.10:
     jake "^10.8.5"
 
 electron-to-chromium@^1.5.393:
-  version "1.5.397"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.397.tgz#b376f17aefc1a6dd3b9898775a4257bd53906c2a"
-  integrity sha512-khGTy9U9x02KEtsKM8vx5A62BsRmcOsIgDpWr1ImE32Ax8GxHGPHZf+Eu9H8zOOyHJnB0jTbseyTHbq2XCT8yw==
+  version "1.5.398"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.398.tgz#9d4d979344ac762840293e3eacbebed34228aa16"
+  integrity sha512-AsvhAxopJGh6museTDMIjn6JpDYOfgu4RLlygomt87MUwBUqTfd/1EiPtx10/LZE8xpTvkP2E9Gafq7lkLtodQ==
 
 emoji-regex@^10.3.0:
   version "10.6.0"
@@ -5069,12 +5069,12 @@ form-data@^4.0.5:
     hasown "^2.0.4"
     mime-types "^2.1.35"
 
-framer-motion@^12.42.2:
-  version "12.42.2"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.42.2.tgz#8628ad31a9b5c1ea6f908ea1764784e33870b711"
-  integrity sha512-5XY9luDiu0oHfHBjpDthFMh0ES+122w6p/papSJBweMkO8Sn+PW2QaEgRblQBpWFnuvZS5qvarpt/hO2pjGmnw==
+framer-motion@^12.43.0:
+  version "12.43.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.43.0.tgz#f7f7f0cf792959ca6a0a7ccd2d55269e68061bc4"
+  integrity sha512-1eaL3RvR/kAlbG7UYcpMptEyzPoENO0c6w7ZnB3/hh2vSAz/6uGAFn6fdoqTBguNstf3MsFhJHsD/0DHiclG+g==
   dependencies:
-    motion-dom "^12.42.2"
+    motion-dom "^12.43.0"
     motion-utils "^12.39.0"
     tslib "^2.4.0"
 
@@ -5287,6 +5287,13 @@ groq-js@^1.30.1, groq-js@^1.30.2, groq-js@^1.30.3:
   integrity sha512-X3Zppy8KO/mDLSu5RylcO9zON+IwxV6y6aeIWsfNNBz0PaRboUmsTVgk3Zndqp9TgWCTFvCk+Z2W0uu0R3i5DA==
   dependencies:
     debug "^4.3.4"
+
+groq-js@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/groq-js/-/groq-js-2.0.0.tgz#132b67abeccfbdf92cba368793d48bdf36faca47"
+  integrity sha512-kj56ZjnOFbgDt91zYwQ10jsVUtVGJqAKfRbAir0EvTK84O5ZsSyc0rDEm2P3jmAJkxs4X1DOG8vtaYJQIA/XCA==
+  dependencies:
+    obug "^2.1.3"
 
 groq@3.88.1-typegen-experimental.0:
   version "3.88.1-typegen-experimental.0"
@@ -6411,10 +6418,10 @@ minizlib@^3.1.0:
   dependencies:
     minipass "^7.1.2"
 
-motion-dom@^12.42.2:
-  version "12.42.2"
-  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.42.2.tgz#b4661b9b3394ae7e990d76dc954bc1e321c59305"
-  integrity sha512-5gIMWLp/PycBtJRJWRgjxke5n8dlvkSn2DrYW+tr3XcqAZY1xZh6BJyooJXCM8wdfM7wfMjkBJNLge1CKPUIRA==
+motion-dom@^12.43.0:
+  version "12.43.0"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.43.0.tgz#65f618a520c4eacf49b6b1bbd023abceff8fb5dd"
+  integrity sha512-azKON4d9S65PEoFUiQTMTgPheEmzf2QngdRc50AKfJp9Q9mmcBVw22c8eMq9k8kxOFHdL7+WZY7N/5F/lwiDag==
   dependencies:
     motion-utils "^12.39.0"
 
@@ -6424,11 +6431,11 @@ motion-utils@^12.39.0:
   integrity sha512-8nadJAJjTtqRkmRF36FoJTrywK9nnFmnPwnSMyxaOCU7GDjN9RTMJIxx9De8ErM+vpPhMccr/6fo5WciyQLnMQ==
 
 motion@^12.40.0, motion@^12.42.2:
-  version "12.42.2"
-  resolved "https://registry.yarnpkg.com/motion/-/motion-12.42.2.tgz#7a0954acb1975e1899ad65639a46fc12a3d24999"
-  integrity sha512-Atvv11yUKIid41cVrRBDVX5m8tF8kNpExRSlbpt6APClhDjtwQssgFHhQzejxw7/7YYbjHSPKBVbHo05BuJT5Q==
+  version "12.43.0"
+  resolved "https://registry.yarnpkg.com/motion/-/motion-12.43.0.tgz#6f68b70aeb48045a294617d3673f3a997fea3bd7"
+  integrity sha512-BQgQbSa9Hn3/mtbib0MK53y6JSANa+YKUKlaYnWzAVDH424RYQ5LVpV3pNiWH00BA2z4ojsSdMzqT7g2FQwjuQ==
   dependencies:
-    framer-motion "^12.42.2"
+    framer-motion "^12.43.0"
     tslib "^2.4.0"
 
 ms@^2.1.3:
@@ -6590,7 +6597,7 @@ observable-callback@^1.0.3:
   resolved "https://registry.yarnpkg.com/observable-callback/-/observable-callback-1.0.3.tgz#c062c614d04f7adda9b42c40e56ffd0418f3d8ef"
   integrity sha512-VlS275UyPnwdMtzxDgr/lCiOUyq9uXNll3vdwzDcJ6PB/LuO7gLmxAQopcCA3JoFwwujBwyA7/tP5TXZwWSXew==
 
-obug@^2.1.1:
+obug@^2.1.1, obug@^2.1.3:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/obug/-/obug-2.1.4.tgz#9090d8a548a522517915d2aa6aae907197ac6cf8"
   integrity sha512-4a+OsYv9UktOJKE+l1A4OufDgdRF9PifWj+tJnHURo/P+WOxpG4GzUFL9qCalmWauao6ogiG+QvnCovwPoyAWA==
