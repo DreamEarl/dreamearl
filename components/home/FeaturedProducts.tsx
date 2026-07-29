@@ -13,7 +13,7 @@ export default async function FeaturedProducts() {
   }
 
   return (
-    <section className="p-4 bg-white">
+    <section className="p-4 pt-16 bg-white">
       <div className="flex flex-col max-w-7xl mx-auto gap-8 mb-4">
         <div className="flex items-center">
           <Heading variant="section" className="flex-1 text-3xl! font-semibold">
@@ -28,7 +28,7 @@ export default async function FeaturedProducts() {
               id={product._id}
               name={product.name}
               price={product.price}
-              image={urlFor(product?.images?.[0]).width(800).url()}
+              image={urlFor(product?.images?.[0]).width(600).url()}
               href={`/products/${product.slug.current}`}
               brand={product.brand}
               currency={product.currency}

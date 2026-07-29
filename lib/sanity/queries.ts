@@ -11,7 +11,7 @@ import {
 // Fetch all products
 export async function getAllProducts(): Promise<SanityProduct[]> {
   return client.fetch(`
-    *[_type == "product" && inStock == true] | order(_createdAt desc) {
+    *[_type == "product" && inStock == true] | order(displayOrder asc, _createdAt desc) {
       _id,
       _type,
       brand,
@@ -32,7 +32,8 @@ export async function getAllProducts(): Promise<SanityProduct[]> {
       shippingInfo,
       packagingInfo,
       inStock,
-      featured
+      featured,
+      displayOrder
     }
   `);
 }
@@ -43,7 +44,7 @@ export async function getProductsByCategory(
 ): Promise<SanityProduct[]> {
   return client.fetch(
     `
-    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(_createdAt desc) {
+    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(displayOrder asc, _createdAt desc) {
       _id,
       _type,
       brand,
@@ -61,7 +62,8 @@ export async function getProductsByCategory(
       pearlColour,
       size,
       inStock,
-      featured
+      featured,
+      displayOrder
     }
   `,
     { categorySlug },
@@ -100,7 +102,8 @@ export async function getProductBySlug(
       shippingInfo,
       packagingInfo,
       inStock,
-      featured
+      featured,
+      displayOrder
     }
   `,
     { slug },
@@ -170,7 +173,7 @@ export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
 // Fetch featured products
 export async function getFeaturedProducts(): Promise<SanityProduct[]> {
   return client.fetch(`
-    *[_type == "product" && featured == true && inStock == true] | order(_createdAt desc) [0...4] {
+    *[_type == "product" && featured == true && inStock == true] | order(displayOrder asc, _createdAt desc) [0...4] {
       _id,
       _type,
       brand,
@@ -182,7 +185,8 @@ export async function getFeaturedProducts(): Promise<SanityProduct[]> {
       category,
       description,
       inStock,
-      featured
+      featured,
+      displayOrder
     }
   `);
 }
@@ -194,7 +198,7 @@ export async function getFeaturedProductsByCategory(
 ): Promise<SanityProduct[]> {
   return client.fetch(
     `
-    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(featured desc, _createdAt desc) [0...$limit] {
+    *[_type == "product" && inStock == true && category->slug.current == $categorySlug] | order(displayOrder asc, featured desc, _createdAt desc) [0...$limit] {
       _id,
       _type,
       brand,
@@ -206,7 +210,8 @@ export async function getFeaturedProductsByCategory(
       category,
       description,
       inStock,
-      featured
+      featured,
+      displayOrder
     }
   `,
     { categorySlug, limit },

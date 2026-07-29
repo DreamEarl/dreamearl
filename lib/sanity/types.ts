@@ -29,6 +29,7 @@ export interface SanityProduct {
   packagingInfo?: string;
   inStock: boolean;
   featured: boolean;
+  displayOrder?: number;
 }
 
 // Category Types

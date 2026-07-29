@@ -9,7 +9,8 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
-      <div className="flex flex-1 gap-12 flex-col">
+
+      <div className="flex flex-1 gap-12 px-32 flex-col">
         <div className="bg-white px-4 py-6 gap-2 text-center">
           <Text variant="price" className="font-glacial font-light">
             {translations.brandDescription.line1}
@@ -17,13 +18,13 @@ export default function Home() {
           <Text variant="price" className="font-glacial font-light">
             {translations.brandDescription.line2}
           </Text>
+
+          <FeaturedProducts />
+
+          <ViewCollection />
+
+          <CustomizeSection />
         </div>
-
-        <FeaturedProducts />
-
-        <ViewCollection />
-
-        <CustomizeSection />
       </div>
     </div>
   );

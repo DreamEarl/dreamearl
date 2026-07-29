@@ -151,6 +151,13 @@ export default defineType({
       type: "boolean",
       initialValue: false,
     }),
+    defineField({
+      name: "displayOrder",
+      title: "Display Order",
+      type: "number",
+      description: "Lower numbers appear first",
+      initialValue: 0,
+    }),
   ],
   preview: {
     select: {
