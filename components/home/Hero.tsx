@@ -6,7 +6,10 @@ import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative h-screen sm:h-[150vh] w-full bg-[#e8e5e0]">
+    <section
+      id="hero"
+      className="relative h-screen sm:h-[150vh] w-full bg-[#e8e5e0]"
+    >
       {/* Background Image */}
       <div id="hero-bg" className="absolute inset-0">
         <Image
@@ -47,7 +50,7 @@ export default function Hero() {
       {/* Tagline at bottom */}
       <div
         id="hero-tagline"
-        className="absolute z-10 w-[90vw] sm:w-auto [top:calc(28%+clamp(90px,22vw,160px))] sm:[top:calc(35%+clamp(90px,22vw,160px))] left-1/2 -translate-x-1/2"
+        className="absolute z-10 w-[90vw] sm:w-auto top-[calc(28%+clamp(90px,22vw,160px))] sm:top-[calc(35%+clamp(90px,22vw,160px))] left-1/2 -translate-x-1/2"
       >
         <p
           className="tracking-[0.15em] sm:tracking-[0.2em] text-white text-center"

@@ -18,10 +18,16 @@ export default function Home() {
           id="brand-description"
           className="bg-white px-4 py-6 gap-2 text-center"
         >
-          <Text variant="price" className="font-glacial font-light">
+          <Text
+            variant="price"
+            className="font-glacial font-light text-lg sm:text-2xl"
+          >
             {translations.brandDescription.line1}
           </Text>
-          <Text variant="price" className="font-glacial font-light">
+          <Text
+            variant="price"
+            className="font-glacial font-light text-lg sm:text-2xl"
+          >
             {translations.brandDescription.line2}
           </Text>
 

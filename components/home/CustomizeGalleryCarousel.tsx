@@ -52,7 +52,7 @@ export default function CustomizeGalleryCarousel({
       <div
         ref={scrollRef}
         id="customize-gallery"
-        className="flex gap-2 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-none [&::-webkit-scrollbar]:hidden"
       >
         {images.map((image, index) => (
           <div
