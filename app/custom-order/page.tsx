@@ -187,6 +187,7 @@ export default function CustomOrderPage() {
                 type="text"
                 id="fullName"
                 name="fullName"
+                required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder={form.fullNamePlaceholder}
@@ -209,6 +210,7 @@ export default function CustomOrderPage() {
                 type="email"
                 id="email"
                 name="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={form.emailPlaceholder}
