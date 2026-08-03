@@ -2,7 +2,7 @@ import { PhoneIcon, MailIcon, InstagramIcon } from "@/components/ui/icons";
 
 export default function ContactUs() {
   return (
-    <div className="flex-1 p-8 flex flex-col justify-center">
+    <div id="contact-us" className="flex-1 p-8 flex flex-col justify-center">
       <h2 className="text-xl mb-6 tracking-wide">CONTACT US</h2>
 
       <p className="text-gray-600 mb-8 text-sm md:text-base">
@@ -10,7 +10,7 @@ export default function ContactUs() {
       </p>
 
       {/* Phone Section */}
-      <div className="mb-8">
+      <div id="contact-phone" className="mb-8">
         <h3 className="text-lg font-semibold mb-3">PHONE</h3>
         <p className="text-sm text-gray-600 mb-2">
           Monday to Sunday from 11 am to 6 pm (IST).
@@ -25,7 +25,7 @@ export default function ContactUs() {
       </div>
 
       {/* Email Section */}
-      <div className="mb-8">
+      <div id="contact-email" className="mb-8">
         <h3 className="text-lg font-semibold mb-3">EMAIL</h3>
         <a
           href="mailto:mydreamearl.shop@gmail.com"
@@ -37,7 +37,7 @@ export default function ContactUs() {
       </div>
 
       {/* Instagram Section */}
-      <div>
+      <div id="contact-instagram">
         <h3 className="text-lg font-semibold mb-3">INSTAGRAM</h3>
         <p className="text-sm text-gray-600 mb-2">
           Follow Us on Instagram & DM to place an Order

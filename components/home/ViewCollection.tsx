@@ -25,14 +25,14 @@ export default async function ViewCollection() {
 
   const href = subcategory
     ? (() => {
-        const url = new URL(buttonLink, "http://x");
+        const url = new URL(buttonLink, "https://x");
         url.searchParams.set("type", subcategory);
         return `${url.pathname}${url.search}`;
       })()
     : buttonLink;
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section id="view-collection" className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
@@ -41,6 +41,7 @@ export default async function ViewCollection() {
         >
           {/* Image */}
           <div
+            id="view-collection-image"
             className={`relative aspect-4/5 max-h-[90vh] overflow-hidden bg-gray-50 ${
               imagePosition === "right" ? "lg:order-2" : "lg:order-1"
             }`}
@@ -55,6 +56,7 @@ export default async function ViewCollection() {
 
           {/* Content */}
           <div
+            id="view-collection-content"
             className={`flex flex-col justify-start gap-4 ${
               imagePosition === "right" ? "lg:order-1" : "lg:order-2"
             }`}

@@ -6,9 +6,9 @@ import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
-    <section className="relative h-[150vh] w-full">
+    <section id="hero" className="relative h-[150vh] w-full">
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div id="hero-bg" className="absolute inset-0">
         <Image
           src="/images/hero/background.jpeg"
           alt="Pearl handbag hero image"
@@ -24,6 +24,7 @@ export default function Hero() {
 
       {/* Logo in center */}
       <div
+        id="hero-logo"
         className="absolute z-10 flex justify-center items-center"
         style={{
           top: "35%",
@@ -33,8 +34,8 @@ export default function Hero() {
       >
         <div
           style={{
-            width: "clamp(250px, 35vw, 300px)",
-            height: "clamp(250px, 35vw, 300px)",
+            width: "clamp(160px, 38vw, 300px)",
+            height: "clamp(160px, 38vw, 300px)",
           }}
         >
           <Image
@@ -50,17 +51,18 @@ export default function Hero() {
 
       {/* Tagline at bottom */}
       <div
-        className="absolute z-10"
+        id="hero-tagline"
+        className="absolute z-10 w-[90vw] sm:w-auto"
         style={{
-          top: "calc(35% + clamp(140px, 22vw, 160px))",
+          top: "calc(35% + clamp(90px, 22vw, 160px))",
           left: "50%",
           transform: "translateX(-50%)",
         }}
       >
         <p
-          className="font-semibold tracking-[0.2em] text-white text-center whitespace-nowrap"
+          className="tracking-[0.15em] sm:tracking-[0.2em] text-white text-center"
           style={{
-            fontSize: "clamp(1.125rem, 2vw, 1.4rem)",
+            fontSize: "clamp(1.2rem, 2.5vw, 1.4rem)",
           }}
         >
           {translations.hero.tagline}
@@ -69,24 +71,26 @@ export default function Hero() {
 
       {/* CTA Buttons */}
       <div
-        className="absolute z-10 flex gap-4 justify-center w-120"
+        id="hero-cta"
+        className="absolute z-10 flex flex-col sm:flex-row gap-4 justify-center"
         style={{
           top: "calc(70% + clamp(200px, 28vw, 240px))",
           left: "50%",
           transform: "translateX(-50%)",
+          width: "min(90vw, 30rem)",
         }}
       >
         <Button
           variant="primary"
           href="/shop"
-          className="flex-1 whitespace-nowrap text-center"
+          className="w-full sm:flex-1 whitespace-nowrap text-center"
         >
           {translations.hero.exploreCollection}
         </Button>
         <Button
           variant="outline"
           href="/about"
-          className="flex-1 whitespace-nowrap text-center"
+          className="w-full sm:flex-1 whitespace-nowrap text-center"
         >
           {translations.hero.ourStory}
         </Button>

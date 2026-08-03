@@ -14,10 +14,13 @@ export default async function CustomizeSection() {
   const images = data?.images ?? [];
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section id="customize" className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Text content */}
-        <div className="flex flex-col items-center text-center mb-10 gap-4">
+        <div
+          id="customize-text"
+          className="flex flex-col items-center text-center mb-10 gap-4"
+        >
           <Heading variant="section">{heading}</Heading>
           <Text variant="body">{subtitle}</Text>
           <Button
@@ -31,7 +34,7 @@ export default async function CustomizeSection() {
 
         {/* Inspiration image strip */}
         {images.length > 0 && (
-          <div className="grid grid-cols-5 gap-2">
+          <div id="customize-gallery" className="grid grid-cols-5 gap-2">
             {images.map((image, index) => (
               <div
                 key={image._key}

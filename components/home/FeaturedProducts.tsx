@@ -13,15 +13,18 @@ export default async function FeaturedProducts() {
   }
 
   return (
-    <section className="p-4 pt-16 bg-white">
+    <section id="featured-products" className="p-4 pt-16 bg-white">
       <div className="flex flex-col max-w-7xl mx-auto gap-8 mb-4">
-        <div className="flex items-center">
+        <div id="featured-products-header" className="flex items-center">
           <Heading variant="section" className="flex-1 text-3xl! font-semibold">
             {translations.featuredProducts.title}
           </Heading>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          id="featured-products-grid"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {products.map((product) => (
             <ProductCard
               key={product._id}
@@ -35,7 +38,10 @@ export default async function FeaturedProducts() {
             />
           ))}
         </div>
-        <div className="flex items-center justify-center">
+        <div
+          id="featured-products-cta"
+          className="flex items-center justify-center"
+        >
           <Link href="/shop?category=handbags">
             <Button variant="primary" size="sm">
               {translations.featuredProducts.shopAll}

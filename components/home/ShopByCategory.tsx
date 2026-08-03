@@ -8,13 +8,16 @@ export default async function ShopByCategory() {
   const categories = await getAllCategories();
 
   return (
-    <section className="py-16 px-4 bg-gray-50">
+    <section id="shop-by-category" className="py-16 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <Heading variant="section" className="mb-12">
           {translations.shopByCategory.title}
         </Heading>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div
+          id="shop-by-category-grid"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {categories.map((category) => (
             <Link
               key={category._id}

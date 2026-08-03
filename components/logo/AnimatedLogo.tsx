@@ -42,7 +42,7 @@ export default function AnimatedLogo() {
             animate={{
               fontSize: scrolled
                 ? "clamp(1.25rem, 2vw, 1.5rem)"
-                : "clamp(3rem, 8vw, 6rem)",
+                : "clamp(2.5rem, 8vw, 6rem)",
               color: scrolled ? "#000000" : "#ffffff",
             }}
             transition={{

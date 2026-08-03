@@ -7,10 +7,13 @@ export default function Footer() {
   const { footer, common } = translations;
 
   return (
-    <footer className="bg-white text-black py-16 px-6 md:px-12 border-t border-gray-200">
+    <footer
+      id="footer"
+      className="bg-white text-black py-16 px-6 md:px-12 border-t border-gray-200"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Brand Header */}
-        <div className="mb-12">
+        <div id="footer-brand" className="mb-12">
           <Heading variant="footer-brand" className="mb-4">
             {common.brand}
           </Heading>
@@ -18,9 +21,12 @@ export default function Footer() {
         </div>
 
         {/* Footer Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div
+          id="footer-grid"
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16"
+        >
           {/* Contact Us */}
-          <div>
+          <div id="footer-contact">
             <Heading variant="footer-section" className="mb-6">
               {footer.contactUs.title}
             </Heading>
@@ -35,7 +41,7 @@ export default function Footer() {
           </div>
 
           {/* Explore */}
-          <div>
+          <div id="footer-explore">
             <Heading variant="footer-section" className="mb-6">
               {footer.explore.title}
             </Heading>
@@ -65,7 +71,7 @@ export default function Footer() {
           </div>
 
           {/* Support */}
-          <div>
+          <div id="footer-support">
             <Heading variant="footer-section" className="mb-6">
               {footer.support.title}
             </Heading>

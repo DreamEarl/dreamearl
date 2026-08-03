@@ -10,8 +10,14 @@ export default function Home() {
     <div className="min-h-screen">
       <Hero />
 
-      <div className="flex flex-1 gap-12 px-32 flex-col">
-        <div className="bg-white px-4 py-6 gap-2 text-center">
+      <div
+        id="main-content"
+        className="flex flex-1 gap-12 px-4 sm:px-8 md:px-16 lg:px-32 flex-col"
+      >
+        <div
+          id="brand-description"
+          className="bg-white px-4 py-6 gap-2 text-center"
+        >
           <Text variant="price" className="font-glacial font-light">
             {translations.brandDescription.line1}
           </Text>

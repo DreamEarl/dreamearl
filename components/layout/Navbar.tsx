@@ -32,12 +32,13 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
   return (
     <>
       <nav
+        id="navbar"
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 md:px-12 transition-all duration-300 ${
           isDark ? "bg-white shadow-sm" : "bg-transparent"
         }`}
       >
         {/* Logo */}
-        <div className="flex items-center w-48">
+        <div id="navbar-logo" className="flex items-center w-48">
           {showLogo && (
             <Link
               href="/"
@@ -49,8 +50,9 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
         </div>
 
         {/* Right Icons */}
-        <div className="flex items-center gap-6">
+        <div id="navbar-actions" className="flex items-center gap-6">
           <button
+            id="navbar-contact-btn"
             onClick={() => setIsContactPanelOpen(true)}
             className={`hidden md:inline text-md hover:opacity-80 transition-opacity cursor-pointer ${
               isDark ? "text-gray-700" : "text-white"
@@ -60,6 +62,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
           </button>
           {/* User Icon */}
           <Link
+            id="navbar-account-link"
             href="/login"
             className={`hover:opacity-80 transition-all duration-300 ${
               isDark ? "text-black" : "text-white"
@@ -71,6 +74,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
 
           {/* Shopping Bag Icon */}
           <Link
+            id="navbar-cart-link"
             href="/cart"
             className={`hover:opacity-80 transition-all duration-300 ${
               isDark ? "text-black" : "text-white"
