@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <MainLayout>{children}</MainLayout>
+        <Analytics />
       </body>
     </html>
   );
