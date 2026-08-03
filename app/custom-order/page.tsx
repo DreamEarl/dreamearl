@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { translations } from "@/lib/constants/translations";
+import { ADMIN_WHATSAPP_NUMBER } from "@/lib/constants/shopConfig";
 
 const { heading, subtitle, form } = translations.customOrder;
 
@@ -15,9 +16,33 @@ const PRODUCT_TYPES = [
   "Other",
 ];
 
+function isValidEmail(value: string): boolean {
+  const at = value.indexOf("@");
+  if (at < 1) return false;
+  const dot = value.lastIndexOf(".");
+  return dot > at + 1 && dot < value.length - 1;
+}
+
+type FormErrors = Partial<Record<"fullName" | "email", string>>;
+
+function validate(fullName: string, email: string): FormErrors {
+  const errors: FormErrors = {};
+  if (!fullName.trim()) errors.fullName = "Name is required";
+  if (!email.trim()) errors.email = "Email is required";
+  else if (!isValidEmail(email)) errors.email = "Enter a valid email address";
+  return errors;
+}
+
 export default function CustomOrderPage() {
   const [dragActive, setDragActive] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [productType, setProductType] = useState("");
+  const [requirements, setRequirements] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleDrag(e: React.DragEvent) {
     e.preventDefault();
@@ -40,9 +65,52 @@ export default function CustomOrderPage() {
     if (file) setImageFile(file);
   }
 
-  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    // TODO: wire up submission
+
+    const validationErrors = validate(fullName, email);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+    setIsSubmitting(true);
+
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      try {
+        const fd = new FormData();
+        fd.append("file", imageFile);
+        const res = await fetch("/api/upload-image", { method: "POST", body: fd });
+        if (res.ok) {
+          const data = await res.json() as { url: string };
+          imageUrl = data.url;
+        }
+      } catch {
+        // proceed without image URL if upload fails
+      }
+    }
+
+    const message = [
+      "New Custom Order – DreamEarl",
+      "",
+      `Name: ${fullName}`,
+      `Email: ${email}`,
+      `Phone: ${phone || "Not provided"}`,
+      `Product Type: ${productType || "Not specified"}`,
+      "",
+      "Requirements:",
+      requirements || "No details provided",
+      "",
+      `Inspiration Image: ${imageUrl ?? (imageFile ? "Upload failed – please send manually" : "Not provided")}`,
+    ].join("\n");
+
+    window.open(
+      `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+
+    setIsSubmitting(false);
   }
 
   return (
@@ -119,10 +187,16 @@ export default function CustomOrderPage() {
                 type="text"
                 id="fullName"
                 name="fullName"
-                required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 placeholder={form.fullNamePlaceholder}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400"
+                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 ${
+                  errors.fullName ? "border-red-400" : "border-gray-300"
+                }`}
               />
+              {errors.fullName && (
+                <p className="mt-1 text-xs text-red-500">{errors.fullName}</p>
+              )}
             </div>
             <div>
               <label
@@ -135,10 +209,16 @@ export default function CustomOrderPage() {
                 type="email"
                 id="email"
                 name="email"
-                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder={form.emailPlaceholder}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400"
+                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 ${
+                  errors.email ? "border-red-400" : "border-gray-300"
+                }`}
               />
+              {errors.email && (
+                <p className="mt-1 text-xs text-red-500">{errors.email}</p>
+              )}
             </div>
           </div>
 
@@ -155,6 +235,8 @@ export default function CustomOrderPage() {
                 type="tel"
                 id="phone"
                 name="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 placeholder={form.phonePlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
@@ -169,7 +251,8 @@ export default function CustomOrderPage() {
               <select
                 id="productType"
                 name="productType"
-                defaultValue=""
+                value={productType}
+                onChange={(e) => setProductType(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white appearance-none"
               >
                 <option value="" disabled>
@@ -196,6 +279,8 @@ export default function CustomOrderPage() {
               id="requirements"
               name="requirements"
               rows={6}
+              value={requirements}
+              onChange={(e) => setRequirements(e.target.value)}
               placeholder="Describe your vision, preferred colors, size, materials, and any special details you'd like to include..."
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 resize-none"
             />
@@ -205,9 +290,10 @@ export default function CustomOrderPage() {
           <div className="flex flex-col items-center gap-3 pt-2">
             <button
               type="submit"
-              className="bg-black text-white px-16 py-4 text-sm tracking-widest font-light hover:bg-gray-900 transition-colors"
+              disabled={isSubmitting}
+              className="bg-black text-white px-16 py-4 text-sm tracking-widest font-light hover:bg-gray-900 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {form.submit}
+              {isSubmitting ? "Sending…" : form.submit}
             </button>
             <p className="text-xs text-gray-400 text-center">
               {form.submitNote}

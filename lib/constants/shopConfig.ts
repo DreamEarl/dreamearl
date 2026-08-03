@@ -6,6 +6,9 @@ export interface SubCategory {
   image?: string;
 }
 
+/** Admin WhatsApp number in E.164 format without '+' for wa.me links */
+export const ADMIN_WHATSAPP_NUMBER = "918830587508";
+
 /**
  * SUBCATEGORIES CONFIGURATION
  *
