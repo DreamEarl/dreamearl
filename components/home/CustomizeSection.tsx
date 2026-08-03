@@ -3,7 +3,7 @@ import { translations } from "@/lib/constants/translations";
 import Heading from "@/components/ui/Heading";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
-import ProductImage from "@/components/ui/ProductImage";
+import CustomizeGalleryCarousel from "@/components/home/CustomizeGalleryCarousel";
 
 export default async function CustomizeSection() {
   const data = await getCustomizationSection();
@@ -32,23 +32,9 @@ export default async function CustomizeSection() {
           </Button>
         </div>
 
-        {/* Inspiration image strip */}
+        {/* Inspiration image carousel */}
         {images.length > 0 && (
-          <div id="customize-gallery" className="grid grid-cols-5 gap-2">
-            {images.map((image, index) => (
-              <div
-                key={image._key}
-                className="relative aspect-3/4 overflow-hidden"
-              >
-                <ProductImage
-                  src={urlFor(image).width(600).url()}
-                  alt={image.alt ?? `Custom order inspiration ${index + 1}`}
-                  sizes="(max-width: 640px) 50vw, 20vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
+          <CustomizeGalleryCarousel images={images} urlFor={urlFor} />
         )}
       </div>
     </section>

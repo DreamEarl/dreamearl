@@ -9,12 +9,23 @@ export default function Hero() {
     <section id="hero" className="relative h-[150vh] w-full">
       {/* Background Image */}
       <div id="hero-bg" className="absolute inset-0">
+        {/* Mobile */}
+        <Image
+          src="/images/hero/background-mobile.jpeg"
+          alt="Pearl handbag hero image"
+          fill
+          sizes="100vw"
+          className="object-cover sm:hidden"
+          priority
+          quality={100}
+        />
+        {/* Desktop */}
         <Image
           src="/images/hero/background.jpeg"
           alt="Pearl handbag hero image"
           fill
           sizes="100vw"
-          className="object-cover"
+          className="object-cover hidden sm:block"
           priority
           quality={100}
         />
@@ -74,7 +85,7 @@ export default function Hero() {
         id="hero-cta"
         className="absolute z-10 flex flex-col sm:flex-row gap-4 justify-center"
         style={{
-          top: "calc(70% + clamp(200px, 28vw, 240px))",
+          top: "calc(70% + clamp(100px, 28vw, 240px))",
           left: "50%",
           transform: "translateX(-50%)",
           width: "min(90vw, 30rem)",

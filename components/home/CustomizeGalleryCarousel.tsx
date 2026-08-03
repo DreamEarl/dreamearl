@@ -1,0 +1,95 @@
+"use client";
+
+import { useRef, useState, useEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import ProductImage from "@/components/ui/ProductImage";
+import type { CustomizationImage } from "@/lib/sanity/types";
+
+export default function CustomizeGalleryCarousel({
+  images,
+  urlFor,
+}: {
+  images: CustomizationImage[];
+  urlFor: (source: CustomizationImage) => {
+    width: (w: number) => { url: () => string };
+  };
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    const ro =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateScrollState)
+        : null;
+    ro?.observe(el);
+    return () => {
+      el.removeEventListener("scroll", updateScrollState);
+      ro?.disconnect();
+    };
+  }, [updateScrollState]);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: dir === "left" ? -el.clientWidth : el.clientWidth,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <div className="relative">
+      <div
+        ref={scrollRef}
+        id="customize-gallery"
+        className="flex gap-2 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {images.map((image, index) => (
+          <div
+            key={image._key}
+            className="snap-start shrink-0 w-[30%] sm:w-[calc(20%-0.4rem)] relative aspect-3/4 overflow-hidden"
+          >
+            <ProductImage
+              src={urlFor(image).width(600).url()}
+              alt={image.alt ?? `Custom order inspiration ${index + 1}`}
+              sizes="(max-width: 640px) 33vw, 20vw"
+              className="object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      {canScrollLeft && (
+        <button
+          onClick={() => scroll("left")}
+          aria-label="Previous images"
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      )}
+      {canScrollRight && (
+        <button
+          onClick={() => scroll("right")}
+          aria-label="Next images"
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      )}
+    </div>
+  );
+}
