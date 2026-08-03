@@ -30,13 +30,12 @@ export default function Home() {
           >
             {translations.brandDescription.line2}
           </Text>
-
-          <FeaturedProducts />
-
-          <ViewCollection />
-
-          <CustomizeSection />
         </div>
+        <FeaturedProducts />
+
+        <ViewCollection />
+
+        <CustomizeSection />
       </div>
     </div>
   );

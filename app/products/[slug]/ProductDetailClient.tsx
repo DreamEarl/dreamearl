@@ -263,12 +263,14 @@ export default function ProductDetailClient({
             </Text>
 
             <div className="space-y-3 mb-8">
-              <Button variant="outline" fullWidth>
+              <Button variant="primary" fullWidth>
                 {translations.product.addToCart}
               </Button>
-              <Button variant="primary" fullWidth>
+
+              {/* Will be used later  */}
+              {/* <Button variant="primary" fullWidth>
                 {translations.product.buyNow}
-              </Button>
+              </Button> */}
             </div>
 
             <ProductDetailsList details={product.details} note={product.note} />
