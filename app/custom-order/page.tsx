@@ -81,9 +81,12 @@ export default function CustomOrderPage() {
       try {
         const fd = new FormData();
         fd.append("file", imageFile);
-        const res = await fetch("/api/upload-image", { method: "POST", body: fd });
+        const res = await fetch("/api/upload-image", {
+          method: "POST",
+          body: fd,
+        });
         if (res.ok) {
-          const data = await res.json() as { url: string };
+          const data = (await res.json()) as { url: string };
           imageUrl = data.url;
         }
       } catch {
@@ -107,9 +110,15 @@ export default function CustomOrderPage() {
 
     window.open(
       `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
-      "_blank"
+      "_blank",
     );
 
+    setFullName("");
+    setEmail("");
+    setPhone("");
+    setProductType("");
+    setRequirements("");
+    setImageFile(null);
     setIsSubmitting(false);
   }
 

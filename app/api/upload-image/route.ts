@@ -14,13 +14,13 @@ export async function POST(req: Request) {
   if (!ALLOWED_TYPES.has(file.type)) {
     return NextResponse.json(
       { error: "Only PNG and JPEG images are accepted" },
-      { status: 400 }
+      { status: 400 },
     );
   }
   if (file.size > MAX_SIZE_BYTES) {
     return NextResponse.json(
       { error: "File exceeds 10 MB limit" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -30,6 +30,7 @@ export async function POST(req: Request) {
     });
     return NextResponse.json({ url: blob.url });
   } catch (err) {
+    console.error("[upload-image]", err);
     const message = err instanceof Error ? err.message : "Upload failed";
     return NextResponse.json({ error: message }, { status: 500 });
   }
