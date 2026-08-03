@@ -3,17 +3,14 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductImage from "@/components/ui/ProductImage";
-import type { CustomizationImage } from "@/lib/sanity/types";
+
+type CarouselImage = { _key: string; src: string; alt?: string | null };
 
 export default function CustomizeGalleryCarousel({
   images,
-  urlFor,
-}: {
-  images: CustomizationImage[];
-  urlFor: (source: CustomizationImage) => {
-    width: (w: number) => { url: () => string };
-  };
-}) {
+}: Readonly<{
+  images: CarouselImage[];
+}>) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -63,7 +60,7 @@ export default function CustomizeGalleryCarousel({
             className="snap-start shrink-0 w-[30%] sm:w-[calc(20%-0.4rem)] relative aspect-3/4 overflow-hidden"
           >
             <ProductImage
-              src={urlFor(image).width(600).url()}
+              src={image.src}
               alt={image.alt ?? `Custom order inspiration ${index + 1}`}
               sizes="(max-width: 640px) 33vw, 20vw"
               className="object-cover"

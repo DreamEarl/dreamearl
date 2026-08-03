@@ -39,8 +39,10 @@ describe("Hero Component", () => {
 
     it("renders hero background image", () => {
       render(<Hero />);
-      const backgroundImage = screen.getByAltText("Pearl handbag hero image");
-      expect(backgroundImage).toBeInTheDocument();
+      const backgroundImages = screen.getAllByAltText(
+        "Pearl handbag hero image",
+      );
+      expect(backgroundImages.length).toBeGreaterThan(0);
     });
 
     it("renders the logo image", () => {

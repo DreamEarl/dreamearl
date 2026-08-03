@@ -11,7 +11,11 @@ export default async function CustomizeSection() {
   const heading = data?.heading ?? translations.customization.heading;
   const subtitle = data?.subtitle ?? translations.customization.subtitle;
   const buttonText = data?.buttonText ?? translations.customization.buttonText;
-  const images = data?.images ?? [];
+  const images = (data?.images ?? []).map((img) => ({
+    _key: img._key,
+    src: urlFor(img).width(600).url(),
+    alt: img.alt,
+  }));
 
   return (
     <section id="customize" className="py-16 px-4 bg-white">
@@ -33,9 +37,7 @@ export default async function CustomizeSection() {
         </div>
 
         {/* Inspiration image carousel */}
-        {images.length > 0 && (
-          <CustomizeGalleryCarousel images={images} urlFor={urlFor} />
-        )}
+        {images.length > 0 && <CustomizeGalleryCarousel images={images} />}
       </div>
     </section>
   );
