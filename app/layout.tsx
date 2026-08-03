@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import MainLayout from "@/components/layout/MainLayout";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <MainLayout>{children}</MainLayout>
+        <SpeedInsights />
       </body>
     </html>
   );
