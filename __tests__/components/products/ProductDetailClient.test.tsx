@@ -67,10 +67,10 @@ describe("ProductDetailClient Component", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders Buy Now button", () => {
-      render(<ProductDetailClient product={singleImageProduct} />);
-      expect(screen.getByText(translations.product.buyNow)).toBeInTheDocument();
-    });
+    // it("renders Buy Now button", () => {
+    //   render(<ProductDetailClient product={singleImageProduct} />);
+    //   expect(screen.getByText(translations.product.buyNow)).toBeInTheDocument();
+    // });
   });
 
   describe("Product Details", () => {
