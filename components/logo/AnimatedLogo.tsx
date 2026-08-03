@@ -7,6 +7,7 @@ import { translations } from "@/lib/constants/translations";
 
 export default function AnimatedLogo() {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +18,17 @@ export default function AnimatedLogo() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  let heroTop = "20vh";
+  if (scrolled) heroTop = "24px";
+  else if (isMobile) heroTop = "14vh";
+
   return (
     <>
       {/* Brand name at top */}
@@ -24,7 +36,7 @@ export default function AnimatedLogo() {
         className="fixed z-100"
         initial={false}
         animate={{
-          top: scrolled ? "24px" : "20vh",
+          top: heroTop,
           left: scrolled ? "24px" : "50%",
           x: scrolled ? "0%" : "-50%",
           y: scrolled ? "0%" : "-50%",
