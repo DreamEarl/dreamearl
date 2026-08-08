@@ -23,13 +23,14 @@ function isValidEmail(value: string): boolean {
   return dot > at + 1 && dot < value.length - 1;
 }
 
-type FormErrors = Partial<Record<"fullName" | "email", string>>;
+type FormErrors = Partial<Record<"fullName" | "email" | "phone", string>>;
 
-function validate(fullName: string, email: string): FormErrors {
+function validate(fullName: string, email: string, phone: string): FormErrors {
   const errors: FormErrors = {};
   if (!fullName.trim()) errors.fullName = "Name is required";
   if (!email.trim()) errors.email = "Email is required";
   else if (!isValidEmail(email)) errors.email = "Enter a valid email address";
+  if (!phone.trim()) errors.phone = "Phone is required";
   return errors;
 }
 
@@ -68,7 +69,7 @@ export default function CustomOrderPage() {
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const validationErrors = validate(fullName, email);
+    const validationErrors = validate(fullName, email, phone);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -99,7 +100,7 @@ export default function CustomOrderPage() {
       "",
       `Name: ${fullName}`,
       `Email: ${email}`,
-      `Phone: ${phone || "Not provided"}`,
+      `Phone: ${phone}`,
       `Product Type: ${productType || "Not specified"}`,
       "",
       "Requirements:",
@@ -246,11 +247,17 @@ export default function CustomOrderPage() {
                 type="tel"
                 id="phone"
                 name="phone"
+                required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder={form.phonePlaceholder}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400"
+                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 ${
+                  errors.phone ? "border-red-400" : "border-gray-300"
+                }`}
               />
+              {errors.phone && (
+                <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
+              )}
             </div>
             <div>
               <label
