@@ -79,6 +79,26 @@ export const translations = {
     returnToStore: "Return to Store",
     termsText:
       "By continuing, you agree to our Terms of Service and Privacy Policy",
+    phone: {
+      label: "Mobile Number",
+      placeholder: "+91 98765 43210",
+      sendOtp: "Send OTP",
+      sending: "Sending...",
+      otpLabel: "Enter OTP",
+      otpPlaceholder: "6-digit code",
+      verify: "Verify & Sign In",
+      verifying: "Verifying...",
+      changeNumber: "Change number",
+      otpSent: "OTP sent to",
+      invalidPhone:
+        "Enter a valid phone number with country code (e.g. +91...)",
+      invalidOtp: "Enter the 6-digit OTP",
+    },
+    errors: {
+      google: "Google sign-in failed. Please try again.",
+      otpSend: "Failed to send OTP. Please try again.",
+      otpVerify: "Invalid OTP. Please try again.",
+    },
   },
   footer: {
     contactUs: {
