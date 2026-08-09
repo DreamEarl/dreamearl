@@ -3,6 +3,22 @@ import userEvent from "@testing-library/user-event";
 import LoginPage from "@/app/login/page";
 import { translations } from "@/lib/constants/translations";
 
+const mockSignInWithOAuth = jest.fn().mockResolvedValue({ error: null });
+
+jest.mock("@/lib/supabase/client", () => ({
+  createClient: () => ({
+    auth: {
+      signInWithOAuth: mockSignInWithOAuth,
+      signInWithOtp: jest.fn().mockResolvedValue({ error: null }),
+      verifyOtp: jest.fn().mockResolvedValue({ error: null }),
+    },
+  }),
+}));
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn() }),
+}));
+
 jest.mock("next/image", () => ({
   __esModule: true,
   default: ({
@@ -60,7 +76,7 @@ describe("Login Page", () => {
 
     it("renders OR divider", () => {
       render(<LoginPage />);
-      expect(screen.getByText(login.orDivider)).toBeInTheDocument();
+      expect(screen.getAllByText(login.orDivider).length).toBeGreaterThan(0);
     });
 
     it("renders Continue as Guest button linking to /shop", () => {
@@ -82,10 +98,7 @@ describe("Login Page", () => {
   });
 
   describe("Interactions", () => {
-    it("Google button triggers login handler", async () => {
-      const consoleSpy = jest
-        .spyOn(console, "log")
-        .mockImplementation(() => {});
+    it("Google button triggers signInWithOAuth", async () => {
       const user = userEvent.setup();
 
       render(<LoginPage />);
@@ -94,8 +107,9 @@ describe("Login Page", () => {
       );
       await user.click(googleBtn);
 
-      expect(consoleSpy).toHaveBeenCalledWith("Login with google");
-      consoleSpy.mockRestore();
+      expect(mockSignInWithOAuth).toHaveBeenCalledWith(
+        expect.objectContaining({ provider: "google" }),
+      );
     });
   });
 });
