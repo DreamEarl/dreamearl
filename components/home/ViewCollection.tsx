@@ -32,7 +32,7 @@ export default async function ViewCollection() {
     : buttonLink;
 
   return (
-    <section id="view-collection" className="py-16 px-4 bg-white">
+    <section id="view-collection" className="py-8 md:py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
@@ -42,7 +42,7 @@ export default async function ViewCollection() {
           {/* Image */}
           <div
             id="view-collection-image"
-            className={`relative aspect-4/5 max-h-[90vh] overflow-hidden bg-gray-50 ${
+            className={`relative aspect-[3/2] sm:aspect-[4/3] lg:aspect-4/5 max-h-[40vh] sm:max-h-[55vh] lg:max-h-[90vh] overflow-hidden bg-gray-50 ${
               imagePosition === "right" ? "lg:order-2" : "lg:order-1"
             }`}
           >
@@ -57,25 +57,25 @@ export default async function ViewCollection() {
           {/* Content */}
           <div
             id="view-collection-content"
-            className={`flex flex-col justify-start gap-4 ${
+            className={`flex flex-col justify-start gap-2 sm:gap-4 ${
               imagePosition === "right" ? "lg:order-1" : "lg:order-2"
             }`}
           >
             <Heading
               variant="section"
-              className="flex-1 text-3xl! font-semibold text-left uppercase"
+              className="flex-1 text-xl! sm:text-3xl! font-semibold text-left uppercase"
             >
               {title}
             </Heading>
             {description && (
               <Text
                 variant="body"
-                className="max-w-420 pt-4 text-left text-lg!"
+                className="max-w-420 text-left text-sm! sm:text-lg!"
               >
                 {description}
               </Text>
             )}
-            <div className="flex justify-start pt-2">
+            <div className="flex justify-start pt-1 sm:pt-2">
               <Link href={href}>
                 <Button
                   variant="primary"

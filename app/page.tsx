@@ -12,7 +12,7 @@ export default function Home() {
 
       <div
         id="main-content"
-        className="flex flex-1 gap-12 px-4 sm:px-8 md:px-16 lg:px-32 flex-col"
+        className="flex flex-1 gap-4 sm:gap-8 md:gap-12 px-4 sm:px-8 md:px-16 lg:px-32 flex-col"
       >
         <div
           id="brand-description"

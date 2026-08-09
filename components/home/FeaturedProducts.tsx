@@ -23,7 +23,7 @@ export default async function FeaturedProducts() {
   }));
 
   return (
-    <section id="featured-products" className="p-4 pt-16 bg-white">
+    <section id="featured-products" className="p-4 pt-8 md:pt-16 bg-white">
       <div className="flex flex-col max-w-7xl mx-auto gap-8 mb-4">
         <div id="featured-products-header" className="flex items-center">
           <Heading variant="section" className="flex-1 text-3xl! font-semibold">

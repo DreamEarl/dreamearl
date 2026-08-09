@@ -65,7 +65,7 @@ export default function ProductCarousel({
         {products.map((product) => (
           <div
             key={product._id}
-            className="snap-start shrink-0 w-[85%] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.334rem)]"
+            className="snap-start shrink-0 w-[calc(40%-1rem)] lg:w-[calc(33.333%-1.334rem)]"
           >
             <ProductCard
               id={product._id}

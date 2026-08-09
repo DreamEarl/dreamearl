@@ -18,7 +18,7 @@ export default async function CustomizeSection() {
   }));
 
   return (
-    <section id="customize" className="py-16 px-4 bg-white">
+    <section id="customize" className="py-8 md:py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Text content */}
         <div

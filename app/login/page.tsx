@@ -13,6 +13,8 @@ type PhoneStep = "input" | "otp";
 
 export default function LoginPage() {
   const { login } = translations;
+
+  const disablePhoneFeature = true; // Set to true to disable phone login feature
   const router = useRouter();
   const [phoneStep, setPhoneStep] = useState<PhoneStep>("input");
   const [phone, setPhone] = useState("");
@@ -107,90 +109,92 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        {/* Divider */}
-        <div className="relative mb-8">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
-          </div>
-          <div className="relative flex justify-center">
-            <Text variant="caption" as="span" className="px-4 bg-white">
-              {login.orDivider}
-            </Text>
-          </div>
-        </div>
+        {!disablePhoneFeature && (
+          <>
+            {/* Divider */}
+            <div className="relative mb-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center">
+                <Text variant="caption" as="span" className="px-4 bg-white">
+                  {login.orDivider}
+                </Text>
+              </div>
+            </div>
+            {/* Phone OTP */}
+            {phoneStep === "input" ? (
+              <form onSubmit={handleSendOtp} className="mb-8">
+                <label className="block text-xs tracking-widest text-gray-500 uppercase mb-2">
+                  {login.phone.label}
+                </label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder={login.phone.placeholder}
+                  className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black mb-4"
+                  autoComplete="tel"
+                />
+                <Button
+                  variant="primary"
+                  fullWidth
+                  type="submit"
+                  disabled={loadingPhone}
+                >
+                  {loadingPhone ? login.phone.sending : login.phone.sendOtp}
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleVerifyOtp} className="mb-8">
+                <Text variant="caption" className="text-center mb-4">
+                  {login.phone.otpSent} {phone.trim()}
+                </Text>
+                <label className="block text-xs tracking-widest text-gray-500 uppercase mb-2">
+                  {login.phone.otpLabel}
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={6}
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                  placeholder={login.phone.otpPlaceholder}
+                  className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black mb-4 tracking-widest text-center"
+                  autoComplete="one-time-code"
+                />
+                <Button
+                  variant="primary"
+                  fullWidth
+                  type="submit"
+                  disabled={loadingPhone}
+                  className="mb-3"
+                >
+                  {loadingPhone ? login.phone.verifying : login.phone.verify}
+                </Button>
+                <Button
+                  variant="underline"
+                  type="button"
+                  onClick={() => {
+                    setPhoneStep("input");
+                    setOtp("");
+                    setError(null);
+                  }}
+                  className="block w-full text-center"
+                >
+                  {login.phone.changeNumber}
+                </Button>
+              </form>
+            )}
 
-        {/* Phone OTP */}
-        {phoneStep === "input" ? (
-          <form onSubmit={handleSendOtp} className="mb-8">
-            <label className="block text-xs tracking-widest text-gray-500 uppercase mb-2">
-              {login.phone.label}
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder={login.phone.placeholder}
-              className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black mb-4"
-              autoComplete="tel"
-            />
-            <Button
-              variant="primary"
-              fullWidth
-              type="submit"
-              disabled={loadingPhone}
-            >
-              {loadingPhone ? login.phone.sending : login.phone.sendOtp}
-            </Button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOtp} className="mb-8">
-            <Text variant="caption" className="text-center mb-4">
-              {login.phone.otpSent} {phone.trim()}
-            </Text>
-            <label className="block text-xs tracking-widest text-gray-500 uppercase mb-2">
-              {login.phone.otpLabel}
-            </label>
-            <input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-              placeholder={login.phone.otpPlaceholder}
-              className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black mb-4 tracking-widest text-center"
-              autoComplete="one-time-code"
-            />
-            <Button
-              variant="primary"
-              fullWidth
-              type="submit"
-              disabled={loadingPhone}
-              className="mb-3"
-            >
-              {loadingPhone ? login.phone.verifying : login.phone.verify}
-            </Button>
-            <Button
-              variant="underline"
-              type="button"
-              onClick={() => {
-                setPhoneStep("input");
-                setOtp("");
-                setError(null);
-              }}
-              className="block w-full text-center"
-            >
-              {login.phone.changeNumber}
-            </Button>
-          </form>
+            {error && (
+              <Text variant="caption" className="text-center text-red-600 mb-4">
+                {error}
+              </Text>
+            )}
+          </>
         )}
-
-        {error && (
-          <Text variant="caption" className="text-center text-red-600 mb-4">
-            {error}
-          </Text>
-        )}
-
         {/* Divider */}
         <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">

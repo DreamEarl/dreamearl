@@ -57,7 +57,7 @@ export default function CustomizeGalleryCarousel({
         {images.map((image, index) => (
           <div
             key={image._key}
-            className="snap-start shrink-0 w-[80%] sm:w-[calc(20%-0.4rem)] relative aspect-3/4 overflow-hidden"
+            className="snap-start shrink-0 w-[calc(42%-0.25rem)] sm:w-[calc(20%-0.4rem)] relative aspect-3/4 overflow-hidden"
           >
             <ProductImage
               src={image.src}
