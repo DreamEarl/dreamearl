@@ -149,7 +149,7 @@ export default async function AboutPage() {
 
       {/* CTA Section with Images */}
       {aboutData?.ctaSection && (
-        <section className="py-20 md:py-32 px-6 bg-[#F5F1E8]">
+        <section className="py-20 md:py-24 px-6 bg-[#F5F1E8]">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Text Content - Always on Left */}
@@ -174,47 +174,37 @@ export default async function AboutPage() {
                 </Button>
               </div>
 
-              {/* Images - Always on Right */}
+              {/* Images - diagonally staggered with overlap */}
               <div>
                 {aboutData.ctaSection.images &&
                   aboutData.ctaSection.images.length > 0 && (
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* First Image - Top Right */}
+                    <div className="relative h-[420px] md:h-[480px]">
+                      {/* First Image - left, top, on top layer */}
                       {safeImageUrl(aboutData.ctaSection.images[0], 400) && (
-                        <div className="col-start-2 row-start-1">
-                          <div className="relative aspect-3/4 w-full">
-                            <Image
-                              src={
-                                safeImageUrl(
-                                  aboutData.ctaSection.images[0],
-                                  400,
-                                )!
-                              }
-                              alt="Product showcase"
-                              fill
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                              className="object-cover rounded-lg"
-                            />
-                          </div>
+                        <div className="absolute top-0 left-0 w-[48%] h-[65%] z-10">
+                          <Image
+                            src={
+                              safeImageUrl(aboutData.ctaSection.images[0], 400)!
+                            }
+                            alt="Product showcase"
+                            fill
+                            sizes="(max-width: 768px) 40vw, 20vw"
+                            className="object-cover"
+                          />
                         </div>
                       )}
-                      {/* Second Image - Bottom Right, Larger */}
+                      {/* Second Image - right, bottom, slightly behind */}
                       {safeImageUrl(aboutData.ctaSection.images[1], 600) && (
-                        <div className="col-start-2 row-start-2">
-                          <div className="relative aspect-3/4 w-full">
-                            <Image
-                              src={
-                                safeImageUrl(
-                                  aboutData.ctaSection.images[1],
-                                  600,
-                                )!
-                              }
-                              alt="Product showcase"
-                              fill
-                              sizes="(max-width: 768px) 50vw, 35vw"
-                              className="object-cover rounded-lg"
-                            />
-                          </div>
+                        <div className="absolute bottom-0 right-0 w-[48%] h-[65%]">
+                          <Image
+                            src={
+                              safeImageUrl(aboutData.ctaSection.images[1], 600)!
+                            }
+                            alt="Product showcase"
+                            fill
+                            sizes="(max-width: 768px) 40vw, 20vw"
+                            className="object-cover"
+                          />
                         </div>
                       )}
                     </div>
@@ -227,7 +217,7 @@ export default async function AboutPage() {
 
       {/* Closing Quote Section */}
       {aboutData?.closingSection && (
-        <section className="py-24 md:py-32 px-6 bg-[#F5F1E8]">
+        <section className="py-24 md:py-24 px-6 bg-[#F5F1E8]">
           <div className="max-w-5xl mx-auto text-center">
             <blockquote className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed mb-8">
               {aboutData.closingSection.quote}

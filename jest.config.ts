@@ -12,6 +12,9 @@ const config: Config = {
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
+    "^nanoid$": "<rootDir>/node_modules/nanoid/index.cjs",
+    "^@sanity/image-url$": "<rootDir>/__mocks__/sanity-image-url.ts",
+    "^@/lib/sanity/client$": "<rootDir>/__mocks__/sanity-client.ts",
     "^@/(.*)$": "<rootDir>/$1",
   },
   testMatch: ["**/__tests__/**/*.{ts,tsx}", "**/*.{test,spec}.{ts,tsx}"],

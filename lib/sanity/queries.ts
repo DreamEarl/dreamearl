@@ -6,6 +6,7 @@ import {
   CustomizationImage,
   SanityCollectionSection,
   SanityAboutPage,
+  SanitySiteContent,
 } from "./types";
 
 // Fetch all products
@@ -316,6 +317,26 @@ export async function getAboutPage(): Promise<SanityAboutPage | null> {
         title,
         content
       }
+    }
+  `);
+}
+
+// Fetch site content (translations)
+export async function getSiteContent(): Promise<SanitySiteContent | null> {
+  return client.fetch(`
+    *[_type == "siteContent"][0] {
+      _id,
+      _type,
+      hero,
+      brandDescription,
+      shopByCategory,
+      featuredProducts,
+      customization,
+      shop,
+      customOrder,
+      about,
+      footer,
+      jewelleryCare
     }
   `);
 }

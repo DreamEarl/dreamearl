@@ -30,7 +30,7 @@ export default async function CustomizeSection() {
           <Button
             variant="primary"
             href="/custom-order"
-            className="mt-2 tracking-widest text-sm px-16 py-4"
+            className="hidden md:block mt-2 tracking-widest text-sm px-16 py-4"
           >
             {buttonText}
           </Button>
@@ -38,6 +38,17 @@ export default async function CustomizeSection() {
 
         {/* Inspiration image carousel */}
         {images.length > 0 && <CustomizeGalleryCarousel images={images} />}
+
+        {/* Button below carousel on mobile */}
+        <div className="flex justify-center mt-6 md:hidden">
+          <Button
+            variant="primary"
+            href="/custom-order"
+            className="tracking-widest text-sm px-8 py-4"
+          >
+            {buttonText}
+          </Button>
+        </div>
       </div>
     </section>
   );

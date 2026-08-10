@@ -1,3 +1,47 @@
+import { getSiteContent } from "@/lib/sanity/queries";
+
+function deepMerge<T extends Record<string, unknown>>(
+  target: T,
+  source: Partial<Record<string, unknown>>,
+): T {
+  const result = { ...target };
+  for (const key in source) {
+    const val = source[key];
+    if (val !== null && val !== undefined) {
+      const targetVal = result[key as keyof T];
+      if (
+        typeof val === "object" &&
+        !Array.isArray(val) &&
+        typeof targetVal === "object" &&
+        targetVal !== null &&
+        !Array.isArray(targetVal)
+      ) {
+        result[key as keyof T] = deepMerge(
+          targetVal as Record<string, unknown>,
+          val as Record<string, unknown>,
+        ) as T[keyof T];
+      } else {
+        result[key as keyof T] = val as T[keyof T];
+      }
+    }
+  }
+  return result;
+}
+
+export async function getTranslations(): Promise<Translations> {
+  try {
+    const content = await getSiteContent();
+    if (!content) return translations;
+    const { _id, _type, ...fields } = content;
+    return deepMerge(
+      translations as unknown as Record<string, unknown>,
+      fields as Partial<Record<string, unknown>>,
+    ) as unknown as Translations;
+  } catch {
+    return translations;
+  }
+}
+
 export const translations = {
   common: {
     brand: "DREAMEARL",
@@ -169,30 +213,53 @@ export const translations = {
       "At DreamEarl, every piece is handcrafted with patience, precision, and countless woven details. With a little extra care, your DreamEarl creation will continue to look beautiful for years to come. Treat it gently, store it thoughtfully, and let it accompany you through many memorable moments.",
     sections: [
       {
-        title: "Storage",
-        eyebrow: "01",
+        title: "Last To Put On, First To Take Off",
         content:
-          "Store your DreamEarl piece in the dust bag provided or in a cool, dry place away from direct sunlight. Keep it away from other jewellery to avoid scratching or tangling. For handbags and totes, stuff them lightly with tissue paper to help maintain their shape.",
+          "Your DreamEarl piece should be the finishing touch to your look. Put on your pearls at the end of your routine and take them off first thing while unwinding. Be very careful with chemical substances as they can erode your pearl's surface.",
       },
       {
-        title: "Cleaning",
-        eyebrow: "02",
+        title: "No Sweat",
         content:
-          "Wipe your piece gently with a soft, dry cloth after each use to remove any dust or oils. Avoid using chemical cleaners, alcohol, or harsh detergents. For a deeper clean, use a slightly damp soft cloth and let it air dry completely before storing.",
+          "While made to be enjoyed, DreamEarl pieces are best kept away from excessive moisture and perspiration. Remove your bag before activities involving heavy sweat or prolonged exposure to rain to help preserve its beauty. Gently wipe your product off with a soft cloth once you take them off, to remove sweat, excess oils or dirt.",
       },
       {
-        title: "Handling",
-        eyebrow: "03",
+        title: "Stay Away From Chemicals",
         content:
-          "Apply perfume, hairspray, and lotions before putting on your piece — chemicals can dull the lustre of pearls over time. Avoid exposing your piece to extreme heat or water. Remove it before swimming, bathing, or exercising.",
+          "Avoid direct contact with perfumes, lotions, hairsprays, sanitizers, makeup, and other beauty products. These can gradually affect the finish and shine of pearls, crystals, and metal hardware.",
       },
       {
-        title: "Pearl Care",
-        eyebrow: "04",
+        title: "Swaddle In Softness",
         content:
-          "Pearls are organic gems that need special attention. They are sensitive to acids, so avoid contact with vinegar, lemon juice, or sweat. Restring knotted pearl pieces periodically to prevent breakage. The more you wear your pearls, the more they radiate — they thrive on your body's natural warmth.",
+          "When not in use, store your DreamEarl piece in its dust bag or a soft fabric pouch. Keep it away from rough surfaces and avoid stacking heavy objects on top to protect the woven structure and pearl finish from scratches.",
+      },
+      {
+        title: "Handle With Care",
+        content:
+          "Every DreamEarl bag is individually handwoven, making each piece beautifully unique. Although the weaving is carefully crafted for everyday use, avoid pulling, twisting, or placing excessive weight on the bag to help maintain its shape and craftsmanship.",
+      },
+      {
+        title: "Thread With Care",
+        content:
+          "Every bead is woven together using premium-quality thread selected for strength and durability. Like all handcrafted woven creations, continuous strain or excessive weight may gradually loosen the weaving over time.",
       },
     ],
+    metalCare: {
+      title: "Metal Care",
+      intro:
+        "The metal rings, chains, clasps, magnets, and other hardware on your DreamEarl piece are carefully chosen to complement its elegant design.",
+      subheading: "To keep them looking their best:",
+      bullets: [
+        "Avoid prolonged contact with water, humidity, and harsh chemicals.",
+        "Wipe gently with a soft, dry microfiber cloth after use.",
+        "Store your piece in a dry place to help preserve its finish.",
+        "Avoid dropping or knocking the hardware against hard surfaces to minimize scratches.",
+      ],
+    },
+    closingNote: {
+      title: "A Note from DreamEarl",
+      body: "Every DreamEarl piece is lovingly handcrafted\u2014not mass produced. Slight variations are a reflection of the artisan\u2019s touch and make each creation uniquely yours. With thoughtful care, your DreamEarl piece is made to be treasured, carried, and admired for years to come.",
+      tagline: "Crafted by hand. Carried with love. Treasured for years.",
+    },
   },
 };
 

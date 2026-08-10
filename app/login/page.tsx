@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { translations } from "@/lib/constants/translations";
 import { createClient } from "@/lib/supabase/client";
@@ -216,9 +217,12 @@ export default function LoginPage() {
           {login.guestCheckout}
         </Button>
 
-        <Button variant="underline" href="/" className="block mb-8">
+        <Link
+          href="/"
+          className="block text-center text-xs text-gray-500 hover:text-gray-700 mb-6"
+        >
           {login.returnToStore}
-        </Button>
+        </Link>
 
         <Text variant="caption" className="text-center">
           {login.termsText}

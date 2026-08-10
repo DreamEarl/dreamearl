@@ -168,3 +168,74 @@ export interface SanityAboutPage {
   closingSection?: SanityAboutClosingSection;
   sections?: SanityAboutSection[];
 }
+
+// Site Content (Translations) Types
+export interface SanitySiteContent {
+  _id: string;
+  _type: "siteContent";
+  hero?: {
+    tagline?: string;
+    exploreCollection?: string;
+    ourStory?: string;
+  };
+  brandDescription?: {
+    line1?: string;
+    line2?: string;
+  };
+  shopByCategory?: {
+    title?: string;
+  };
+  featuredProducts?: {
+    title?: string;
+    shopAll?: string;
+  };
+  customization?: {
+    heading?: string;
+    subtitle?: string;
+    buttonText?: string;
+  };
+  shop?: {
+    title?: string;
+  };
+  customOrder?: {
+    heading?: string;
+    subtitle?: string;
+  };
+  about?: {
+    hero?: {
+      subtitle?: string;
+      title?: string;
+      description?: string;
+    };
+  };
+  footer?: {
+    contactUs?: {
+      title?: string;
+      text?: string;
+      email?: string;
+      responseTime?: string;
+    };
+    copyright?: string;
+  };
+  jewelleryCare?: {
+    hero?: {
+      title?: string;
+    };
+    intro?: string;
+    sections?: Array<{
+      title?: string;
+      content?: string;
+    }>;
+    metalCare?: {
+      title?: string;
+      intro?: string;
+      subheading?: string;
+      bullets?: string[];
+    };
+    closingNote?: {
+      title?: string;
+      body?: string;
+      tagline?: string;
+    };
+  };
+}
