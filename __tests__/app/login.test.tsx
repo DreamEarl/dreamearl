@@ -85,12 +85,6 @@ describe("Login Page", () => {
       expect(guestLink).toHaveAttribute("href", "/shop");
     });
 
-    it("renders Return to Store link to /", () => {
-      render(<LoginPage />);
-      const returnLink = screen.getByText(login.returnToStore).closest("a");
-      expect(returnLink).toHaveAttribute("href", "/");
-    });
-
     it("renders terms text", () => {
       render(<LoginPage />);
       expect(screen.getByText(login.termsText)).toBeInTheDocument();

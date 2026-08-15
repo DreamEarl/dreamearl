@@ -217,13 +217,6 @@ export default function LoginPage() {
           {login.guestCheckout}
         </Button>
 
-        <Link
-          href="/"
-          className="block text-center text-xs text-gray-500 hover:text-gray-700 mb-6"
-        >
-          {login.returnToStore}
-        </Link>
-
         <Text variant="caption" className="text-center">
           {login.termsText}
         </Text>

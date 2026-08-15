@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import Heading from "@/components/ui/Heading";
 import Text from "@/components/ui/Text";
 import ProductImage from "@/components/ui/ProductImage";
+import { useCart } from "@/lib/cart/CartContext";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -20,6 +21,8 @@ interface ProductDetails {
 
 interface ProductDetailClientProps {
   product: {
+    id: string;
+    slug: string;
     brand: string;
     name: string;
     price: number;
@@ -218,6 +221,7 @@ export default function ProductDetailClient({
 }: Readonly<ProductDetailClientProps>) {
   const [copied, setCopied] = useState(false);
   const isSharing = useRef(false);
+  const { addToCart } = useCart();
 
   const handleShare = async () => {
     if (isSharing.current) return;
@@ -263,7 +267,23 @@ export default function ProductDetailClient({
             </Text>
 
             <div className="space-y-3 mb-8">
-              <Button variant="primary" fullWidth>
+              <Button
+                variant="primary"
+                fullWidth
+                onClick={() =>
+                  addToCart({
+                    id: product.id,
+                    name: product.name,
+                    subtitle: product.details.product,
+                    price: product.price,
+                    image: product.images[0] ?? "",
+                    href: `/products/${product.slug}`,
+                    brand: product.brand,
+                    currency: product.currency,
+                    color: product.details.pearlColour,
+                  })
+                }
+              >
                 {translations.product.addToCart}
               </Button>
 

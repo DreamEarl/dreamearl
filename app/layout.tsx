@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import MainLayout from "@/components/layout/MainLayout";
+import { CartProvider } from "@/lib/cart/CartContext";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -49,7 +50,9 @@ export default function RootLayout({
         className={`${dmSans.variable} ${glacialIndifference.variable} antialiased`}
         suppressHydrationWarning
       >
-        <MainLayout>{children}</MainLayout>
+        <CartProvider>
+          <MainLayout>{children}</MainLayout>
+        </CartProvider>
         <Analytics />
         <SpeedInsights />
       </body>

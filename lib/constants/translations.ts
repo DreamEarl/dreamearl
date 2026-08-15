@@ -108,8 +108,27 @@ export const translations = {
     title: "HANDBAGS",
   },
   cart: {
+    hero: {
+      title: "YOUR CART",
+      subtitle:
+        "You are one step closer to owning a piece of handcrafted elegance.",
+      backgroundImage: "/images/hero/background.jpeg",
+    },
     emptyMessage: "YOUR CART IS CURRENTLY EMPTY",
     returnToShop: "RETURN TO SHOP",
+    columns: {
+      product: "PRODUCT",
+      price: "PRICE",
+      quantity: "QUANTITY",
+      total: "TOTAL",
+    },
+    summary: {
+      title: "CART SUMMARY",
+      subtotal: "Subtotal",
+      shipping: "Shipping",
+      shippingValue: "Calculated at checkout",
+      checkout: "PROCEED TO CHECKOUT",
+    },
   },
   login: {
     title: "LOGIN",

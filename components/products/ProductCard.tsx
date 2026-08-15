@@ -6,26 +6,33 @@ import Button from "@/components/ui/Button";
 import Text from "@/components/ui/Text";
 import Heading from "@/components/ui/Heading";
 import ProductImage from "@/components/ui/ProductImage";
+import { useCart } from "@/lib/cart/CartContext";
 
 interface ProductCardProps {
   id: string;
   name: string;
+  subtitle?: string;
   price: number;
   image: string;
   href: string;
   brand?: string;
   currency?: string;
+  color?: string;
 }
 
 export default function ProductCard({
   id,
   name,
+  subtitle,
   price,
   image,
   href,
   brand = translations.common.brand,
   currency = translations.common.currency,
+  color,
 }: Readonly<ProductCardProps>) {
+  const { addToCart } = useCart();
+
   return (
     <div className="group">
       <Link href={href} className="block">
@@ -43,7 +50,17 @@ export default function ProductCard({
               fullWidth
               onClick={(e) => {
                 e.preventDefault();
-                console.log("Add to cart:", id);
+                addToCart({
+                  id,
+                  name,
+                  subtitle,
+                  price,
+                  image,
+                  href,
+                  brand,
+                  currency,
+                  color,
+                });
               }}
             >
               {translations.product.addToCart}

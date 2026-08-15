@@ -334,6 +334,22 @@ export async function getSiteContent(): Promise<SanitySiteContent | null> {
       customization,
       shop,
       customOrder,
+      cart {
+        hero {
+          title,
+          subtitle,
+          backgroundImage {
+            asset-> {
+              _id,
+              url
+            },
+            hotspot,
+            crop
+          }
+        },
+        emptyMessage,
+        returnToShop
+      },
       about,
       footer,
       jewelleryCare

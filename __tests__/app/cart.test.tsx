@@ -1,6 +1,25 @@
-import { render, screen } from "@/__tests__/utils/test-utils";
-import CartPage from "@/app/cart/page";
+import { render, screen, act } from "@/__tests__/utils/test-utils";
+import userEvent from "@testing-library/user-event";
+import CartClient from "@/app/cart/CartClient";
 import { translations } from "@/lib/constants/translations";
+
+const t = translations.cart;
+
+const defaultProps = {
+  heroImageUrl: "/images/hero/background.jpeg",
+  heroTitle: t.hero.title,
+  heroSubtitle: t.hero.subtitle,
+  emptyMessage: t.emptyMessage,
+  returnToShop: t.returnToShop,
+};
+
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: ({ src, alt }: { src: string; alt: string }) => (
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    <img src={src} alt={alt} />
+  ),
+}));
 
 jest.mock("next/link", () => ({
   __esModule: true,
@@ -13,28 +32,186 @@ jest.mock("next/link", () => ({
   }) => <a href={href}>{children}</a>,
 }));
 
-describe("Cart Page", () => {
-  describe("Rendering", () => {
+describe("CartClient", () => {
+  describe("Empty cart", () => {
+    it("renders hero title", () => {
+      render(<CartClient {...defaultProps} />);
+      expect(screen.getByText(t.hero.title)).toBeInTheDocument();
+    });
+
+    it("renders hero subtitle", () => {
+      render(<CartClient {...defaultProps} />);
+      expect(screen.getByText(t.hero.subtitle)).toBeInTheDocument();
+    });
+
+    it("renders hero background image", () => {
+      render(<CartClient {...defaultProps} />);
+      expect(screen.getByAltText("Cart hero")).toHaveAttribute(
+        "src",
+        "/images/hero/background.jpeg",
+      );
+    });
+
     it("renders empty cart message", () => {
-      render(<CartPage />);
-      expect(
-        screen.getByText(translations.cart.emptyMessage),
-      ).toBeInTheDocument();
+      render(<CartClient {...defaultProps} />);
+      expect(screen.getByText(t.emptyMessage)).toBeInTheDocument();
     });
 
     it("renders Return to Shop button", () => {
-      render(<CartPage />);
-      expect(
-        screen.getByText(translations.cart.returnToShop),
-      ).toBeInTheDocument();
+      render(<CartClient {...defaultProps} />);
+      expect(screen.getByText(t.returnToShop)).toBeInTheDocument();
     });
 
     it("Return to Shop button links to /shop", () => {
-      render(<CartPage />);
-      const link = screen
-        .getByText(translations.cart.returnToShop)
-        .closest("a");
+      render(<CartClient {...defaultProps} />);
+      const link = screen.getByText(t.returnToShop).closest("a");
       expect(link).toHaveAttribute("href", "/shop");
+    });
+
+    it("accepts Sanity-overridden hero title", () => {
+      render(<CartClient {...defaultProps} heroTitle="BASKET" />);
+      expect(screen.getByText("BASKET")).toBeInTheDocument();
+    });
+
+    it("accepts Sanity-overridden hero image URL", () => {
+      render(
+        <CartClient
+          {...defaultProps}
+          heroImageUrl="https://cdn.sanity.io/cart-hero.jpg"
+        />,
+      );
+      expect(screen.getByAltText("Cart hero")).toHaveAttribute(
+        "src",
+        "https://cdn.sanity.io/cart-hero.jpg",
+      );
+    });
+  });
+
+  describe("Cart with items", () => {
+    const item = {
+      id: "prod-1",
+      name: "GLEAMSLING",
+      subtitle: "Phone Sling Bag",
+      price: 4599,
+      image: "/gleamsling.jpg",
+      href: "/products/gleamsling",
+      brand: "DREAMEARL",
+      currency: "Rs.",
+      color: "Ivory",
+      quantity: 1,
+    };
+
+    function renderWithItem() {
+      // Pre-populate localStorage before rendering so CartProvider picks it up
+      localStorage.setItem("dreamearl_cart", JSON.stringify({ items: [item] }));
+      return render(<CartClient {...defaultProps} />);
+    }
+
+    afterEach(() => {
+      localStorage.clear();
+    });
+
+    it("renders product name", () => {
+      renderWithItem();
+      expect(screen.getByText("GLEAMSLING")).toBeInTheDocument();
+    });
+
+    it("renders product subtitle", () => {
+      renderWithItem();
+      expect(screen.getByText("Phone Sling Bag")).toBeInTheDocument();
+    });
+
+    it("renders product color", () => {
+      renderWithItem();
+      expect(screen.getByText("Color: Ivory")).toBeInTheDocument();
+    });
+
+    it("renders product price", () => {
+      renderWithItem();
+      expect(screen.getAllByText(/4,599/).length).toBeGreaterThan(0);
+    });
+
+    it("renders column headers", () => {
+      renderWithItem();
+      expect(screen.getByText(t.columns.product)).toBeInTheDocument();
+      expect(screen.getByText(t.columns.price)).toBeInTheDocument();
+      expect(screen.getByText(t.columns.quantity)).toBeInTheDocument();
+      expect(screen.getByText(t.columns.total)).toBeInTheDocument();
+    });
+
+    it("renders cart summary title", () => {
+      renderWithItem();
+      expect(screen.getByText(t.summary.title)).toBeInTheDocument();
+    });
+
+    it("renders subtotal in summary", () => {
+      renderWithItem();
+      expect(screen.getByText(t.summary.subtotal)).toBeInTheDocument();
+    });
+
+    it("renders checkout button", () => {
+      renderWithItem();
+      expect(screen.getByText(t.summary.checkout)).toBeInTheDocument();
+    });
+
+    it("removes item when ✕ is clicked", async () => {
+      const user = userEvent.setup();
+      renderWithItem();
+
+      const removeBtn = screen.getByRole("button", {
+        name: /Remove GLEAMSLING/i,
+      });
+      await act(async () => {
+        await user.click(removeBtn);
+      });
+
+      expect(screen.getByText(t.emptyMessage)).toBeInTheDocument();
+    });
+
+    it("increments quantity when + is clicked", async () => {
+      const user = userEvent.setup();
+      renderWithItem();
+
+      const increaseBtn = screen.getByRole("button", {
+        name: "Increase quantity",
+      });
+      await act(async () => {
+        await user.click(increaseBtn);
+      });
+
+      expect(screen.getByText("2")).toBeInTheDocument();
+    });
+
+    it("decrements quantity when − is clicked", async () => {
+      localStorage.setItem(
+        "dreamearl_cart",
+        JSON.stringify({ items: [{ ...item, quantity: 2 }] }),
+      );
+      const user = userEvent.setup();
+      render(<CartClient {...defaultProps} />);
+
+      const decreaseBtn = screen.getByRole("button", {
+        name: "Decrease quantity",
+      });
+      await act(async () => {
+        await user.click(decreaseBtn);
+      });
+
+      expect(screen.getByText("1")).toBeInTheDocument();
+    });
+
+    it("removes item when quantity decremented to zero", async () => {
+      const user = userEvent.setup();
+      renderWithItem();
+
+      const decreaseBtn = screen.getByRole("button", {
+        name: "Decrease quantity",
+      });
+      await act(async () => {
+        await user.click(decreaseBtn);
+      });
+
+      expect(screen.getByText(t.emptyMessage)).toBeInTheDocument();
     });
   });
 });

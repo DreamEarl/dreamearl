@@ -201,6 +201,17 @@ export interface SanitySiteContent {
     heading?: string;
     subtitle?: string;
   };
+  cart?: {
+    hero?: {
+      title?: string;
+      subtitle?: string;
+      backgroundImage?: SanityImageSource & {
+        asset?: { _id: string; url: string };
+      };
+    };
+    emptyMessage?: string;
+    returnToShop?: string;
+  };
   about?: {
     hero?: {
       subtitle?: string;

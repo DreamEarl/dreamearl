@@ -79,6 +79,43 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "cart",
+      title: "Cart Page",
+      type: "object",
+      group: "pages",
+      fields: [
+        defineField({
+          name: "hero",
+          title: "Hero",
+          type: "object",
+          fields: [
+            defineField({ name: "title", title: "Title", type: "string" }),
+            defineField({
+              name: "subtitle",
+              title: "Subtitle",
+              type: "string",
+            }),
+            defineField({
+              name: "backgroundImage",
+              title: "Background Image",
+              type: "image",
+              options: { hotspot: true },
+            }),
+          ],
+        }),
+        defineField({
+          name: "emptyMessage",
+          title: "Empty Cart Message",
+          type: "string",
+        }),
+        defineField({
+          name: "returnToShop",
+          title: "Return to Shop Button",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
       name: "shop",
       title: "Shop Page",
       type: "object",

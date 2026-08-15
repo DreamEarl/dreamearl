@@ -19,6 +19,8 @@ export default async function ProductDetailPage({
 
   // Transform Sanity product to match component expectations
   const transformedProduct = {
+    id: product._id,
+    slug: product.slug.current,
     brand: product.brand,
     name: product.name,
     price: product.price,
