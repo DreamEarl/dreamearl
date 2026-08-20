@@ -16,11 +16,19 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
   const [scrolled, setScrolled] = useState(false);
   const [isContactPanelOpen, setIsContactPanelOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [cartBump, setCartBump] = useState(false);
   const { itemCount } = useCart();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    setCartBump(true);
+    const t = setTimeout(() => setCartBump(false), 500);
+    return () => clearTimeout(t);
+  }, [itemCount]);
 
   useEffect(() => {
     if (!isHomePage) return;
@@ -91,7 +99,11 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
           >
             <CartIcon />
             {mounted && itemCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] font-medium w-4 h-4 rounded-full flex items-center justify-center leading-none">
+              <span
+                className={`absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] font-medium w-4 h-4 rounded-full flex items-center justify-center leading-none ${
+                  cartBump ? "animate-cart-bounce" : ""
+                }`}
+              >
                 {itemCount > 9 ? "9+" : itemCount}
               </span>
             )}
