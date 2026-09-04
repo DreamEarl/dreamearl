@@ -110,7 +110,7 @@ export default async function AboutPage() {
 
       {/* Philosophy Section */}
       {aboutData?.philosophySection && (
-        <section className="py-20 md:py-32 px-6 bg-[#F5F1E8]">
+        <section className="py-20 md:py-32 px-6 bg-[#5f1631] text-white">
           <div className="max-w-7xl mx-auto">
             {/* Heading */}
             <div className="text-center mb-16">
@@ -133,7 +133,7 @@ export default async function AboutPage() {
                       key={value.title}
                       className="bg-white rounded-3xl p-8 md:p-10 text-center"
                     >
-                      <h3 className="text-xl md:text-2xl font-light mb-4">
+                      <h3 className="text-xl md:text-2xl font-light mb-4 text-black">
                         {value.title}
                       </h3>
                       <p className="text-gray-700 text-sm md:text-base leading-relaxed">
@@ -149,7 +149,7 @@ export default async function AboutPage() {
 
       {/* CTA Section with Images */}
       {aboutData?.ctaSection && (
-        <section className="py-20 md:py-24 px-6 bg-[#F5F1E8]">
+        <section className="py-20 md:py-24 px-6 bg-[#5f1631] text-white">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Text Content - Always on Left */}
@@ -162,11 +162,11 @@ export default async function AboutPage() {
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6">
                   {aboutData.ctaSection.heading}
                 </h2>
-                <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-8">
+                <p className="text-base md:text-lg leading-relaxed mb-8">
                   {aboutData.ctaSection.description}
                 </p>
                 <Button
-                  variant="primary"
+                  variant="secondary"
                   href={aboutData.ctaSection.buttonLink}
                   className="inline-block"
                 >
@@ -217,7 +217,7 @@ export default async function AboutPage() {
 
       {/* Closing Quote Section */}
       {aboutData?.closingSection && (
-        <section className="py-24 md:py-24 px-6 bg-[#F5F1E8]">
+        <section className="py-24 md:py-24 px-6 bg-white">
           <div className="max-w-5xl mx-auto text-center">
             <blockquote className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed mb-8">
               {aboutData.closingSection.quote}

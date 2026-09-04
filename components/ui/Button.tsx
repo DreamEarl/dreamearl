@@ -1,7 +1,13 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import Link from "next/link";
 
-type ButtonVariant = "primary" | "outline" | "ghost" | "social" | "underline";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "social"
+  | "underline";
 type ButtonSize = "sm" | "md";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,7 +21,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-black text-white font-light tracking-wide hover:bg-gray-900 transition-colors active:scale-95 active:brightness-90 transition-transform",
+    "bg-[#5f1631] text-white font-light tracking-wide transition-colors active:scale-95 active:brightness-90 transition-transform",
+  secondary:
+    "bg-white text-black font-light tracking-wide transition-colors active:scale-95 active:brightness-90 transition-transform",
   outline:
     "border-1 border-black bg-white text-black font-light tracking-wide hover:bg-gray-50 transition-colors active:scale-95 active:bg-gray-100 transition-transform",
   ghost:
