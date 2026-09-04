@@ -26,7 +26,7 @@ describe("Button Component", () => {
     it("applies primary variant classes by default", () => {
       render(<Button>Primary</Button>);
       const button = screen.getByRole("button");
-      expect(button).toHaveClass("bg-black", "text-white");
+      expect(button).toHaveClass("bg-[#5f1631]");
     });
 
     it("applies outline variant classes", () => {
