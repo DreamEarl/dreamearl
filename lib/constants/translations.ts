@@ -78,6 +78,7 @@ export const translations = {
   },
   product: {
     addToCart: "ADD TO CART",
+    addedToCart: "ALREADY IN CART",
     buyNow: "BUY IT NOW",
     share: "Share",
     linkCopied: "Link Copied!",
@@ -116,6 +117,10 @@ export const translations = {
     },
     emptyMessage: "YOUR CART IS CURRENTLY EMPTY",
     returnToShop: "RETURN TO SHOP",
+    miniCart: {
+      continueShopping: "CONTINUE SHOPPING",
+      checkoutCart: "CHECKOUT CART",
+    },
     columns: {
       product: "PRODUCT",
       price: "PRICE",

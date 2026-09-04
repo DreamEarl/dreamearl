@@ -5,6 +5,7 @@ import {
   useContext,
   useMemo,
   useReducer,
+  useState,
   useEffect,
   ReactNode,
 } from "react";
@@ -25,6 +26,10 @@ interface CartContextValue {
   clearCart: () => void;
   itemCount: number;
   subtotal: number;
+  isCartOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
+  isInCart: (id: string) => boolean;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -32,7 +37,6 @@ const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "dreamearl_cart";
 
 function loadFromStorage(): CartState {
-  if (typeof window === "undefined") return initialCartState;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as CartState) : initialCartState;
@@ -42,16 +46,28 @@ function loadFromStorage(): CartState {
 }
 
 export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const [state, dispatch] = useReducer(cartReducer, initialCartState, () =>
-    loadFromStorage(),
-  );
+  const [state, dispatch] = useReducer(cartReducer, initialCartState);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load persisted cart after mount so the initial client render matches SSR output.
+  useEffect(() => {
+    dispatch({ type: "HYDRATE", payload: loadFromStorage() });
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
+  }, [state, hydrated]);
 
-  const addToCart = (item: Omit<CartItem, "quantity">) =>
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+
+  const addToCart = (item: Omit<CartItem, "quantity">) => {
     dispatch({ type: "ADD_TO_CART", payload: item });
+    openCart();
+  };
 
   const removeFromCart = (id: string) =>
     dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
@@ -60,6 +76,8 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
     dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
 
   const clearCart = () => dispatch({ type: "CLEAR_CART" });
+
+  const isInCart = (id: string) => state.items.some((i) => i.id === id);
 
   const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = state.items.reduce(
@@ -77,9 +95,13 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
       clearCart,
       itemCount,
       subtotal,
+      isCartOpen,
+      openCart,
+      closeCart,
+      isInCart,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state, itemCount, subtotal],
+    [state, itemCount, subtotal, isCartOpen],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

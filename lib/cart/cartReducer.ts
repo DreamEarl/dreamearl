@@ -19,12 +19,16 @@ export type CartAction =
   | { type: "ADD_TO_CART"; payload: Omit<CartItem, "quantity"> }
   | { type: "REMOVE_FROM_CART"; payload: { id: string } }
   | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
-  | { type: "CLEAR_CART" };
+  | { type: "CLEAR_CART" }
+  | { type: "HYDRATE"; payload: CartState };
 
 export const initialCartState: CartState = { items: [] };
 
 export function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
+    case "HYDRATE":
+      return action.payload;
+
     case "ADD_TO_CART": {
       const exists = state.items.some((i) => i.id === action.payload.id);
       if (exists) {

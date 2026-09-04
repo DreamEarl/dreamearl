@@ -221,7 +221,8 @@ export default function ProductDetailClient({
 }: Readonly<ProductDetailClientProps>) {
   const [copied, setCopied] = useState(false);
   const isSharing = useRef(false);
-  const { addToCart } = useCart();
+  const { addToCart, isInCart } = useCart();
+  const inCart = isInCart(product.id);
 
   const handleShare = async () => {
     if (isSharing.current) return;
@@ -284,7 +285,9 @@ export default function ProductDetailClient({
                   })
                 }
               >
-                {translations.product.addToCart}
+                {inCart
+                  ? translations.product.addedToCart
+                  : translations.product.addToCart}
               </Button>
 
               {/* Will be used later  */}

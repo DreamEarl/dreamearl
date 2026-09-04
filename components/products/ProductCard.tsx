@@ -31,7 +31,8 @@ export default function ProductCard({
   currency = translations.common.currency,
   color,
 }: Readonly<ProductCardProps>) {
-  const { addToCart } = useCart();
+  const { addToCart, isInCart } = useCart();
+  const inCart = isInCart(id);
 
   return (
     <div className="group">
@@ -63,7 +64,9 @@ export default function ProductCard({
                 });
               }}
             >
-              {translations.product.addToCart}
+              {inCart
+                ? translations.product.addedToCart
+                : translations.product.addToCart}
             </Button>
           </div>
         </div>

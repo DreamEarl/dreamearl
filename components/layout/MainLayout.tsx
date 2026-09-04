@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AnimatedLogo from "@/components/logo/AnimatedLogo";
+import MiniCart from "@/components/cart/MiniCart";
 import { ReactNode } from "react";
 
 interface MainLayoutProps {
@@ -20,6 +21,7 @@ export default function MainLayout({ children }: Readonly<MainLayoutProps>) {
       <Navbar isHomePage={isHomePage} />
       {children}
       <Footer />
+      <MiniCart />
     </>
   );
 }

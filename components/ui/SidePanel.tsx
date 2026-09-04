@@ -7,12 +7,14 @@ interface SidePanelProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  closeButtonClassName?: string;
 }
 
 export default function SidePanel({
   isOpen,
   onClose,
   children,
+  closeButtonClassName = "",
 }: Readonly<SidePanelProps>) {
   useEffect(() => {
     if (isOpen) {
@@ -53,7 +55,7 @@ export default function SidePanel({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-8 right-8 flex items-center justify-center"
+          className={`absolute top-8 right-8 flex items-center justify-center ${closeButtonClassName}`}
           aria-label="Close panel"
         >
           <CloseIcon />

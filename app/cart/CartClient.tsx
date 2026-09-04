@@ -177,33 +177,32 @@ export default function CartClient({
             </div>
 
             {/* Cart summary */}
-            <div className="lg:w-72 shrink-0">
-              <div className="bg-[#faf7f4] p-6">
+
+            <div className="bg-[#faf7f4] p-6">
+              <Text
+                variant="small"
+                className="font-medium tracking-widest mb-6"
+              >
+                {summary.title}
+              </Text>
+              <div className="flex justify-between items-center mb-3">
+                <Text variant="body">{summary.subtotal}</Text>
+                <Text variant="body">
+                  {translations.common.currency} {subtotal.toLocaleString()}
+                </Text>
+              </div>
+              <div className="flex justify-between items-start mb-8">
+                <Text variant="body">{summary.shipping}</Text>
                 <Text
                   variant="small"
-                  className="font-medium tracking-widest mb-6"
+                  className="text-gray-500 text-right max-w-32"
                 >
-                  {summary.title}
+                  {summary.shippingValue}
                 </Text>
-                <div className="flex justify-between items-center mb-3">
-                  <Text variant="body">{summary.subtotal}</Text>
-                  <Text variant="body">
-                    {translations.common.currency} {subtotal.toLocaleString()}
-                  </Text>
-                </div>
-                <div className="flex justify-between items-start mb-8">
-                  <Text variant="body">{summary.shipping}</Text>
-                  <Text
-                    variant="small"
-                    className="text-gray-500 text-right max-w-32"
-                  >
-                    {summary.shippingValue}
-                  </Text>
-                </div>
-                <Button variant="primary" size="sm" fullWidth href="/checkout">
-                  {summary.checkout}
-                </Button>
               </div>
+              <Button variant="primary" size="sm" fullWidth href="/checkout">
+                {summary.checkout}
+              </Button>
             </div>
           </div>
         </div>
