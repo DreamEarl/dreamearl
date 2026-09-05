@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer
       id="footer"
-      className="bg-white text-black py-16 px-6 md:px-12 border-t border-gray-200"
+      className="bg-[#5f1631] text-white py-16 px-6 md:px-12 border-t border-gray-200"
     >
       <div className="max-w-7xl mx-auto">
         {/* Brand Header */}
@@ -34,7 +34,12 @@ export default function Footer() {
               <Text variant="body">
                 {`${footer.contactUs.text} `}
 
-                <span className="font-semibold">{footer.contactUs.email}</span>
+                <a
+                  href={`mailto:${footer.contactUs.email}`}
+                  className="font-semibold hover:underline"
+                >
+                  {footer.contactUs.email}
+                </a>
               </Text>
               <Text variant="body">{footer.contactUs.responseTime}</Text>
             </div>
@@ -94,6 +99,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/returns-and-refund"
+                  className="hover:underline transition-all"
+                >
+                  {footer.support.links.returnsAndRefund}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacy-policy"
                   className="hover:underline transition-all"
                 >
@@ -105,7 +118,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <Text variant="caption" as="p" className="text-center">
+        <Text variant="caption" as="p" className="text-center text-white">
           {footer.copyright}
         </Text>
       </div>

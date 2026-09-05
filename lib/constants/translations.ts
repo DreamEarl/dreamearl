@@ -78,7 +78,7 @@ export const translations = {
   },
   product: {
     addToCart: "ADD TO CART",
-    addedToCart: "ALREADY IN CART",
+    addedToCart: "ADDED TO CART",
     buyNow: "BUY IT NOW",
     share: "Share",
     linkCopied: "Link Copied!",
@@ -191,6 +191,7 @@ export const translations = {
         shippingPolicy: "Shipping Policy",
         termsConditions: "Terms & Conditions",
         privacyPolicy: "Privacy Policy",
+        returnsAndRefund: "Returns & Refund",
       },
     },
     copyright: "2026, DREAMEARL. All rights reserved",

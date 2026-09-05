@@ -32,7 +32,10 @@ export default async function ViewCollection() {
     : buttonLink;
 
   return (
-    <section id="view-collection" className="py-8 md:py-16 px-4 bg-white">
+    <section
+      id="view-collection"
+      className="py-8 md:py-16 px-4 bg-[#5f1631] text-white"
+    >
       <div className="max-w-7xl mx-auto">
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
@@ -78,7 +81,7 @@ export default async function ViewCollection() {
             <div className="flex justify-start pt-1 sm:pt-2">
               <Link href={href}>
                 <Button
-                  variant="primary"
+                  variant="secondary"
                   size="sm"
                   className="tracking-widest uppercase"
                 >

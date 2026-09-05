@@ -5,6 +5,12 @@ import customizationSection from "./customizationSection";
 import collectionSection from "./collectionSection";
 import aboutPage from "./aboutPage";
 import siteContent from "./siteContent";
+import {
+  shippingPolicy,
+  termsConditions,
+  returnsAndRefund,
+  privacyPolicy,
+} from "./legalPage";
 
 export const schemaTypes = [
   product,
@@ -14,4 +20,8 @@ export const schemaTypes = [
   collectionSection,
   aboutPage,
   siteContent,
+  shippingPolicy,
+  termsConditions,
+  returnsAndRefund,
+  privacyPolicy,
 ];

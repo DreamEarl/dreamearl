@@ -7,6 +7,7 @@ import {
   SanityCollectionSection,
   SanityAboutPage,
   SanitySiteContent,
+  SanityLegalPage,
 } from "./types";
 
 // Fetch all products
@@ -319,6 +320,45 @@ export async function getAboutPage(): Promise<SanityAboutPage | null> {
       }
     }
   `);
+}
+
+const legalPageProjection = `
+  _id,
+  _type,
+  title,
+  intro,
+  sections[] {
+    heading,
+    paragraphs
+  }
+`;
+
+// Fetch shipping policy page
+export async function getShippingPolicy(): Promise<SanityLegalPage | null> {
+  return client.fetch(
+    `*[_type == "shippingPolicy"][0] { ${legalPageProjection} }`,
+  );
+}
+
+// Fetch terms & conditions page
+export async function getTermsConditions(): Promise<SanityLegalPage | null> {
+  return client.fetch(
+    `*[_type == "termsConditions"][0] { ${legalPageProjection} }`,
+  );
+}
+
+// Fetch returns & refund page
+export async function getReturnsAndRefund(): Promise<SanityLegalPage | null> {
+  return client.fetch(
+    `*[_type == "returnsAndRefund"][0] { ${legalPageProjection} }`,
+  );
+}
+
+// Fetch privacy policy page
+export async function getPrivacyPolicy(): Promise<SanityLegalPage | null> {
+  return client.fetch(
+    `*[_type == "privacyPolicy"][0] { ${legalPageProjection} }`,
+  );
 }
 
 // Fetch site content (translations)

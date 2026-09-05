@@ -169,6 +169,24 @@ export interface SanityAboutPage {
   sections?: SanityAboutSection[];
 }
 
+// Legal / Policy Page Types (Shipping Policy, Terms & Conditions, Returns & Refund, Privacy Policy)
+export interface SanityLegalSection {
+  heading?: string;
+  paragraphs?: string[];
+}
+
+export interface SanityLegalPage {
+  _id: string;
+  _type:
+    | "shippingPolicy"
+    | "termsConditions"
+    | "returnsAndRefund"
+    | "privacyPolicy";
+  title: string;
+  intro?: string;
+  sections?: SanityLegalSection[];
+}
+
 // Site Content (Translations) Types
 export interface SanitySiteContent {
   _id: string;
