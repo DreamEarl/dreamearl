@@ -88,12 +88,22 @@ export default function CartClient({
                 {cartItems.map((item) => (
                   <li
                     key={item.id}
-                    className="grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 items-center py-6"
+                    className="relative grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-3 md:gap-4 items-center py-6"
                   >
+                    {/* Remove */}
+                    <button
+                      type="button"
+                      aria-label={`Remove ${item.name}`}
+                      className="absolute top-6 right-0 md:static p-2 -m-2 md:m-0 text-gray-400 hover:text-gray-700 transition-colors text-lg font-light md:order-last"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      ✕
+                    </button>
+
                     {/* Product */}
-                    <div className="flex gap-4 items-start">
+                    <div className="flex gap-4 items-start pr-10 md:pr-0">
                       <Link href={item.href} className="shrink-0">
-                        <div className="relative w-24 h-24 bg-gray-50 overflow-hidden">
+                        <div className="relative w-20 h-20 md:w-24 md:h-24 bg-gray-50 overflow-hidden">
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -125,52 +135,57 @@ export default function CartClient({
                     </div>
 
                     {/* Price */}
-                    <Text variant="body">
-                      {item.currency} {item.price.toLocaleString()}
-                    </Text>
+                    <div className="flex items-center justify-between md:block">
+                      <Text variant="small" className="text-gray-500 md:hidden">
+                        {columns.price}
+                      </Text>
+                      <Text variant="body">
+                        {item.currency} {item.price.toLocaleString()}
+                      </Text>
+                    </div>
 
                     {/* Quantity */}
-                    <div className="flex items-center border border-gray-300 w-fit">
-                      <button
-                        type="button"
-                        aria-label="Decrease quantity"
-                        className="px-3 py-2 text-lg leading-none hover:bg-gray-100 transition-colors"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                      >
-                        −
-                      </button>
-                      <span className="px-4 py-2 text-sm min-w-10 text-center">
-                        {item.quantity}
-                      </span>
-                      <button
-                        type="button"
-                        aria-label="Increase quantity"
-                        className="px-3 py-2 text-lg leading-none hover:bg-gray-100 transition-colors"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                      >
-                        +
-                      </button>
+                    <div className="flex items-center justify-between md:block">
+                      <Text variant="small" className="text-gray-500 md:hidden">
+                        {columns.quantity}
+                      </Text>
+                      <div className="flex items-center border border-gray-300 w-fit">
+                        <button
+                          type="button"
+                          aria-label="Decrease quantity"
+                          className="px-3 py-2 text-lg leading-none hover:bg-gray-100 transition-colors"
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
+                        >
+                          −
+                        </button>
+                        <span className="px-4 py-2 text-sm min-w-10 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          type="button"
+                          aria-label="Increase quantity"
+                          className="px-3 py-2 text-lg leading-none hover:bg-gray-100 transition-colors"
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
 
                     {/* Total */}
-                    <Text variant="body">
-                      {item.currency}{" "}
-                      {(item.price * item.quantity).toLocaleString()}
-                    </Text>
-
-                    {/* Remove */}
-                    <button
-                      type="button"
-                      aria-label={`Remove ${item.name}`}
-                      className="text-gray-400 hover:text-gray-700 transition-colors text-lg font-light"
-                      onClick={() => removeFromCart(item.id)}
-                    >
-                      ✕
-                    </button>
+                    <div className="flex items-center justify-between md:block">
+                      <Text variant="small" className="text-gray-500 md:hidden">
+                        {columns.total}
+                      </Text>
+                      <Text variant="body">
+                        {item.currency}{" "}
+                        {(item.price * item.quantity).toLocaleString()}
+                      </Text>
+                    </div>
                   </li>
                 ))}
               </ul>
