@@ -16,7 +16,7 @@ export default function LegalPageLayout({
 }: Readonly<LegalPageLayoutProps>) {
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-[#5f1631] pt-32 pb-10 md:pt-40 md:pb-14 px-6">
+      <div className="bg-[#5f1631] pt-10 pb-10 md:pt-14 md:pb-14 px-6">
         <h1 className="text-white text-2xl md:text-3xl font-bold uppercase tracking-wide text-center">
           {title}
         </h1>

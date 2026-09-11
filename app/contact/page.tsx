@@ -1,7 +1,7 @@
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
-      <main className="pt-32 px-6 md:px-12 max-w-2xl mx-auto pb-16">
+      <main className="pt-16 px-6 md:px-12 max-w-2xl mx-auto pb-16">
         <h1 className="text-4xl md:text-5xl font-light tracking-wider mb-8">
           CONTACT US
         </h1>

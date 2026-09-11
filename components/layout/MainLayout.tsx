@@ -16,12 +16,12 @@ export default function MainLayout({ children }: Readonly<MainLayoutProps>) {
   const isHomePage = pathname === "/";
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       {isHomePage && <AnimatedLogo />}
       <Navbar isHomePage={isHomePage} />
-      {children}
+      <div className="flex-1 flex flex-col">{children}</div>
       <Footer />
       <MiniCart />
-    </>
+    </div>
   );
 }

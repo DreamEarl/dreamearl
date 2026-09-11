@@ -148,7 +148,7 @@ export default async function ShopPage({
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-16">
+      <main className="pt-16 px-6 md:px-12 max-w-7xl mx-auto pb-16">
         <Heading variant="page" className="text-center mb-10">
           {pageTitle}
         </Heading>

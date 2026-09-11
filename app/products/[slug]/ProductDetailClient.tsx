@@ -250,7 +250,7 @@ export default function ProductDetailClient({
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="pt-24 md:pt-32 px-4 md:px-8 lg:px-12 max-w-7xl mx-auto pb-16">
+      <main className="pt-8 md:pt-12 px-4 md:px-8 lg:px-12 max-w-7xl mx-auto pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           <ImageCarousel images={product.images} productName={product.name} />
 
