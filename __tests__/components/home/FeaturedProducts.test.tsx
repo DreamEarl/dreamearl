@@ -92,7 +92,7 @@ describe("FeaturedProducts", () => {
     );
 
     const component = await FeaturedProducts();
-    render(component);
+    render(component!);
 
     expect(screen.getByText("HANDBAGS")).toBeInTheDocument();
     expect(screen.getByText("VIEW ALL")).toBeInTheDocument();
@@ -105,7 +105,7 @@ describe("FeaturedProducts", () => {
     (getFeaturedProductsByCategory as jest.Mock).mockResolvedValue([]);
 
     const component = await FeaturedProducts();
-    const { container } = render(component);
+    const { container } = render(component!);
 
     expect(container.firstChild).toBeNull();
   });
@@ -116,7 +116,7 @@ describe("FeaturedProducts", () => {
     );
 
     const component = await FeaturedProducts();
-    render(component);
+    render(component!);
 
     expect(screen.getByText(/4,599/)).toBeInTheDocument();
     expect(screen.getByText(/2,299/)).toBeInTheDocument();
@@ -129,7 +129,7 @@ describe("FeaturedProducts", () => {
     );
 
     const component = await FeaturedProducts();
-    render(component);
+    render(component!);
 
     const shopAllLink = screen
       .getByText("VIEW ALL")

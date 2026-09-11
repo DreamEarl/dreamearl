@@ -20,6 +20,8 @@ jest.mock("next/image", () => ({
 }));
 
 const singleImageProduct = {
+  id: "1",
+  slug: "pearl-stud-earrings",
   brand: "DREAMEARL",
   name: "Pearl Stud Earrings",
   price: 2500,

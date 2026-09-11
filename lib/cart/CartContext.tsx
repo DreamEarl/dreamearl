@@ -83,10 +83,11 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
     fetch(`/api/cart-items?ids=${missingIds.join(",")}`)
       .then((res) => res.json())
       .then((data: { items?: CartProductDetails[] }) => {
-        if (cancelled || !data.items) return;
+        const items = data.items;
+        if (cancelled || !items) return;
         setProductDetails((prev) => {
           const next = { ...prev };
-          for (const item of data.items) next[item.id] = item;
+          for (const item of items) next[item.id] = item;
           return next;
         });
       })
