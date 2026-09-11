@@ -25,8 +25,8 @@ export default function CartClient({
   emptyMessage,
   returnToShop,
 }: Readonly<CartClientProps>) {
-  const { state, removeFromCart, updateQuantity, subtotal } = useCart();
-  const { items } = state;
+  const { cartItems, itemCount, removeFromCart, updateQuantity, subtotal } =
+    useCart();
 
   return (
     <div className="min-h-screen bg-white">
@@ -50,7 +50,7 @@ export default function CartClient({
         </div>
       </div>
 
-      {items.length === 0 ? (
+      {itemCount === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 px-6 text-center">
           <Heading variant="cart" className="mb-8">
             {emptyMessage}
@@ -85,7 +85,7 @@ export default function CartClient({
 
               {/* Cart rows */}
               <ul className="divide-y divide-gray-100">
-                {items.map((item) => (
+                {cartItems.map((item) => (
                   <li
                     key={item.id}
                     className="grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 items-center py-6"

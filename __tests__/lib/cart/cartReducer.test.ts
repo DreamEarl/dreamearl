@@ -4,27 +4,9 @@ import {
   CartState,
 } from "@/lib/cart/cartReducer";
 
-const item1 = {
-  id: "p1",
-  name: "GLEAMSLING",
-  subtitle: "Phone Sling Bag",
-  price: 4599,
-  image: "/gleamsling.jpg",
-  href: "/products/gleamsling",
-  brand: "DREAMEARL",
-  currency: "Rs.",
-  color: "Ivory",
-};
+const item1 = { id: "p1" };
 
-const item2 = {
-  id: "p2",
-  name: "PEARLA",
-  price: 2999,
-  image: "/pearla.jpg",
-  href: "/products/pearla",
-  brand: "DREAMEARL",
-  currency: "Rs.",
-};
+const item2 = { id: "p2" };
 
 describe("cartReducer", () => {
   describe("initial state", () => {
@@ -40,7 +22,7 @@ describe("cartReducer", () => {
         payload: item1,
       });
       expect(state.items).toHaveLength(1);
-      expect(state.items[0]).toEqual({ ...item1, quantity: 1 });
+      expect(state.items[0]).toEqual({ id: "p1", quantity: 1 });
     });
 
     it("increments quantity when same id is added again", () => {

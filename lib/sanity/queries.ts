@@ -112,6 +112,30 @@ export async function getProductBySlug(
   );
 }
 
+// Fetch products by id (used to enrich cart items, which only store product ids)
+export async function getProductsByIds(
+  ids: string[],
+): Promise<SanityProduct[]> {
+  if (ids.length === 0) return [];
+  return client.fetch(
+    `
+    *[_type == "product" && _id in $ids] {
+      _id,
+      _type,
+      brand,
+      name,
+      slug,
+      images,
+      price,
+      currency,
+      productType,
+      pearlColour
+    }
+  `,
+    { ids },
+  );
+}
+
 // Fetch all categories
 export async function getAllCategories(): Promise<SanityCategory[]> {
   return client.fetch(`

@@ -62,53 +62,62 @@ describe("ProductCard Component", () => {
       render(<ProductCard {...defaultProps} brand="Custom Brand" />);
       expect(screen.getByText("Custom Brand")).toBeInTheDocument();
     });
-
-    it("accepts subtitle prop without rendering it on the card", () => {
-      // subtitle is forwarded to the cart item, not displayed on the card
-      render(<ProductCard {...defaultProps} subtitle="Phone Sling Bag" />);
-      expect(screen.queryByText("Phone Sling Bag")).not.toBeInTheDocument();
-    });
-
-    it("accepts color prop without rendering it on the card", () => {
-      // color is forwarded to the cart item, not displayed on the card
-      render(<ProductCard {...defaultProps} color="Ivory" />);
-      expect(screen.queryByText("Color: Ivory")).not.toBeInTheDocument();
-    });
   });
 
   describe("Links", () => {
-    it("renders product link with correct href", () => {
+    it("renders product links with correct href", () => {
       render(<ProductCard {...defaultProps} />);
       const links = screen.getAllByRole("link");
 
-      // Should have two links - one for image and one for heading
-      expect(links).toHaveLength(2);
+      // Mobile image link, desktop image link, and heading link
+      expect(links).toHaveLength(3);
       links.forEach((link) => {
         expect(link).toHaveAttribute("href", "/products/test-product");
       });
     });
 
+    it("clicking the mobile image link navigates instead of adding to cart", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ProductCard {...defaultProps} />);
+      const mobileImageLink = container.querySelector(
+        "a.md\\:hidden",
+      ) as HTMLElement;
+      expect(mobileImageLink).toHaveAttribute("href", "/products/test-product");
+
+      await act(async () => {
+        await user.click(mobileImageLink);
+      });
+
+      expect(
+        screen.queryByRole("button", {
+          name: translations.product.addedToCart,
+        }),
+      ).not.toBeInTheDocument();
+    });
+
     it("product name is clickable", () => {
       render(<ProductCard {...defaultProps} />);
-      const nameLink = screen.getByRole("link", { name: "Test Product" });
-      expect(nameLink).toHaveAttribute("href", "/products/test-product");
+      const nameLinks = screen.getAllByRole("link", { name: "Test Product" });
+      nameLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/products/test-product");
+      });
     });
   });
 
   describe("Add to Cart Button", () => {
-    it("renders add to cart button", () => {
+    it("renders add to cart buttons for mobile and desktop", () => {
       render(<ProductCard {...defaultProps} />);
-      const button = screen.getByRole("button", {
+      const buttons = screen.getAllByRole("button", {
         name: translations.product.addToCart,
       });
-      expect(button).toBeInTheDocument();
+      expect(buttons).toHaveLength(2);
     });
 
     it("dispatches item to cart when clicked", async () => {
       const user = userEvent.setup();
       render(<ProductCard {...defaultProps} />);
 
-      const button = screen.getByRole("button", {
+      const [button] = screen.getAllByRole("button", {
         name: translations.product.addToCart,
       });
       await act(async () => {
@@ -123,7 +132,7 @@ describe("ProductCard Component", () => {
       const user = userEvent.setup();
       render(<ProductCard {...defaultProps} />);
 
-      const button = screen.getByRole("button", {
+      const [button] = screen.getAllByRole("button", {
         name: translations.product.addToCart,
       });
 
@@ -143,12 +152,20 @@ describe("ProductCard Component", () => {
       expect(imageContainer).toBeInTheDocument();
     });
 
-    it("add to cart button has opacity transition classes", () => {
+    it("mobile add to cart icon button is always visible (no opacity transition)", () => {
       render(<ProductCard {...defaultProps} />);
-      const button = screen.getByRole("button", {
+      const [mobileButton] = screen.getAllByRole("button", {
         name: translations.product.addToCart,
       });
-      const buttonContainer = button.parentElement;
+      expect(mobileButton).not.toHaveClass("opacity-0");
+    });
+
+    it("desktop add to cart button has opacity transition classes", () => {
+      render(<ProductCard {...defaultProps} />);
+      const [, desktopButton] = screen.getAllByRole("button", {
+        name: translations.product.addToCart,
+      });
+      const buttonContainer = desktopButton.parentElement;
       expect(buttonContainer).toHaveClass(
         "opacity-0",
         "group-hover:opacity-100",
@@ -188,7 +205,7 @@ describe("ProductCard Component", () => {
 
     it("has accessible button text", () => {
       render(<ProductCard {...defaultProps} />);
-      const button = screen.getByRole("button");
+      const [button] = screen.getAllByRole("button");
       expect(button).toHaveAccessibleName(translations.product.addToCart);
     });
   });

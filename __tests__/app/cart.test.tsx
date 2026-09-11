@@ -88,7 +88,8 @@ describe("CartClient", () => {
   });
 
   describe("Cart with items", () => {
-    const item = {
+    const item = { id: "prod-1", quantity: 1 };
+    const productDetails = {
       id: "prod-1",
       name: "GLEAMSLING",
       subtitle: "Phone Sling Bag",
@@ -98,8 +99,16 @@ describe("CartClient", () => {
       brand: "DREAMEARL",
       currency: "Rs.",
       color: "Ivory",
-      quantity: 1,
     };
+
+    beforeEach(() => {
+      // Mocks the /api/cart-items enrichment endpoint used to resolve product data from ids
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ items: [productDetails] }),
+        }),
+      ) as jest.Mock;
+    });
 
     function renderWithItem() {
       // Pre-populate localStorage before rendering so CartProvider picks it up
@@ -109,26 +118,27 @@ describe("CartClient", () => {
 
     afterEach(() => {
       localStorage.clear();
+      jest.restoreAllMocks();
     });
 
-    it("renders product name", () => {
+    it("renders product name", async () => {
       renderWithItem();
-      expect(screen.getByText("GLEAMSLING")).toBeInTheDocument();
+      expect(await screen.findByText("GLEAMSLING")).toBeInTheDocument();
     });
 
-    it("renders product subtitle", () => {
+    it("renders product subtitle", async () => {
       renderWithItem();
-      expect(screen.getByText("Phone Sling Bag")).toBeInTheDocument();
+      expect(await screen.findByText("Phone Sling Bag")).toBeInTheDocument();
     });
 
-    it("renders product color", () => {
+    it("renders product color", async () => {
       renderWithItem();
-      expect(screen.getByText("Color: Ivory")).toBeInTheDocument();
+      expect(await screen.findByText("Color: Ivory")).toBeInTheDocument();
     });
 
-    it("renders product price", () => {
+    it("renders product price", async () => {
       renderWithItem();
-      expect(screen.getAllByText(/4,599/).length).toBeGreaterThan(0);
+      expect((await screen.findAllByText(/4,599/)).length).toBeGreaterThan(0);
     });
 
     it("renders column headers", () => {
@@ -158,7 +168,7 @@ describe("CartClient", () => {
       const user = userEvent.setup();
       renderWithItem();
 
-      const removeBtn = screen.getByRole("button", {
+      const removeBtn = await screen.findByRole("button", {
         name: /Remove GLEAMSLING/i,
       });
       await act(async () => {
@@ -172,7 +182,7 @@ describe("CartClient", () => {
       const user = userEvent.setup();
       renderWithItem();
 
-      const increaseBtn = screen.getByRole("button", {
+      const increaseBtn = await screen.findByRole("button", {
         name: "Increase quantity",
       });
       await act(async () => {
@@ -190,7 +200,7 @@ describe("CartClient", () => {
       const user = userEvent.setup();
       render(<CartClient {...defaultProps} />);
 
-      const decreaseBtn = screen.getByRole("button", {
+      const decreaseBtn = await screen.findByRole("button", {
         name: "Decrease quantity",
       });
       await act(async () => {
@@ -204,7 +214,7 @@ describe("CartClient", () => {
       const user = userEvent.setup();
       renderWithItem();
 
-      const decreaseBtn = screen.getByRole("button", {
+      const decreaseBtn = await screen.findByRole("button", {
         name: "Decrease quantity",
       });
       await act(async () => {

@@ -271,19 +271,7 @@ export default function ProductDetailClient({
               <Button
                 variant="primary"
                 fullWidth
-                onClick={() =>
-                  addToCart({
-                    id: product.id,
-                    name: product.name,
-                    subtitle: product.details.product,
-                    price: product.price,
-                    image: product.images[0] ?? "",
-                    href: `/products/${product.slug}`,
-                    brand: product.brand,
-                    currency: product.currency,
-                    color: product.details.pearlColour,
-                  })
-                }
+                onClick={() => addToCart(product.id)}
               >
                 {inCart
                   ? translations.product.addedToCart

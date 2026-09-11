@@ -1,4 +1,11 @@
+// Raw cart items only store id + quantity; product details are fetched separately
 export interface CartItem {
+  id: string;
+  quantity: number;
+}
+
+// Product details resolved from an id (e.g. via the cart-items API)
+export interface CartProductDetails {
   id: string;
   name: string;
   subtitle?: string;
@@ -8,6 +15,9 @@ export interface CartItem {
   brand: string;
   currency: string;
   color?: string;
+}
+
+export interface EnrichedCartItem extends CartProductDetails {
   quantity: number;
 }
 
@@ -16,7 +26,7 @@ export interface CartState {
 }
 
 export type CartAction =
-  | { type: "ADD_TO_CART"; payload: Omit<CartItem, "quantity"> }
+  | { type: "ADD_TO_CART"; payload: { id: string } }
   | { type: "REMOVE_FROM_CART"; payload: { id: string } }
   | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
   | { type: "CLEAR_CART" }
@@ -41,7 +51,7 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
       }
       return {
         ...state,
-        items: [...state.items, { ...action.payload, quantity: 1 }],
+        items: [...state.items, { id: action.payload.id, quantity: 1 }],
       };
     }
 

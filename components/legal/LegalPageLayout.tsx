@@ -32,7 +32,7 @@ export default function LegalPageLayout({
         {sections?.map((section, sectionIndex) => (
           <div key={sectionIndex} className="space-y-3">
             {section.heading && (
-              <h2 className="font-bold uppercase tracking-wide text-gray-900">
+              <h2 className="font-bold uppercase tracking-wide text-gray-900 text-justify">
                 {section.heading}
               </h2>
             )}

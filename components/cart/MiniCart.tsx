@@ -13,14 +13,14 @@ const { hero, emptyMessage, miniCart } = translations.cart;
 
 export default function MiniCart() {
   const {
-    state,
+    cartItems,
+    itemCount,
     isCartOpen,
     closeCart,
     removeFromCart,
     updateQuantity,
     subtotal,
   } = useCart();
-  const { items } = state;
 
   return (
     <SidePanel
@@ -39,7 +39,7 @@ export default function MiniCart() {
           </Text>
         </div>
 
-        {items.length === 0 ? (
+        {itemCount === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
             <Text variant="body" className="text-gray-500">
               {emptyMessage}
@@ -47,7 +47,7 @@ export default function MiniCart() {
           </div>
         ) : (
           <ul className="flex-1 overflow-y-auto divide-y divide-gray-100 px-8">
-            {items.map((item) => (
+            {cartItems.map((item) => (
               <li key={item.id} className="flex gap-4 py-6">
                 <Link href={item.href} className="shrink-0">
                   <div className="relative w-20 h-20 bg-gray-50 overflow-hidden">
@@ -127,7 +127,7 @@ export default function MiniCart() {
           </ul>
         )}
 
-        {items.length > 0 && (
+        {itemCount > 0 && (
           <div className="border-t border-gray-100 p-8">
             <div className="flex justify-between items-center mb-6">
               <Text variant="body" className="font-medium">

@@ -12,7 +12,8 @@ import {
 import {
   CartState,
   CartAction,
-  CartItem,
+  CartProductDetails,
+  EnrichedCartItem,
   cartReducer,
   initialCartState,
 } from "@/lib/cart/cartReducer";
@@ -20,10 +21,12 @@ import {
 interface CartContextValue {
   state: CartState;
   dispatch: React.Dispatch<CartAction>;
-  addToCart: (item: Omit<CartItem, "quantity">) => void;
+  addToCart: (id: string) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  cartItems: EnrichedCartItem[];
+  isLoadingCartItems: boolean;
   itemCount: number;
   subtotal: number;
   isCartOpen: boolean;
@@ -49,6 +52,10 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [state, dispatch] = useReducer(cartReducer, initialCartState);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [productDetails, setProductDetails] = useState<
+    Record<string, CartProductDetails>
+  >({});
+  const [isLoadingCartItems, setIsLoadingCartItems] = useState(false);
 
   // Load persisted cart after mount so the initial client render matches SSR output.
   useEffect(() => {
@@ -61,11 +68,46 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state, hydrated]);
 
+  const idsKey = state.items.map((i) => i.id).join(",");
+
+  // Cart items only store ids; fetch live product data for any id not yet cached.
+  useEffect(() => {
+    const missingIds = state.items
+      .map((i) => i.id)
+      .filter((id) => !productDetails[id]);
+    if (missingIds.length === 0) return;
+
+    let cancelled = false;
+    setIsLoadingCartItems(true);
+
+    fetch(`/api/cart-items?ids=${missingIds.join(",")}`)
+      .then((res) => res.json())
+      .then((data: { items?: CartProductDetails[] }) => {
+        if (cancelled || !data.items) return;
+        setProductDetails((prev) => {
+          const next = { ...prev };
+          for (const item of data.items) next[item.id] = item;
+          return next;
+        });
+      })
+      .catch((err) =>
+        console.error("[cart] failed to load product details", err),
+      )
+      .finally(() => {
+        if (!cancelled) setIsLoadingCartItems(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey]);
+
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
 
-  const addToCart = (item: Omit<CartItem, "quantity">) => {
-    dispatch({ type: "ADD_TO_CART", payload: item });
+  const addToCart = (id: string) => {
+    dispatch({ type: "ADD_TO_CART", payload: { id } });
     openCart();
   };
 
@@ -79,11 +121,13 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
 
   const isInCart = (id: string) => state.items.some((i) => i.id === id);
 
+  const cartItems: EnrichedCartItem[] = state.items.flatMap((i) => {
+    const details = productDetails[i.id];
+    return details ? [{ ...details, quantity: i.quantity }] : [];
+  });
+
   const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = state.items.reduce(
-    (sum, i) => sum + i.price * i.quantity,
-    0,
-  );
+  const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   const value = useMemo(
     () => ({
@@ -93,6 +137,8 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
       removeFromCart,
       updateQuantity,
       clearCart,
+      cartItems,
+      isLoadingCartItems,
       itemCount,
       subtotal,
       isCartOpen,
@@ -101,7 +147,7 @@ export function CartProvider({ children }: Readonly<{ children: ReactNode }>) {
       isInCart,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state, itemCount, subtotal, isCartOpen],
+    [state, cartItems, isLoadingCartItems, itemCount, subtotal, isCartOpen],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
