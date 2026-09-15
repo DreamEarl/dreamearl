@@ -121,23 +121,39 @@ describe("Translations", () => {
 
   describe("Login Translations", () => {
     it("has login content", () => {
-      expect(translations.login.title).toBe("LOGIN");
-      expect(translations.login.subtitle).toBeTruthy();
+      expect(translations.login.tabs.signIn).toBe("SIGN IN");
+      expect(translations.login.tabs.createAccount).toBe("CREATE ACCOUNT");
       expect(translations.login.continueWith).toBe("Continue with");
     });
 
     it("has social login options", () => {
       expect(translations.login.google).toBe("Google");
-      expect(translations.login.facebook).toBe("Facebook");
-      expect(translations.login.apple).toBe("Apple");
     });
 
     it("has other login options", () => {
       expect(translations.login.orDivider).toBe("OR");
       expect(translations.login.guestCheckout).toBe("Continue as Guest");
-      expect(translations.login.returnToStore).toBe("Return to Store");
-      expect(translations.login.termsText).toContain("Terms of Service");
-      expect(translations.login.termsText).toContain("Privacy Policy");
+      expect(translations.login.createAccount.agreeToTerms).toBeTruthy();
+      expect(translations.login.createAccount.termsOfService).toBe(
+        "Terms of Service",
+      );
+      expect(translations.login.createAccount.privacyPolicy).toBe(
+        "Privacy Policy",
+      );
+    });
+  });
+
+  describe("Account Translations", () => {
+    it("has profile content", () => {
+      expect(translations.account.title).toBe("MY PROFILE");
+      expect(translations.account.greeting).toBeTruthy();
+      expect(translations.account.signOut).toBe("Sign Out");
+    });
+
+    it("has quick link labels", () => {
+      expect(translations.account.quickLinks.continueShopping).toBeTruthy();
+      expect(translations.account.quickLinks.viewCart).toBeTruthy();
+      expect(translations.account.quickLinks.customOrders).toBeTruthy();
     });
   });
 

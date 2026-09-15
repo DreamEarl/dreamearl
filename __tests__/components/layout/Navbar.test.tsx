@@ -3,6 +3,19 @@ import userEvent from "@testing-library/user-event";
 import Navbar from "@/components/layout/Navbar";
 import { translations } from "@/lib/constants/translations";
 
+const mockGetUser = jest.fn();
+const mockOnAuthStateChange = jest.fn();
+
+jest.mock("@/lib/supabase/client", () => ({
+  createClient: () => ({
+    auth: {
+      getUser: (...args: unknown[]) => mockGetUser(...args),
+      onAuthStateChange: (...args: unknown[]) =>
+        mockOnAuthStateChange(...args),
+    },
+  }),
+}));
+
 // Mock Next.js Link component — forward all props so aria-label and className are preserved
 jest.mock("next/link", () => {
   return ({
@@ -29,6 +42,10 @@ describe("Navbar Component", () => {
   beforeEach(() => {
     // Reset scroll position
     window.scrollY = 0;
+    mockGetUser.mockResolvedValue({ data: { user: null } });
+    mockOnAuthStateChange.mockReturnValue({
+      data: { subscription: { unsubscribe: jest.fn() } },
+    });
   });
 
   describe("Rendering", () => {
@@ -43,10 +60,24 @@ describe("Navbar Component", () => {
       expect(screen.getByText("Contact Us")).toBeInTheDocument();
     });
 
-    it("renders user icon link", () => {
+    it("renders user icon link to /login when signed out", () => {
       render(<Navbar />);
       const userLink = screen.getByLabelText("Account");
       expect(userLink).toHaveAttribute("href", "/login");
+    });
+
+    it("renders user icon link to /account when signed in", async () => {
+      mockGetUser.mockResolvedValue({
+        data: { user: { id: "user-1", email: "jane@example.com" } },
+      });
+      render(<Navbar />);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Account")).toHaveAttribute(
+          "href",
+          "/account",
+        );
+      });
     });
 
     it("renders cart icon link", () => {

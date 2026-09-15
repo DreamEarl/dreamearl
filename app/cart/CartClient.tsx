@@ -31,7 +31,7 @@ export default function CartClient({
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative h-64 md:h-80 flex items-center px-8 md:px-16 overflow-hidden">
+      <div className="relative h-84 flex px-8 md:px-16 overflow-hidden items-end pb-12">
         <Image
           src={heroImageUrl}
           alt="Cart hero"

@@ -7,6 +7,7 @@ import { translations } from "@/lib/constants/translations";
 import SidePanel from "@/components/ui/SidePanel";
 import ContactUs from "@/components/layout/ContactUs";
 import { useCart } from "@/lib/cart/CartContext";
+import { useAuthUser } from "@/lib/supabase/useAuthUser";
 
 interface NavbarProps {
   isHomePage?: boolean;
@@ -18,6 +19,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
   const [mounted, setMounted] = useState(false);
   const [cartBump, setCartBump] = useState(false);
   const { itemCount } = useCart();
+  const user = useAuthUser();
 
   useEffect(() => {
     setMounted(true);
@@ -79,7 +81,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
           {/* User Icon */}
           <Link
             id="navbar-account-link"
-            href="/login"
+            href={user ? "/account" : "/login"}
             className={`hover:opacity-80 transition-all duration-300 ${
               isDark ? "text-black" : "text-white"
             }`}

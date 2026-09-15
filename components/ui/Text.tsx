@@ -1,9 +1,12 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 
 type TextVariant = "body" | "small" | "muted" | "price" | "label" | "caption";
 type TextAs = "p" | "span" | "div";
 
-interface TextProps {
+interface TextProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "className" | "children"
+> {
   children: ReactNode;
   variant?: TextVariant;
   as?: TextAs;
@@ -24,8 +27,11 @@ export default function Text({
   variant = "body",
   as: Tag = "p",
   className = "",
+  ...rest
 }: Readonly<TextProps>) {
   return (
-    <Tag className={`${variantClasses[variant]} ${className}`}>{children}</Tag>
+    <Tag className={`${variantClasses[variant]} ${className}`} {...rest}>
+      {children}
+    </Tag>
   );
 }

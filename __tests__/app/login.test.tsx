@@ -4,19 +4,26 @@ import LoginPage from "@/app/login/page";
 import { translations } from "@/lib/constants/translations";
 
 const mockSignInWithOAuth = jest.fn().mockResolvedValue({ error: null });
+const mockSignInWithPassword = jest.fn().mockResolvedValue({ error: null });
+const mockSignUp = jest
+  .fn()
+  .mockResolvedValue({ data: { session: null }, error: null });
+const mockResetPasswordForEmail = jest.fn().mockResolvedValue({ error: null });
+const mockPush = jest.fn();
 
 jest.mock("@/lib/supabase/client", () => ({
   createClient: () => ({
     auth: {
       signInWithOAuth: mockSignInWithOAuth,
-      signInWithOtp: jest.fn().mockResolvedValue({ error: null }),
-      verifyOtp: jest.fn().mockResolvedValue({ error: null }),
+      signInWithPassword: mockSignInWithPassword,
+      signUp: mockSignUp,
+      resetPasswordForEmail: mockResetPasswordForEmail,
     },
   }),
 }));
 
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({ push: jest.fn() }),
+  useRouter: () => ({ push: mockPush }),
 }));
 
 jest.mock("next/image", () => ({
@@ -30,7 +37,7 @@ jest.mock("next/image", () => ({
     alt: string;
     [key: string]: unknown;
   }) => {
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={alt} {...props} />;
   },
 }));
@@ -50,16 +57,24 @@ describe("Login Page", () => {
   const { login } = translations;
 
   describe("Rendering", () => {
-    it("renders the page heading", () => {
+    it("renders the sign in and create account tabs", () => {
       render(<LoginPage />);
       expect(
-        screen.getByRole("heading", { name: login.title }),
+        screen.getByRole("tab", { name: login.tabs.signIn }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tab", { name: login.tabs.createAccount }),
       ).toBeInTheDocument();
     });
 
-    it("renders subtitle text", () => {
+    it("renders the sign in form by default", () => {
       render(<LoginPage />);
-      expect(screen.getByText(login.subtitle)).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText(login.signIn.emailPlaceholder),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText(login.signIn.passwordPlaceholder),
+      ).toBeInTheDocument();
     });
 
     it("renders Continue with Google button", () => {
@@ -69,14 +84,9 @@ describe("Login Page", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders Google logo image", () => {
-      render(<LoginPage />);
-      expect(screen.getByAltText("Google logo")).toBeInTheDocument();
-    });
-
     it("renders OR divider", () => {
       render(<LoginPage />);
-      expect(screen.getAllByText(login.orDivider).length).toBeGreaterThan(0);
+      expect(screen.getByText(login.orDivider)).toBeInTheDocument();
     });
 
     it("renders Continue as Guest button linking to /shop", () => {
@@ -85,24 +95,142 @@ describe("Login Page", () => {
       expect(guestLink).toHaveAttribute("href", "/shop");
     });
 
-    it("renders terms text", () => {
+    it("switches to the create account form when tab is clicked", async () => {
+      const user = userEvent.setup();
       render(<LoginPage />);
-      expect(screen.getByText(login.termsText)).toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole("tab", { name: login.tabs.createAccount }),
+      );
+
+      expect(
+        screen.getByPlaceholderText(login.createAccount.firstNamePlaceholder),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText(login.createAccount.lastNamePlaceholder),
+      ).toBeInTheDocument();
     });
   });
 
-  describe("Interactions", () => {
+  describe("Sign In interactions", () => {
     it("Google button triggers signInWithOAuth", async () => {
       const user = userEvent.setup();
-
       render(<LoginPage />);
-      const googleBtn = screen.getByText(
-        `${login.continueWith} ${login.google}`,
+
+      await user.click(
+        screen.getByText(`${login.continueWith} ${login.google}`),
       );
-      await user.click(googleBtn);
 
       expect(mockSignInWithOAuth).toHaveBeenCalledWith(
         expect.objectContaining({ provider: "google" }),
+      );
+    });
+
+    it("submits email and password to signInWithPassword", async () => {
+      const user = userEvent.setup();
+      render(<LoginPage />);
+
+      await user.type(
+        screen.getByPlaceholderText(login.signIn.emailPlaceholder),
+        "jane@example.com",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.signIn.passwordPlaceholder),
+        "password123",
+      );
+      await user.click(
+        screen.getByRole("button", { name: login.signIn.submit, exact: true }),
+      );
+
+      expect(mockSignInWithPassword).toHaveBeenCalledWith({
+        email: "jane@example.com",
+        password: "password123",
+      });
+    });
+
+    it("shows an error message when a required email is missing for password reset", async () => {
+      const user = userEvent.setup();
+      render(<LoginPage />);
+
+      await user.click(screen.getByText(login.signIn.forgotPassword));
+
+      expect(screen.getByText(login.errors.emailRequired)).toBeInTheDocument();
+    });
+  });
+
+  describe("Create Account interactions", () => {
+    it("shows an error when terms are not agreed to", async () => {
+      const user = userEvent.setup();
+      render(<LoginPage />);
+
+      await user.click(
+        screen.getByRole("tab", { name: login.tabs.createAccount }),
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.firstNamePlaceholder),
+        "Jane",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.lastNamePlaceholder),
+        "Doe",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.emailPlaceholder),
+        "jane@example.com",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.passwordPlaceholder),
+        "password123",
+      );
+      await user.click(
+        screen.getByRole("button", {
+          name: login.createAccount.submit,
+          exact: true,
+        }),
+      );
+
+      expect(mockSignUp).not.toHaveBeenCalled();
+      expect(screen.getByText(login.errors.termsRequired)).toBeInTheDocument();
+    });
+
+    it("calls signUp when the form is valid and terms are agreed to", async () => {
+      const user = userEvent.setup();
+      render(<LoginPage />);
+
+      await user.click(
+        screen.getByRole("tab", { name: login.tabs.createAccount }),
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.firstNamePlaceholder),
+        "Jane",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.lastNamePlaceholder),
+        "Doe",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.emailPlaceholder),
+        "jane@example.com",
+      );
+      await user.type(
+        screen.getByPlaceholderText(login.createAccount.passwordPlaceholder),
+        "password123",
+      );
+      await user.click(
+        screen.getByText(login.createAccount.agreeToTerms, { exact: false }),
+      );
+      await user.click(
+        screen.getByRole("button", {
+          name: login.createAccount.submit,
+          exact: true,
+        }),
+      );
+
+      expect(mockSignUp).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "jane@example.com",
+          password: "password123",
+        }),
       );
     });
   });
