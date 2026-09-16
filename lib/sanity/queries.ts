@@ -136,6 +136,33 @@ export async function getProductsByIds(
   );
 }
 
+// Fetch products by id including inStock — used to authoritatively re-price and
+// validate cart items server-side before creating a payment order. Never trust
+// price/availability sent from the browser.
+export async function getProductsForCheckout(
+  ids: string[],
+): Promise<SanityProduct[]> {
+  if (ids.length === 0) return [];
+  return client.fetch(
+    `
+    *[_type == "product" && _id in $ids] {
+      _id,
+      _type,
+      brand,
+      name,
+      slug,
+      images,
+      price,
+      currency,
+      productType,
+      pearlColour,
+      inStock
+    }
+  `,
+    { ids },
+  );
+}
+
 // Fetch all categories
 export async function getAllCategories(): Promise<SanityCategory[]> {
   return client.fetch(`

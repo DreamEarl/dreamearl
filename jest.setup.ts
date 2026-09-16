@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 
-// Prevent cart state from leaking across tests via localStorage
+// Prevent cart state from leaking across tests via localStorage.
+// Guarded because API route tests run under the "node" environment, which has no localStorage.
 afterEach(() => {
-  localStorage.clear();
+  if (typeof localStorage !== "undefined") localStorage.clear();
 });
 
 // Default fetch mock so CartContext's product-detail enrichment doesn't crash
