@@ -23,7 +23,9 @@ interface LiveStatus {
   currency: string;
 }
 
-export default function OrderStatusView({ order }: Readonly<OrderStatusViewProps>) {
+export default function OrderStatusView({
+  order,
+}: Readonly<OrderStatusViewProps>) {
   const t = translations.orderSuccess;
   const [live, setLive] = useState<LiveStatus>({
     status: order.status,
@@ -125,11 +127,18 @@ export default function OrderStatusView({ order }: Readonly<OrderStatusViewProps
           {order.items.map((item) => (
             <li key={item.productId} className="flex gap-4 py-4">
               <div className="relative w-16 h-16 bg-gray-50 overflow-hidden shrink-0">
-                <Image src={item.image} alt={item.name} fill className="object-cover" />
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div className="flex-1">
                 <Text variant="body">{item.name}</Text>
-                {item.color && <Text variant="caption">Color: {item.color}</Text>}
+                {item.color && (
+                  <Text variant="caption">Color: {item.color}</Text>
+                )}
                 <Text variant="caption">Qty: {item.quantity}</Text>
               </div>
               <Text variant="body">
@@ -160,7 +169,7 @@ export default function OrderStatusView({ order }: Readonly<OrderStatusViewProps
             {t.continueShopping}
           </Button>
           <Link
-            href={`/order-success/${order.id}`}
+            href={`/account/orders/${order.id}`}
             className="w-full py-3 px-6 text-sm border border-black bg-white text-black font-light tracking-wide hover:bg-gray-50 transition-colors text-center"
           >
             {t.viewOrder}
