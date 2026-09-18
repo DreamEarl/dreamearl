@@ -53,6 +53,17 @@ export function useCreateAccount() {
       return;
     }
     setNotice(success.signUpConfirm);
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setPassword("");
+    setUpdatesOptIn(false);
+    setAgreedToTerms(false);
   };
 
   return {

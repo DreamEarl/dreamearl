@@ -20,6 +20,7 @@ interface HeadingProps {
   children: ReactNode;
   variant: HeadingVariant;
   className?: string;
+  id?: string;
 }
 
 const variantConfig: Record<HeadingVariant, HeadingConfig> = {
@@ -67,7 +68,12 @@ export default function Heading({
   children,
   variant,
   className = "",
+  id,
 }: Readonly<HeadingProps>) {
   const { tag: Tag, className: variantClass } = variantConfig[variant];
-  return <Tag className={`${variantClass} ${className}`}>{children}</Tag>;
+  return (
+    <Tag id={id} className={`${variantClass} ${className}`}>
+      {children}
+    </Tag>
+  );
 }

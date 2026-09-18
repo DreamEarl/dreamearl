@@ -6,7 +6,15 @@ import { createClient } from "@/lib/supabase/client";
 import Button from "@/components/ui/Button";
 import { translations } from "@/lib/constants/translations";
 
-export default function SignOutButton() {
+interface SignOutButtonProps {
+  variant?: "primary" | "secondary" | "outline";
+  className?: string;
+}
+
+export default function SignOutButton({
+  variant = "primary",
+  className = "",
+}: Readonly<SignOutButtonProps>) {
   const router = useRouter();
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
@@ -22,11 +30,12 @@ export default function SignOutButton() {
   return (
     <Button
       id="sign-out-button"
-      variant="primary"
+      variant={variant}
       fullWidth
       onClick={handleSignOut}
       disabled={loading}
       aria-busy={loading}
+      className={className}
     >
       {loading ? account.signingOut : account.signOut}
     </Button>

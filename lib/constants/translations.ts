@@ -169,7 +169,8 @@ export const translations = {
     errors: {
       generic: "Something went wrong. Please try again.",
       gatewayLoad: "Payment gateway failed to load. Please retry.",
-      verifyFailed: "We couldn't confirm your payment. Please try again or contact us.",
+      verifyFailed:
+        "We couldn't confirm your payment. Please try again or contact us.",
     },
     paymentFailed: {
       title: "Payment failed",
@@ -253,6 +254,65 @@ export const translations = {
       continueShopping: "Continue Shopping",
       viewCart: "View Cart",
       customOrders: "Custom Orders",
+    },
+    nav: {
+      overview: "Overview",
+      myOrders: "My Orders",
+      manageAddresses: "Manage Addresses",
+      customRequests: "Custom Requests",
+    },
+    orders: {
+      title: "My Orders",
+      empty: "You haven't placed any orders yet.",
+      emptyTitle: "No orders yet",
+      emptySubtitle:
+        "Start exploring our collection and find something you love.",
+      exploreNow: "Explore Now",
+      viewDetails: "View Details",
+    },
+    orderDetails: {
+      title: "Order Details",
+      orderNumber: "Order #",
+      placedOn: "Placed on",
+      itemsTitle: "Items in this order",
+      quantity: "Quantity:",
+      colour: "Colour:",
+      subtotal: "Subtotal",
+      shipping: "Shipping",
+      free: "Free",
+      discount: "Discount",
+      totalPaid: "Total Paid",
+      timelineTitle: "Order Timeline",
+      shippingAddressTitle: "Shipping Address",
+      needHelpTitle: "Need Help?",
+      needHelpMessage:
+        "If you have any questions about this order, feel free to contact us.",
+      contactUs: "Contact Us",
+    },
+    overview: {
+      welcome: "Welcome to your DreamEarl account.",
+      edit: "Edit",
+      personalInfo: {
+        title: "Personal Information",
+        fullName: "Full Name",
+        email: "Email Address",
+        phone: "Phone Number",
+      },
+      changePassword: {
+        title: "Change Password",
+        description: "Update your password to keep your account secure.",
+        password: "Password",
+      },
+      promo: {
+        heading: "Handcrafted pieces, a little closer to you.",
+        subtitle:
+          "Explore, customise and keep track of your DreamEarl journey here.",
+        cta: "Explore The Collection",
+      },
+    },
+    placeholders: {
+      addresses: "You haven't saved any addresses yet.",
+      customRequests: "You haven't submitted any custom requests yet.",
     },
   },
   footer: {

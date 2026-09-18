@@ -59,7 +59,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
           {showLogo && (
             <Link
               href="/"
-              className="font-glacial font-light tracking-[0.3em] text-[30px] whitespace-nowrap text-black hover:opacity-70 transition-opacity"
+              className="font-glacial font-light tracking-[0.3em] text-[30px] whitespace-nowrap text-[#5f1631] hover:opacity-70 transition-opacity"
             >
               {translations.common.brand}
             </Link>
@@ -73,7 +73,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
             type="button"
             onClick={() => setIsContactPanelOpen(true)}
             className={`hidden md:inline text-md hover:opacity-80 transition-opacity cursor-pointer ${
-              isDark ? "text-gray-700" : "text-white"
+              isDark ? "text-[#5f1631]" : "text-white"
             }`}
           >
             Contact Us
@@ -83,7 +83,7 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
             id="navbar-account-link"
             href={user ? "/account" : "/login"}
             className={`hover:opacity-80 transition-all duration-300 ${
-              isDark ? "text-black" : "text-white"
+              isDark ? "text-[#5f1631]" : "text-white"
             }`}
             aria-label="Account"
           >
@@ -95,14 +95,14 @@ export default function Navbar({ isHomePage = false }: Readonly<NavbarProps>) {
             id="navbar-cart-link"
             href="/cart"
             className={`relative hover:opacity-80 transition-all duration-300 ${
-              isDark ? "text-black" : "text-white"
+              isDark ? "text-[#5f1631]" : "text-white"
             }`}
             aria-label="Shopping Cart"
           >
             <CartIcon />
             {mounted && itemCount > 0 && (
               <span
-                className={`absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] font-medium w-4 h-4 rounded-full flex items-center justify-center leading-none ${
+                className={`absolute -top-1.5 -right-1.5 bg-[#5f1631] text-white text-[10px] font-medium w-4 h-4 rounded-full flex items-center justify-center leading-none ${
                   cartBump ? "animate-cart-bounce" : ""
                 }`}
               >
