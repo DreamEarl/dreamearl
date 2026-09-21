@@ -61,7 +61,7 @@ export default function ConfirmDialog({
       />
       <div
         id={`${id}-card`}
-        className="relative bg-white w-full max-w-md p-10 text-center"
+        className="relative bg-white text-black w-full max-w-md p-10 text-center"
       >
         <Heading id={`${id}-title`} variant="login" className="mb-3">
           {title}
