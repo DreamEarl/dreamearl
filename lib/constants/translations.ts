@@ -250,6 +250,19 @@ export const translations = {
     greeting: "Hello,",
     signOut: "Sign Out",
     signingOut: "Signing out...",
+    signOutConfirm: {
+      title: "Sign out of your account?",
+      message: "Are you sure you want to sign out of your Dreamearl account?",
+      cancel: "Cancel",
+      confirm: "Signout",
+    },
+    signedOut: {
+      eyebrow: "You've Been Signed Out",
+      title: "Until we meet again.",
+      subtitle: "Your DreamEarl account is waiting for you",
+      signIn: "Sign In",
+      explore: "Explore Collection",
+    },
     quickLinks: {
       continueShopping: "Continue Shopping",
       viewCart: "View Cart",

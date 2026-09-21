@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Button from "@/components/ui/Button";
 import { translations } from "@/lib/constants/translations";
 import { ADMIN_WHATSAPP_NUMBER } from "@/lib/constants/shopConfig";
 import { useAuthUser } from "@/lib/supabase/useAuthUser";
@@ -325,13 +326,14 @@ export default function CustomOrderPage() {
 
           {/* Submit */}
           <div className="flex flex-col items-center gap-3 pt-2">
-            <button
+            <Button
               type="submit"
+              variant="primary"
               disabled={isSubmitting}
-              className="bg-black text-white px-16 py-4 text-sm tracking-widest font-light hover:bg-gray-900 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              className="px-16 tracking-widest disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Sending…" : form.submit}
-            </button>
+            </Button>
             <p className="text-xs text-gray-400 text-center">
               {form.submitNote}
             </p>

@@ -33,14 +33,42 @@ describe("SignOutButton", () => {
     ).toBeInTheDocument();
   });
 
-  it("signs the user out and redirects to /login", async () => {
+  it("shows a confirmation dialog instead of signing out immediately", async () => {
     const user = userEvent.setup();
     render(<SignOutButton />);
 
     await user.click(screen.getByRole("button", { name: account.signOut }));
 
+    expect(screen.getByText(account.signOutConfirm.title)).toBeInTheDocument();
+    expect(mockSignOut).not.toHaveBeenCalled();
+  });
+
+  it("does nothing and closes the dialog when Cancel is clicked", async () => {
+    const user = userEvent.setup();
+    render(<SignOutButton />);
+
+    await user.click(screen.getByRole("button", { name: account.signOut }));
+    await user.click(
+      screen.getByRole("button", { name: account.signOutConfirm.cancel }),
+    );
+
+    expect(
+      screen.queryByText(account.signOutConfirm.title),
+    ).not.toBeInTheDocument();
+    expect(mockSignOut).not.toHaveBeenCalled();
+  });
+
+  it("signs the user out and redirects to /signed-out when confirmed", async () => {
+    const user = userEvent.setup();
+    render(<SignOutButton />);
+
+    await user.click(screen.getByRole("button", { name: account.signOut }));
+    await user.click(
+      screen.getByRole("button", { name: account.signOutConfirm.confirm }),
+    );
+
     expect(mockSignOut).toHaveBeenCalledTimes(1);
-    expect(mockPush).toHaveBeenCalledWith("/login");
+    expect(mockPush).toHaveBeenCalledWith("/signed-out");
     expect(mockRefresh).toHaveBeenCalledTimes(1);
   });
 });
