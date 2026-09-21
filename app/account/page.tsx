@@ -5,14 +5,14 @@ import { getFullName } from "@/lib/account/getFullName";
 import { getInitials } from "@/lib/account/getInitials";
 import { getPhoneNumber } from "@/lib/account/getPhoneNumber";
 import { toAccountTab } from "@/lib/account/tabs";
-import { translations } from "@/lib/constants/translations";
 import AccountShell from "@/components/account/AccountShell";
 import OverviewPanel from "@/components/account/OverviewPanel";
 import OrdersPanel from "@/components/account/OrdersPanel";
 import AddressesPanel from "@/components/account/AddressesPanel";
-import PlaceholderPanel from "@/components/account/PlaceholderPanel";
+import CustomRequestsPanel from "@/components/account/CustomRequestsPanel";
 import type { Order } from "@/lib/orders/types";
 import type { Address } from "@/lib/addresses/types";
+import type { CustomRequest } from "@/lib/customRequests/types";
 
 interface AccountPageProps {
   searchParams?: Promise<{ tab?: string }>;
@@ -53,7 +53,15 @@ export default async function AccountPage({
           .order("created_at", { ascending: true })
       : { data: null };
 
-  const { nav, placeholders } = translations.account;
+  const { data: customRequests } =
+    activeTab === "custom-requests"
+      ? await supabase
+          .from("custom_requests")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+      : { data: null };
+
   const name = getFullName(user);
 
   return (
@@ -78,10 +86,8 @@ export default async function AccountPage({
         <AddressesPanel addresses={(addresses ?? []) as Address[]} />
       )}
       {activeTab === "custom-requests" && (
-        <PlaceholderPanel
-          id="custom-requests-panel"
-          title={nav.customRequests}
-          message={placeholders.customRequests}
+        <CustomRequestsPanel
+          requests={(customRequests ?? []) as CustomRequest[]}
         />
       )}
     </AccountShell>

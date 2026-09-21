@@ -5,6 +5,25 @@ import { translations } from "@/lib/constants/translations";
 
 const { heading, subtitle, form } = translations.customOrder;
 
+const mockGetUser = jest.fn();
+const mockOnAuthStateChange = jest.fn();
+
+jest.mock("@/lib/supabase/client", () => ({
+  createClient: () => ({
+    auth: {
+      getUser: (...args: unknown[]) => mockGetUser(...args),
+      onAuthStateChange: (...args: unknown[]) => mockOnAuthStateChange(...args),
+    },
+  }),
+}));
+
+beforeEach(() => {
+  mockGetUser.mockResolvedValue({ data: { user: null } });
+  mockOnAuthStateChange.mockReturnValue({
+    data: { subscription: { unsubscribe: jest.fn() } },
+  });
+});
+
 const PRODUCT_TYPES = [
   "Necklace",
   "Bracelet",

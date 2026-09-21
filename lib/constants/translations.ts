@@ -310,8 +310,27 @@ export const translations = {
         cta: "Explore The Collection",
       },
     },
-    placeholders: {
-      customRequests: "You haven't submitted any custom requests yet.",
+    customRequests: {
+      title: "Custom Requests",
+      empty:
+        "You haven't placed any custom requests yet. Let's create something special together.",
+      emptyTitle: "No custom requests yet",
+      placeRequest: "Place a Custom Request",
+      viewDetails: "View Details",
+      requestedOn: "Requested on",
+    },
+    customRequestDetails: {
+      title: "Custom Request Details",
+      requestNumber: "Request #",
+      requestedOn: "Requested on",
+      productTitle: "Requested Product",
+      productType: "Product Type:",
+      messageTitle: "Message from You",
+      timelineTitle: "Request Timeline",
+      needHelpTitle: "Need to Add Anything?",
+      needHelpMessage:
+        "If you'd like to share more details, reference images, or make any changes, feel free to reach out to us.",
+      contactUs: "Contact Us",
     },
     addresses: {
       title: "Manage Addresses",

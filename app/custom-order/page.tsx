@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { translations } from "@/lib/constants/translations";
 import { ADMIN_WHATSAPP_NUMBER } from "@/lib/constants/shopConfig";
+import { useAuthUser } from "@/lib/supabase/useAuthUser";
 
 const { heading, subtitle, form } = translations.customOrder;
 
@@ -35,6 +36,7 @@ function validate(fullName: string, email: string, phone: string): FormErrors {
 }
 
 export default function CustomOrderPage() {
+  const user = useAuthUser();
   const [dragActive, setDragActive] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fullName, setFullName] = useState("");
@@ -108,6 +110,23 @@ export default function CustomOrderPage() {
       "",
       `Inspiration Image: ${imageUrl ?? (imageFile ? "Upload failed – please send manually" : "Not provided")}`,
     ].join("\n");
+
+    // Track the request on the account "Custom Requests" screen for signed-in users.
+    if (user) {
+      try {
+        await fetch("/api/custom-requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            productType: productType || "Custom Piece",
+            message: requirements || "No details provided",
+            imageUrl,
+          }),
+        });
+      } catch {
+        // non-blocking — the WhatsApp message below is the source of truth
+      }
+    }
 
     window.open(
       `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
