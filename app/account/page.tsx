@@ -9,8 +9,10 @@ import { translations } from "@/lib/constants/translations";
 import AccountShell from "@/components/account/AccountShell";
 import OverviewPanel from "@/components/account/OverviewPanel";
 import OrdersPanel from "@/components/account/OrdersPanel";
+import AddressesPanel from "@/components/account/AddressesPanel";
 import PlaceholderPanel from "@/components/account/PlaceholderPanel";
 import type { Order } from "@/lib/orders/types";
+import type { Address } from "@/lib/addresses/types";
 
 interface AccountPageProps {
   searchParams?: Promise<{ tab?: string }>;
@@ -41,6 +43,16 @@ export default async function AccountPage({
           .order("created_at", { ascending: false })
       : { data: null };
 
+  const { data: addresses } =
+    activeTab === "addresses"
+      ? await supabase
+          .from("addresses")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("is_default", { ascending: false })
+          .order("created_at", { ascending: true })
+      : { data: null };
+
   const { nav, placeholders } = translations.account;
   const name = getFullName(user);
 
@@ -63,11 +75,7 @@ export default async function AccountPage({
         <OrdersPanel orders={(orders ?? []) as Order[]} />
       )}
       {activeTab === "addresses" && (
-        <PlaceholderPanel
-          id="addresses-panel"
-          title={nav.manageAddresses}
-          message={placeholders.addresses}
-        />
+        <AddressesPanel addresses={(addresses ?? []) as Address[]} />
       )}
       {activeTab === "custom-requests" && (
         <PlaceholderPanel

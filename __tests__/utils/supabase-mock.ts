@@ -3,7 +3,9 @@
  * Each chain method returns the same chainable object; awaiting it (or calling
  * `.single()`) resolves to the configured `{ data, error }` result.
  */
-function makeChain(result: { data: unknown; error: unknown }) {
+type ChainResult = { data: unknown; error?: unknown; count?: number };
+
+function makeChain(result: ChainResult) {
   const chain: Record<string, unknown> = {};
   const passthrough = [
     "select",
@@ -26,9 +28,10 @@ function makeChain(result: { data: unknown; error: unknown }) {
 
 interface SupabaseMockOptions {
   user?: { id: string; email?: string } | null;
-  selectResult?: { data: unknown; error?: unknown };
-  insertResult?: { data: unknown; error?: unknown };
-  updateResult?: { data: unknown; error?: unknown };
+  selectResult?: ChainResult;
+  insertResult?: ChainResult;
+  updateResult?: ChainResult;
+  deleteResult?: ChainResult;
 }
 
 export function createSupabaseMock({
@@ -36,11 +39,13 @@ export function createSupabaseMock({
   selectResult = { data: null, error: null },
   insertResult = { data: null, error: null },
   updateResult = { data: null, error: null },
+  deleteResult = { data: null, error: null },
 }: SupabaseMockOptions) {
   const from = jest.fn(() => ({
     select: jest.fn(() => makeChain(selectResult)),
     insert: jest.fn(() => makeChain(insertResult)),
     update: jest.fn(() => makeChain(updateResult)),
+    delete: jest.fn(() => makeChain(deleteResult)),
   }));
 
   return {
