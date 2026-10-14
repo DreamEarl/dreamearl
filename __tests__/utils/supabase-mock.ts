@@ -21,6 +21,7 @@ function makeChain(result: ChainResult) {
     chain[method] = jest.fn(() => chain);
   }
   chain.single = jest.fn(() => Promise.resolve(result));
+  chain.maybeSingle = jest.fn(() => Promise.resolve(result));
   chain.then = (onFulfilled: (value: typeof result) => unknown) =>
     Promise.resolve(result).then(onFulfilled);
   return chain;

@@ -5,6 +5,7 @@ import { getFullName } from "@/lib/account/getFullName";
 import { getInitials } from "@/lib/account/getInitials";
 import { getPhoneNumber } from "@/lib/account/getPhoneNumber";
 import { toAccountTab } from "@/lib/account/tabs";
+import { isAdmin } from "@/lib/admin/auth";
 import AccountShell from "@/components/account/AccountShell";
 import OverviewPanel from "@/components/account/OverviewPanel";
 import OrdersPanel from "@/components/account/OrdersPanel";
@@ -63,6 +64,7 @@ export default async function AccountPage({
       : { data: null };
 
   const name = getFullName(user);
+  const userIsAdmin = await isAdmin(user.id);
 
   return (
     <AccountShell
@@ -70,6 +72,7 @@ export default async function AccountPage({
       email={user.email ?? ""}
       initials={getInitials(name)}
       activeTab={activeTab}
+      isAdmin={userIsAdmin}
     >
       {activeTab === "overview" && (
         <OverviewPanel

@@ -6,6 +6,7 @@ interface AccountShellProps {
   email: string;
   initials: string;
   activeTab: AccountTab;
+  isAdmin?: boolean;
   children: React.ReactNode;
 }
 
@@ -14,6 +15,7 @@ export default function AccountShell({
   email,
   initials,
   activeTab,
+  isAdmin = false,
   children,
 }: Readonly<AccountShellProps>) {
   return (
@@ -30,6 +32,7 @@ export default function AccountShell({
           email={email}
           initials={initials}
           activeTab={activeTab}
+          isAdmin={isAdmin}
         />
 
         <div id="account-page-panel" className="flex-1 min-w-0 p-6">

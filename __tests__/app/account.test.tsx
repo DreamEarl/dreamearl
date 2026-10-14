@@ -41,6 +41,10 @@ jest.mock("@/lib/supabase/client", () => ({
   }),
 }));
 
+jest.mock("@/lib/admin/auth", () => ({
+  isAdmin: jest.fn().mockResolvedValue(false),
+}));
+
 const baseOrder: Order = {
   id: "order-1",
   user_id: "user-1",

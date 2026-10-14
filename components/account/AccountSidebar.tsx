@@ -9,6 +9,7 @@ interface AccountSidebarProps {
   email: string;
   initials: string;
   activeTab: AccountTab;
+  isAdmin?: boolean;
 }
 
 const NAV_LABEL_KEYS: Record<
@@ -26,6 +27,7 @@ export default function AccountSidebar({
   email,
   initials,
   activeTab,
+  isAdmin = false,
 }: Readonly<AccountSidebarProps>) {
   const { nav } = translations.account;
 
@@ -73,6 +75,15 @@ export default function AccountSidebar({
             </Link>
           );
         })}
+        {isAdmin && (
+          <Link
+            id="account-sidebar-nav-admin"
+            href="/admin/orders"
+            className="py-3 px-4 text-sm tracking-widest uppercase text-center transition-colors border border-white/40 text-white hover:bg-white/10"
+          >
+            Admin Portal
+          </Link>
+        )}
       </nav>
 
       <div id="account-sidebar-signout" className="mt-auto">
