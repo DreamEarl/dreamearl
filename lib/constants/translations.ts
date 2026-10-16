@@ -152,6 +152,11 @@ export const translations = {
       state: "State",
       pincode: "Pincode",
       phone: "Phone Number",
+      defaultBadge: "Default",
+      useSaved: "Use a saved address",
+      addNew: "+ Add New Address",
+      saveForFuture: "Save this address for future orders",
+      selectError: "Please select a shipping address.",
     },
     summary: {
       title: "Order Summary",
