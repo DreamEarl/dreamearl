@@ -345,6 +345,7 @@ export const translations = {
       productType: "Product Type:",
       messageTitle: "Message from You",
       timelineTitle: "Request Timeline",
+      declineReasonTitle: "Why We Couldn't Take This On",
       needHelpTitle: "Need to Add Anything?",
       needHelpMessage:
         "If you'd like to share more details, reference images, or make any changes, feel free to reach out to us.",
@@ -422,7 +423,7 @@ export const translations = {
     form: {
       inspirationImage: "Inspiration Image",
       dropzone: "Drop your image here, or click to browse",
-      dropzoneHint: "PNG, JPG up to 10MB",
+      dropzoneHint: "PNG, JPG up to 10MB each, max 5 images",
       fullName: "Full Name",
       fullNamePlaceholder: "Your name",
       email: "Email Address",

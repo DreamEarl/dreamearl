@@ -18,9 +18,12 @@ function buildRequest(body?: unknown) {
 }
 
 const validInput = {
+  fullName: "Jane Doe",
+  email: "jane@example.com",
+  phone: "+91 9876543210",
   productType: "Necklace",
   message: "Pearl bag in pastel pink with detachable chain.",
-  imageUrl: "https://example.com/inspiration.png",
+  imageUrls: ["https://example.com/inspiration.png"],
 };
 
 beforeEach(() => {
@@ -53,9 +56,12 @@ describe("POST /api/custom-requests", () => {
           data: {
             id: "req-1",
             user_id: "user-1",
+            full_name: validInput.fullName,
+            email: validInput.email,
+            phone: validInput.phone,
             product_type: "Necklace",
             message: validInput.message,
-            image_url: validInput.imageUrl,
+            image_urls: validInput.imageUrls,
             status: "PENDING",
           },
           error: null,

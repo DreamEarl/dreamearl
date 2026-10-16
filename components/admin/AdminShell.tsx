@@ -44,6 +44,13 @@ export default function AdminShell({
             >
               Orders
             </Link>
+            <Link
+              id="admin-sidebar-nav-custom-requests"
+              href="/admin/custom-requests"
+              className="text-sm tracking-wide text-white/90 hover:text-white"
+            >
+              Custom Requests
+            </Link>
           </nav>
 
           <div id="admin-sidebar-sign-out" className="mt-auto">

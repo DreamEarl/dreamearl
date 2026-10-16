@@ -43,9 +43,12 @@ export async function POST(request: Request) {
     .from("custom_requests")
     .insert({
       user_id: user.id,
+      full_name: input.fullName,
+      email: input.email,
+      phone: input.phone,
       product_type: input.productType,
       message: input.message,
-      image_url: input.imageUrl,
+      image_urls: input.imageUrls,
     })
     .select("*")
     .single();

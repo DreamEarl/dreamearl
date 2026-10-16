@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import CustomRequestStatusBadge from "@/components/account/CustomRequestStatusBadge";
 import {
   formatCustomRequestDate,
+  getCustomRequestImages,
   getCustomRequestTitle,
 } from "@/lib/customRequests/status";
 import { getCustomRequestTimeline } from "@/lib/customRequests/timeline";
@@ -23,6 +24,7 @@ export default function CustomRequestDetailsPanel({
   const requestCode = request.id.slice(0, 8).toUpperCase();
   const timeline = getCustomRequestTimeline(request);
   const title = getCustomRequestTitle(request);
+  const images = getCustomRequestImages(request);
 
   return (
     <div id="custom-request-details-panel">
@@ -67,14 +69,24 @@ export default function CustomRequestDetailsPanel({
           </Text>
 
           <div className="flex gap-4">
-            {request.image_url && (
-              <div className="relative w-20 h-20 bg-gray-50 overflow-hidden shrink-0">
-                <Image
-                  src={request.image_url}
-                  alt={title}
-                  fill
-                  className="object-cover"
-                />
+            {images.length > 0 && (
+              <div
+                id="custom-request-details-panel-images"
+                className="flex flex-wrap gap-2 shrink-0"
+              >
+                {images.map((url, index) => (
+                  <div
+                    key={url}
+                    className="relative w-20 h-20 bg-gray-50 overflow-hidden"
+                  >
+                    <Image
+                      src={url}
+                      alt={`${title} reference ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
               </div>
             )}
             <div>
@@ -142,6 +154,20 @@ export default function CustomRequestDetailsPanel({
           </ol>
         </div>
       </div>
+
+      {request.status === "DECLINED" && request.decline_reason && (
+        <div
+          id="custom-request-details-panel-decline-reason"
+          className="border border-red-200 bg-red-50 p-6 mb-6"
+        >
+          <Text variant="label" className="font-medium text-red-700 mb-2">
+            {t.declineReasonTitle}
+          </Text>
+          <Text variant="caption" className="text-red-700">
+            {request.decline_reason}
+          </Text>
+        </div>
+      )}
 
       <div
         id="custom-request-details-panel-help"

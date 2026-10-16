@@ -5,10 +5,14 @@ import type { CustomRequest } from "@/lib/customRequests/types";
 const baseRequest: CustomRequest = {
   id: "req-12345678",
   user_id: "user-1",
+  full_name: "Jane Doe",
+  email: "jane@example.com",
+  phone: "+91 9876543210",
   product_type: "Necklace",
   message: "Pearl bag in pastel pink with detachable chain.",
-  image_url: null,
+  image_urls: [],
   status: "IN_DISCUSSION",
+  decline_reason: null,
   created_at: "2025-09-05T00:00:00.000Z",
   updated_at: "2025-09-06T00:00:00.000Z",
 };
@@ -39,5 +43,27 @@ describe("CustomRequestDetailsPanel", () => {
       "href",
       expect.stringContaining("mailto:"),
     );
+  });
+
+  it("renders a decline reason banner for a declined request", () => {
+    render(
+      <CustomRequestDetailsPanel
+        request={{
+          ...baseRequest,
+          status: "DECLINED",
+          decline_reason: "We're unable to source this material right now.",
+        }}
+      />,
+    );
+    expect(
+      document.getElementById("custom-request-details-panel-decline-reason"),
+    ).toHaveTextContent("We're unable to source this material right now.");
+  });
+
+  it("does not render a decline reason banner when not declined", () => {
+    render(<CustomRequestDetailsPanel request={baseRequest} />);
+    expect(
+      document.getElementById("custom-request-details-panel-decline-reason"),
+    ).not.toBeInTheDocument();
   });
 });

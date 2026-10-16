@@ -1,4 +1,9 @@
-import { render, screen, fireEvent } from "@/__tests__/utils/test-utils";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+} from "@/__tests__/utils/test-utils";
 import userEvent from "@testing-library/user-event";
 import CustomOrderPage from "@/app/custom-order/page";
 import { translations } from "@/lib/constants/translations";
@@ -168,14 +173,27 @@ describe("Custom Order Page", () => {
       expect(screen.getByText("inspiration.png")).toBeInTheDocument();
     });
 
-    it("hides dropzone text after a file is selected", async () => {
+    it("still shows the dropzone after a file is selected, to allow adding more", async () => {
       const { container } = render(<CustomOrderPage />);
       const fileInput = container.querySelector(
         "input[type='file']",
       ) as HTMLInputElement;
       const file = new File(["img"], "photo.jpg", { type: "image/jpeg" });
       await userEvent.upload(fileInput, file);
-      expect(screen.queryByText(form.dropzone)).not.toBeInTheDocument();
+      expect(screen.getByText(form.dropzone)).toBeInTheDocument();
+    });
+
+    it("disables the dropzone once the max image count is reached", async () => {
+      const { container } = render(<CustomOrderPage />);
+      const fileInput = container.querySelector(
+        "input[type='file']",
+      ) as HTMLInputElement;
+      const files = Array.from(
+        { length: 5 },
+        (_, i) => new File(["img"], `photo-${i}.jpg`, { type: "image/jpeg" }),
+      );
+      await userEvent.upload(fileInput, files);
+      expect(fileInput).toBeDisabled();
     });
   });
 
@@ -186,6 +204,69 @@ describe("Custom Order Page", () => {
         .getByRole("button", { name: form.submit })
         .closest("form")!;
       fireEvent.submit(form_);
+    });
+  });
+
+  describe("Account prefill", () => {
+    const signedInUser = {
+      id: "user-1",
+      email: "jane@example.com",
+      phone: "+919876543210",
+      user_metadata: { first_name: "Jane", last_name: "Doe" },
+    };
+
+    it("prefills and greys out contact fields for a signed-in user with account details", async () => {
+      mockGetUser.mockResolvedValue({ data: { user: signedInUser } });
+      render(<CustomOrderPage />);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText(form.fullName)).toHaveValue("Jane Doe");
+      });
+      expect(screen.getByLabelText(form.email)).toHaveValue("jane@example.com");
+      expect(screen.getByLabelText(form.phone)).toHaveValue("+919876543210");
+      expect(screen.getByLabelText(form.fullName)).toBeDisabled();
+      expect(screen.getByLabelText(form.email)).toBeDisabled();
+      expect(screen.getByLabelText(form.phone)).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
+    });
+
+    it("unlocks the contact fields when Edit is clicked", async () => {
+      mockGetUser.mockResolvedValue({ data: { user: signedInUser } });
+      render(<CustomOrderPage />);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText(form.fullName)).toBeDisabled();
+      });
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+      expect(screen.getByLabelText(form.fullName)).toBeEnabled();
+      expect(screen.getByLabelText(form.email)).toBeEnabled();
+      expect(screen.getByLabelText(form.phone)).toBeEnabled();
+      expect(
+        screen.queryByRole("button", { name: "Edit" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("does not lock contact fields for a signed-in user with no account details", async () => {
+      mockGetUser.mockResolvedValue({
+        data: { user: { id: "user-2", email: null, user_metadata: {} } },
+      });
+      render(<CustomOrderPage />);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText(form.fullName)).toBeEnabled();
+      });
+      expect(
+        screen.queryByRole("button", { name: "Edit" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("leaves contact fields editable for a signed-out visitor", () => {
+      render(<CustomOrderPage />);
+      expect(screen.getByLabelText(form.fullName)).toBeEnabled();
+      expect(
+        screen.queryByRole("button", { name: "Edit" }),
+      ).not.toBeInTheDocument();
     });
   });
 

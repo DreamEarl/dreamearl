@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button";
 import CustomRequestStatusBadge from "@/components/account/CustomRequestStatusBadge";
 import {
   formatCustomRequestDate,
+  getCustomRequestImages,
   getCustomRequestStatusMeta,
   getCustomRequestTitle,
 } from "@/lib/customRequests/status";
@@ -20,6 +21,7 @@ export default function CustomRequestCard({
   const { customRequests: t } = translations.account;
   const title = getCustomRequestTitle(request);
   const statusMessage = getCustomRequestStatusMeta(request.status).message;
+  const [firstImage] = getCustomRequestImages(request);
 
   return (
     <div
@@ -30,13 +32,8 @@ export default function CustomRequestCard({
         id={`custom-request-card-${request.id}-image`}
         className="relative w-20 h-20 bg-gray-50 overflow-hidden shrink-0"
       >
-        {request.image_url && (
-          <Image
-            src={request.image_url}
-            alt={title}
-            fill
-            className="object-cover"
-          />
+        {firstImage && (
+          <Image src={firstImage} alt={title} fill className="object-cover" />
         )}
       </div>
 

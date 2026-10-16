@@ -47,6 +47,12 @@ const STATUS_META: Record<CustomRequestStatus, CustomRequestStatusMeta> = {
     badgeClassName: "bg-gray-100 text-gray-500",
     message: "This request was cancelled.",
   },
+  DECLINED: {
+    label: "Declined",
+    dotClassName: "bg-red-500",
+    badgeClassName: "bg-red-50 text-red-700",
+    message: "We're unable to take on this request.",
+  },
 };
 
 export function getCustomRequestStatusMeta(
@@ -65,4 +71,10 @@ export function formatCustomRequestDate(iso: string): string {
 
 export function getCustomRequestTitle(request: CustomRequest): string {
   return `Custom ${request.product_type}`;
+}
+
+// Defensive against rows fetched before the image_urls migration/backfill ran
+// (column missing or null), so the UI degrades to "no images" instead of crashing.
+export function getCustomRequestImages(request: CustomRequest): string[] {
+  return request.image_urls ?? [];
 }

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import Button from "@/components/ui/Button";
 import { translations } from "@/lib/constants/translations";
 import { ADMIN_WHATSAPP_NUMBER } from "@/lib/constants/shopConfig";
 import { useAuthUser } from "@/lib/supabase/useAuthUser";
+import { getPhoneNumber } from "@/lib/account/getPhoneNumber";
+import { MAX_CUSTOM_REQUEST_IMAGES } from "@/lib/customRequests/types";
 
 const { heading, subtitle, form } = translations.customOrder;
 
@@ -25,21 +28,103 @@ function isValidEmail(value: string): boolean {
   return dot > at + 1 && dot < value.length - 1;
 }
 
-type FormErrors = Partial<Record<"fullName" | "email" | "phone", string>>;
+type FormErrors = Partial<
+  Record<"fullName" | "email" | "phone" | "images", string>
+>;
 
-function validate(fullName: string, email: string, phone: string): FormErrors {
+function validate(
+  fullName: string,
+  email: string,
+  phone: string,
+  imageCount: number,
+): FormErrors {
   const errors: FormErrors = {};
   if (!fullName.trim()) errors.fullName = "Name is required";
   if (!email.trim()) errors.email = "Email is required";
   else if (!isValidEmail(email)) errors.email = "Enter a valid email address";
   if (!phone.trim()) errors.phone = "Phone is required";
+  if (imageCount > MAX_CUSTOM_REQUEST_IMAGES) {
+    errors.images = `You can attach up to ${MAX_CUSTOM_REQUEST_IMAGES} images`;
+  }
   return errors;
+}
+
+function isAcceptedImage(file: File): boolean {
+  return file.type === "image/png" || file.type === "image/jpeg";
+}
+
+// Unlike lib/account/getFullName, this never falls back to guessing a name from
+// the email address — an email-derived guess is fine for a greeting, but wrong
+// to silently prefill into a form field the customer submits as their real name.
+function getAccountFullName(user: User): string {
+  const metadata = user.user_metadata as Record<string, unknown>;
+  const firstName =
+    typeof metadata.first_name === "string" ? metadata.first_name.trim() : "";
+  const lastName =
+    typeof metadata.last_name === "string" ? metadata.last_name.trim() : "";
+  if (firstName || lastName) {
+    return [firstName, lastName].filter(Boolean).join(" ");
+  }
+  const fullName = metadata.full_name ?? metadata.name;
+  return typeof fullName === "string" ? fullName.trim() : "";
+}
+
+function getAccountContact(user: User) {
+  return {
+    fullName: getAccountFullName(user),
+    email: user.email ?? "",
+    phone: getPhoneNumber(user),
+  };
+}
+
+async function uploadImages(files: File[]): Promise<string[]> {
+  const uploads = await Promise.all(
+    files.map(async (file) => {
+      try {
+        const fd = new FormData();
+        fd.append("file", file);
+        const res = await fetch("/api/upload-image", {
+          method: "POST",
+          body: fd,
+        });
+        if (!res.ok) return null;
+        const data = (await res.json()) as { url: string };
+        return data.url;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  return uploads.filter((url): url is string => url !== null);
+}
+
+interface ImageItem {
+  file: File;
+  previewUrl: string;
+}
+
+// Wrapped defensively since some test environments (jsdom) don't implement createObjectURL.
+function createPreviewUrl(file: File): string {
+  try {
+    return URL.createObjectURL(file);
+  } catch {
+    return "";
+  }
+}
+
+function revokePreviewUrl(url: string) {
+  if (!url) return;
+  try {
+    URL.revokeObjectURL(url);
+  } catch {
+    // ignore
+  }
 }
 
 export default function CustomOrderPage() {
   const user = useAuthUser();
   const [dragActive, setDragActive] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageItems, setImageItems] = useState<ImageItem[]>([]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -47,6 +132,68 @@ export default function CustomOrderPage() {
   const [requirements, setRequirements] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isContactLocked, setIsContactLocked] = useState(false);
+
+  // Prefill name/email/phone from the signed-in account once per user, so
+  // returning customers don't have to retype details we already have. Adjusted
+  // directly during render (React's sanctioned pattern for "state derived from
+  // a changed prop/value") rather than in a useEffect, since this repo's lint
+  // config forbids calling setState synchronously inside an effect body.
+  // Functional setState keeps anything the customer already typed before auth
+  // resolved.
+  const [prefilledUserId, setPrefilledUserId] = useState<string | null>(null);
+  if (user && user.id !== prefilledUserId) {
+    setPrefilledUserId(user.id);
+
+    const account = getAccountContact(user);
+    setFullName((prev) => prev || account.fullName);
+    setEmail((prev) => prev || account.email);
+    setPhone((prev) => prev || account.phone);
+
+    if (account.fullName || account.email || account.phone) {
+      setIsContactLocked(true);
+    }
+  }
+
+  function unlockContactFields() {
+    setIsContactLocked(false);
+  }
+
+  // Object URLs are created/revoked in event handlers (addFiles/removeFile), not
+  // during render, since the create/revoke calls are side effects tied to user
+  // actions rather than something to synchronize via an effect. This ref just
+  // lets us revoke any still-open URLs if the page unmounts with files pending.
+  const imageItemsRef = useRef<ImageItem[]>([]);
+  useEffect(() => {
+    imageItemsRef.current = imageItems;
+  }, [imageItems]);
+  useEffect(() => {
+    return () => {
+      imageItemsRef.current.forEach((item) =>
+        revokePreviewUrl(item.previewUrl),
+      );
+    };
+  }, []);
+
+  function addFiles(newFiles: File[]) {
+    const accepted = newFiles.filter(isAcceptedImage);
+    setImageItems((prev) => {
+      const room = MAX_CUSTOM_REQUEST_IMAGES - prev.length;
+      if (room <= 0) return prev;
+      const toAdd = accepted
+        .slice(0, room)
+        .map((file) => ({ file, previewUrl: createPreviewUrl(file) }));
+      return [...prev, ...toAdd];
+    });
+  }
+
+  function removeFile(index: number) {
+    setImageItems((prev) => {
+      const target = prev[index];
+      if (target) revokePreviewUrl(target.previewUrl);
+      return prev.filter((_, i) => i !== index);
+    });
+  }
 
   function handleDrag(e: React.DragEvent) {
     e.preventDefault();
@@ -58,21 +205,23 @@ export default function CustomOrderPage() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
-      setImageFile(file);
-    }
+    addFiles(Array.from(e.dataTransfer.files ?? []));
   }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file) setImageFile(file);
+    addFiles(Array.from(e.target.files ?? []));
+    e.target.value = "";
   }
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const validationErrors = validate(fullName, email, phone);
+    const validationErrors = validate(
+      fullName,
+      email,
+      phone,
+      imageItems.length,
+    );
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -80,23 +229,14 @@ export default function CustomOrderPage() {
     setErrors({});
     setIsSubmitting(true);
 
-    let imageUrl: string | null = null;
-    if (imageFile) {
-      try {
-        const fd = new FormData();
-        fd.append("file", imageFile);
-        const res = await fetch("/api/upload-image", {
-          method: "POST",
-          body: fd,
-        });
-        if (res.ok) {
-          const data = (await res.json()) as { url: string };
-          imageUrl = data.url;
-        }
-      } catch {
-        // proceed without image URL if upload fails
-      }
-    }
+    const files = imageItems.map((item) => item.file);
+    const imageUrls = files.length ? await uploadImages(files) : [];
+    const failedUploadCount = files.length - imageUrls.length;
+    const failedUploadSuffix = failedUploadCount > 1 ? "s" : "";
+    const failedUploadNote =
+      failedUploadCount > 0
+        ? `(${failedUploadCount} image upload${failedUploadSuffix} failed – please send manually)`
+        : "";
 
     const message = [
       "New Custom Order – DreamEarl",
@@ -109,8 +249,13 @@ export default function CustomOrderPage() {
       "Requirements:",
       requirements || "No details provided",
       "",
-      `Inspiration Image: ${imageUrl ?? (imageFile ? "Upload failed – please send manually" : "Not provided")}`,
-    ].join("\n");
+      imageUrls.length
+        ? `Inspiration Images:\n${imageUrls.join("\n")}`
+        : "Inspiration Images: Not provided",
+      failedUploadNote,
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     // Track the request on the account "Custom Requests" screen for signed-in users.
     if (user) {
@@ -119,9 +264,12 @@ export default function CustomOrderPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            fullName,
+            email,
+            phone,
             productType: productType || "Custom Piece",
             message: requirements || "No details provided",
-            imageUrl,
+            imageUrls,
           }),
         });
       } catch {
@@ -134,12 +282,26 @@ export default function CustomOrderPage() {
       "_blank",
     );
 
-    setFullName("");
-    setEmail("");
-    setPhone("");
+    // Re-prefill (rather than blank) contact fields for signed-in users, in case
+    // they submit another custom request in the same visit.
+    if (user) {
+      const account = getAccountContact(user);
+      setFullName(account.fullName);
+      setEmail(account.email);
+      setPhone(account.phone);
+      setIsContactLocked(
+        Boolean(account.fullName || account.email || account.phone),
+      );
+    } else {
+      setFullName("");
+      setEmail("");
+      setPhone("");
+      setIsContactLocked(false);
+    }
     setProductType("");
     setRequirements("");
-    setImageFile(null);
+    imageItems.forEach((item) => revokePreviewUrl(item.previewUrl));
+    setImageItems([]);
     setIsSubmitting(false);
   }
 
@@ -154,7 +316,7 @@ export default function CustomOrderPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Inspiration Image */}
+          {/* Inspiration Images */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {form.inspirationImage}
@@ -169,42 +331,86 @@ export default function CustomOrderPage() {
                 dragActive
                   ? "border-gray-400 bg-gray-50"
                   : "border-gray-300 bg-white"
-              }`}
+              } ${imageItems.length >= MAX_CUSTOM_REQUEST_IMAGES ? "pointer-events-none opacity-50" : ""}`}
             >
               <input
                 type="file"
                 id="inspirationImage"
                 accept="image/png,image/jpeg"
+                multiple
                 className="sr-only"
                 onChange={handleFileChange}
+                disabled={imageItems.length >= MAX_CUSTOM_REQUEST_IMAGES}
               />
-              {imageFile ? (
-                <p className="text-sm text-gray-600">{imageFile.name}</p>
-              ) : (
-                <>
-                  <svg
-                    className="w-10 h-10 text-gray-400 mb-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                    />
-                  </svg>
-                  <p className="text-sm text-gray-500">{form.dropzone}</p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {form.dropzoneHint}
-                  </p>
-                </>
-              )}
+              <svg
+                className="w-10 h-10 text-gray-400 mb-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                />
+              </svg>
+              <p className="text-sm text-gray-500">{form.dropzone}</p>
+              <p className="text-xs text-gray-400 mt-1">{form.dropzoneHint}</p>
             </label>
+            {errors.images && (
+              <p className="mt-1 text-xs text-red-500">{errors.images}</p>
+            )}
+            {imageItems.length > 0 && (
+              <ul className="mt-3 grid grid-cols-3 sm:grid-cols-5 gap-3">
+                {imageItems.map(({ file, previewUrl }, index) => (
+                  <li
+                    key={`${file.name}-${file.lastModified}`}
+                    className="relative"
+                  >
+                    <div className="relative w-full aspect-square bg-gray-50 overflow-hidden rounded-lg">
+                      {previewUrl && (
+                        /* eslint-disable-next-line @next/next/no-img-element -- blob: preview URLs aren't valid next/image sources */
+                        <img
+                          src={previewUrl}
+                          alt={file.name}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500 truncate mt-1">
+                      {file.name}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => removeFile(index)}
+                      aria-label={`Remove ${file.name}`}
+                      className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center rounded-full bg-black/70 text-white text-xs leading-none"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Full Name & Email */}
+          {isContactLocked && (
+            <div className="flex items-center justify-between -mb-2">
+              <p className="text-xs text-gray-400">
+                Auto-filled from your account
+              </p>
+              <button
+                type="button"
+                onClick={unlockContactFields}
+                className="text-xs font-medium text-gray-600 underline hover:text-black"
+              >
+                Edit
+              </button>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label
@@ -221,9 +427,10 @@ export default function CustomOrderPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder={form.fullNamePlaceholder}
+                disabled={isContactLocked}
                 className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 ${
                   errors.fullName ? "border-red-400" : "border-gray-300"
-                }`}
+                } ${isContactLocked ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}`}
               />
               {errors.fullName && (
                 <p className="mt-1 text-xs text-red-500">{errors.fullName}</p>
@@ -244,9 +451,10 @@ export default function CustomOrderPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={form.emailPlaceholder}
+                disabled={isContactLocked}
                 className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 ${
                   errors.email ? "border-red-400" : "border-gray-300"
-                }`}
+                } ${isContactLocked ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}`}
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-red-500">{errors.email}</p>
@@ -271,9 +479,10 @@ export default function CustomOrderPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder={form.phonePlaceholder}
+                disabled={isContactLocked}
                 className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 ${
                   errors.phone ? "border-red-400" : "border-gray-300"
-                }`}
+                } ${isContactLocked ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}`}
               />
               {errors.phone && (
                 <p className="mt-1 text-xs text-red-500">{errors.phone}</p>

@@ -25,6 +25,7 @@ const STEP_LABELS: Record<CustomRequestStatus, string> = {
   IN_PRODUCTION: "In Production",
   COMPLETED: "Completed",
   CANCELLED: "Cancelled",
+  DECLINED: "Declined",
 };
 
 function formatDateTime(iso: string): string {
@@ -44,7 +45,7 @@ function formatDateTime(iso: string): string {
 export function getCustomRequestTimeline(
   request: CustomRequest,
 ): CustomRequestTimelineStep[] {
-  if (request.status === "CANCELLED") {
+  if (request.status === "CANCELLED" || request.status === "DECLINED") {
     return [
       {
         key: "PENDING",
@@ -53,8 +54,8 @@ export function getCustomRequestTimeline(
         isComplete: true,
       },
       {
-        key: "CANCELLED",
-        label: STEP_LABELS.CANCELLED,
+        key: request.status,
+        label: STEP_LABELS[request.status],
         timestamp: formatDateTime(request.updated_at),
         isComplete: true,
       },
