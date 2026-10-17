@@ -10,10 +10,14 @@ type OrderPayload = {
   phone: string;
   productType: string;
   requirements: string;
-  imageUrl: string | null;
+  imageUrls?: string[];
+  imageUrl?: string | null;
 };
 
 function adminHtml(o: OrderPayload) {
+  const imageUrls =
+    o.imageUrls?.length ? o.imageUrls : o.imageUrl ? [o.imageUrl] : [];
+
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#222">
       <h2 style="border-bottom:1px solid #eee;padding-bottom:12px">
@@ -30,12 +34,16 @@ function adminHtml(o: OrderPayload) {
         ${o.requirements || "No details provided"}
       </p>
       ${
-        o.imageUrl
-          ? `<h3>Inspiration Image</h3>
-             <a href="${o.imageUrl}">
-               <img src="${o.imageUrl}" alt="Inspiration" style="max-width:100%;border-radius:8px"/>
-             </a>`
-          : "<p style='color:#999'>No inspiration image provided.</p>"
+        imageUrls.length
+          ? `<h3>Inspiration Images</h3>
+             ${imageUrls
+               .map(
+                 (url) => `<a href="${url}">
+                   <img src="${url}" alt="Inspiration" style="max-width:100%;max-height:320px;border-radius:8px;margin:0 8px 8px 0"/>
+                 </a>`,
+               )
+               .join("")}`
+          : "<p style='color:#999'>No inspiration images provided.</p>"
       }
     </div>
   `;
@@ -50,8 +58,7 @@ function customerHtml(name: string) {
         We'll reach out within <strong>24–48 hours</strong> with a quote and timeline.
       </p>
       <p style="color:#555;line-height:1.7">
-        In the meantime, feel free to reply to this email or WhatsApp us at
-        <a href="https://wa.me/918830587508" style="color:#000">+91 88305 87508</a>.
+        In the meantime, feel free to reply to this email if you have any questions.
       </p>
       <p style="margin-top:32px;color:#999;font-size:12px">DreamEarl · Handmade Luxury Accessories</p>
     </div>
@@ -69,7 +76,7 @@ export async function POST(req: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
-    await Promise.all([
+    const results = await Promise.all([
       resend.emails.send({
         from: FROM_ADDRESS,
         to: ADMIN_EMAIL,
@@ -84,6 +91,10 @@ export async function POST(req: Request) {
         html: customerHtml(fullName),
       }),
     ]);
+    const failedResult = results.find((result) => result.error);
+    if (failedResult?.error) {
+      throw new Error(failedResult.error.message);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {

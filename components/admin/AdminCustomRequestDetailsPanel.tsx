@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Heading from "@/components/ui/Heading";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
@@ -143,11 +142,11 @@ export default function AdminCustomRequestDetailsPanel({
                     rel="noreferrer"
                     className="relative w-20 h-20 bg-gray-50 overflow-hidden shrink-0"
                   >
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element -- uploaded reference URLs are user-provided */}
+                    <img
                       src={url}
                       alt={`Reference ${index + 1}`}
-                      fill
-                      className="object-cover"
+                      className="w-full h-full object-cover"
                     />
                   </a>
                 ))}

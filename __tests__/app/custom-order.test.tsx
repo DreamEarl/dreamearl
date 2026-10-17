@@ -205,6 +205,92 @@ describe("Custom Order Page", () => {
         .closest("form")!;
       fireEvent.submit(form_);
     });
+
+    it("sends signed-out requests by email without opening WhatsApp", async () => {
+      const fetchMock = jest
+        .spyOn(global, "fetch")
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ success: true }),
+        } as Response);
+      const openMock = jest.spyOn(window, "open").mockImplementation(() => null);
+      render(<CustomOrderPage />);
+
+      await userEvent.type(screen.getByLabelText(form.fullName), "Jane Doe");
+      await userEvent.type(
+        screen.getByLabelText(form.email),
+        "jane@example.com",
+      );
+      await userEvent.type(
+        screen.getByLabelText(form.phone),
+        "+919876543210",
+      );
+      await userEvent.click(screen.getByRole("button", { name: form.submit }));
+
+      await waitFor(() => {
+        expect(screen.getByRole("status")).toHaveTextContent(
+          "Your custom request has been sent.",
+        );
+      });
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/send-order",
+        expect.objectContaining({ method: "POST" }),
+      );
+      expect(openMock).not.toHaveBeenCalled();
+      fetchMock.mockRestore();
+      openMock.mockRestore();
+    });
+
+    it("records signed-in requests through the custom request API and emails them", async () => {
+      mockGetUser.mockResolvedValue({
+        data: {
+          user: {
+            id: "user-1",
+            email: "jane@example.com",
+            phone: "+919876543210",
+            user_metadata: { first_name: "Jane", last_name: "Doe" },
+          },
+        },
+      });
+      const fetchMock = jest
+        .spyOn(global, "fetch")
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ customRequest: { id: "request-1" } }),
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ success: true }),
+        } as Response);
+      render(<CustomOrderPage />);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText(form.fullName)).toHaveValue("Jane Doe");
+      });
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+      await userEvent.type(
+        screen.getByLabelText(form.requirements),
+        "Pearl necklace",
+      );
+      await userEvent.click(screen.getByRole("button", { name: form.submit }));
+
+      await waitFor(() => {
+        expect(screen.getByRole("status")).toHaveTextContent(
+          "Your custom request has been sent.",
+        );
+      });
+      expect(fetchMock).toHaveBeenNthCalledWith(
+        1,
+        "/api/custom-requests",
+        expect.objectContaining({ method: "POST" }),
+      );
+      expect(fetchMock).toHaveBeenNthCalledWith(
+        2,
+        "/api/send-order",
+        expect.objectContaining({ method: "POST" }),
+      );
+      fetchMock.mockRestore();
+    });
   });
 
   describe("Account prefill", () => {
@@ -237,14 +323,18 @@ describe("Custom Order Page", () => {
       await waitFor(() => {
         expect(screen.getByLabelText(form.fullName)).toBeDisabled();
       });
+      expect(screen.queryByText("Auto-filled from your account")).not.toBeInTheDocument();
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
       expect(screen.getByLabelText(form.fullName)).toBeEnabled();
       expect(screen.getByLabelText(form.email)).toBeEnabled();
       expect(screen.getByLabelText(form.phone)).toBeEnabled();
-      expect(
-        screen.queryByRole("button", { name: "Edit" }),
-      ).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Done" })).toBeInTheDocument();
+      await userEvent.clear(screen.getByLabelText(form.fullName));
+      await userEvent.type(screen.getByLabelText(form.fullName), "Jane Smith");
+      expect(screen.getByLabelText(form.fullName)).toHaveValue("Jane Smith");
+      await userEvent.click(screen.getByRole("button", { name: "Done" }));
+      expect(screen.getByLabelText(form.fullName)).toBeDisabled();
     });
 
     it("does not lock contact fields for a signed-in user with no account details", async () => {

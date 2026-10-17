@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import Button from "@/components/ui/Button";
 import { translations } from "@/lib/constants/translations";
-import { ADMIN_WHATSAPP_NUMBER } from "@/lib/constants/shopConfig";
 import { useAuthUser } from "@/lib/supabase/useAuthUser";
 import { getPhoneNumber } from "@/lib/account/getPhoneNumber";
 import { MAX_CUSTOM_REQUEST_IMAGES } from "@/lib/customRequests/types";
@@ -95,6 +94,11 @@ async function uploadImages(files: File[]): Promise<string[]> {
       }
     }),
   );
+  if (uploads.some((url) => url === null)) {
+    throw new Error(
+      "One or more inspiration images could not be uploaded. Please try again.",
+    );
+  }
   return uploads.filter((url): url is string => url !== null);
 }
 
@@ -132,7 +136,14 @@ export default function CustomOrderPage() {
   const [requirements, setRequirements] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isContactLocked, setIsContactLocked] = useState(false);
+  const [isContactEditing, setIsContactEditing] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+  const hasAccountContact = Boolean(
+    user &&
+      Object.values(getAccountContact(user)).some((value) => value.trim()),
+  );
+  const isContactLocked = hasAccountContact && !isContactEditing;
 
   // Prefill name/email/phone from the signed-in account once per user, so
   // returning customers don't have to retype details we already have. Adjusted
@@ -150,13 +161,7 @@ export default function CustomOrderPage() {
     setEmail((prev) => prev || account.email);
     setPhone((prev) => prev || account.phone);
 
-    if (account.fullName || account.email || account.phone) {
-      setIsContactLocked(true);
-    }
-  }
-
-  function unlockContactFields() {
-    setIsContactLocked(false);
+    setIsContactEditing(false);
   }
 
   // Object URLs are created/revoked in event handlers (addFiles/removeFile), not
@@ -216,6 +221,8 @@ export default function CustomOrderPage() {
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    setSubmitError(null);
+    setSubmitSuccess(null);
     const validationErrors = validate(
       fullName,
       email,
@@ -229,38 +236,13 @@ export default function CustomOrderPage() {
     setErrors({});
     setIsSubmitting(true);
 
-    const files = imageItems.map((item) => item.file);
-    const imageUrls = files.length ? await uploadImages(files) : [];
-    const failedUploadCount = files.length - imageUrls.length;
-    const failedUploadSuffix = failedUploadCount > 1 ? "s" : "";
-    const failedUploadNote =
-      failedUploadCount > 0
-        ? `(${failedUploadCount} image upload${failedUploadSuffix} failed – please send manually)`
-        : "";
+    try {
+      const files = imageItems.map((item) => item.file);
+      const imageUrls = files.length ? await uploadImages(files) : [];
 
-    const message = [
-      "New Custom Order – DreamEarl",
-      "",
-      `Name: ${fullName}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      `Product Type: ${productType || "Not specified"}`,
-      "",
-      "Requirements:",
-      requirements || "No details provided",
-      "",
-      imageUrls.length
-        ? `Inspiration Images:\n${imageUrls.join("\n")}`
-        : "Inspiration Images: Not provided",
-      failedUploadNote,
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    // Track the request on the account "Custom Requests" screen for signed-in users.
-    if (user) {
-      try {
-        await fetch("/api/custom-requests", {
+      // Signed-in requests are also recorded for the customer and admin dashboard.
+      if (user) {
+        const requestResponse = await fetch("/api/custom-requests", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -272,37 +254,74 @@ export default function CustomOrderPage() {
             imageUrls,
           }),
         });
-      } catch {
-        // non-blocking — the WhatsApp message below is the source of truth
+        const requestData = await requestResponse.json().catch(() => null);
+        if (!requestResponse.ok) {
+          setSubmitError(
+            requestData?.error ?? "Unable to save your request. Please try again.",
+          );
+          return;
+        }
       }
+
+      const emailResponse = await fetch("/api/send-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          email,
+          phone,
+          productType: productType || "Custom Piece",
+          requirements: requirements || "No details provided",
+          imageUrls,
+        }),
+      });
+      const emailData = await emailResponse.json().catch(() => null);
+      if (!emailResponse.ok) {
+        if (user) {
+          clearSubmittedForm(user);
+          setSubmitSuccess(
+            "Your request is saved for our team, but the email could not be sent. Please try again later.",
+          );
+        } else {
+          setSubmitError(
+            emailData?.error ?? "Unable to send your request. Please try again.",
+          );
+        }
+        return;
+      }
+
+      clearSubmittedForm(user);
+      setSubmitSuccess(
+        "Your custom request has been sent. We’ll get back to you by email.",
+      );
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Unable to send your request. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
+  }
 
-    window.open(
-      `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
-      "_blank",
-    );
-
-    // Re-prefill (rather than blank) contact fields for signed-in users, in case
-    // they submit another custom request in the same visit.
-    if (user) {
-      const account = getAccountContact(user);
+  function clearSubmittedForm(submittedUser: User | null) {
+    if (submittedUser) {
+      const account = getAccountContact(submittedUser);
       setFullName(account.fullName);
       setEmail(account.email);
       setPhone(account.phone);
-      setIsContactLocked(
-        Boolean(account.fullName || account.email || account.phone),
-      );
+      setIsContactEditing(false);
     } else {
       setFullName("");
       setEmail("");
       setPhone("");
-      setIsContactLocked(false);
+      setIsContactEditing(false);
     }
     setProductType("");
     setRequirements("");
     imageItems.forEach((item) => revokePreviewUrl(item.previewUrl));
     setImageItems([]);
-    setIsSubmitting(false);
   }
 
   return (
@@ -397,21 +416,22 @@ export default function CustomOrderPage() {
           </div>
 
           {/* Full Name & Email */}
-          {isContactLocked && (
-            <div className="flex items-center justify-between -mb-2">
-              <p className="text-xs text-gray-400">
-                Auto-filled from your account
-              </p>
+          {(isContactLocked || hasAccountContact) && (
+            <div className="flex justify-end -mb-2">
               <button
                 type="button"
-                onClick={unlockContactFields}
+                onClick={() => setIsContactEditing((editing) => !editing)}
+                aria-controls="custom-order-contact-fields"
                 className="text-xs font-medium text-gray-600 underline hover:text-black"
               >
-                Edit
+                {isContactLocked ? "Edit" : "Done"}
               </button>
             </div>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            id="custom-order-contact-fields"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
             <div>
               <label
                 htmlFor="fullName"
@@ -535,6 +555,16 @@ export default function CustomOrderPage() {
 
           {/* Submit */}
           <div className="flex flex-col items-center gap-3 pt-2">
+            {submitError && (
+              <p role="alert" className="text-sm text-red-600 text-center">
+                {submitError}
+              </p>
+            )}
+            {submitSuccess && (
+              <p role="status" className="text-sm text-green-700 text-center">
+                {submitSuccess}
+              </p>
+            )}
             <Button
               type="submit"
               variant="primary"
